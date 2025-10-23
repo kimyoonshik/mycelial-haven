@@ -1,12 +1,35 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { Header } from "@/components/Header";
+import { Hero } from "@/components/Hero";
+import { About } from "@/components/About";
+import { Materials } from "@/components/Materials";
+import { Portfolio } from "@/components/Portfolio";
+import { Process } from "@/components/Process";
+import { Sustainability } from "@/components/Sustainability";
+import { Press } from "@/components/Press";
+import { Contact } from "@/components/Contact";
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="w-full">
+      <Header />
+      <main>
+        <Hero />
+        <About />
+        <Materials />
+        <Portfolio />
+        <Process />
+        <Sustainability />
+        <Press />
+        <Contact />
+      </main>
+      
+      <footer className="bg-deep-burgundy border-t border-foreground/10 py-8">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="font-ui text-sm text-foreground/60">
+            © 2025 MYCERRA. Born from nature's intelligence—crafted purely from mycelium.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
