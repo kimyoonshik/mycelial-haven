@@ -1,6 +1,6 @@
 {
   "name": "mycerra-modes",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MYCERRA 전문가 모드 버튼 3개(균사체 기술 / M&A·ESG 금융 / PPT 디자인)를 입력창 위에 띄우고, 선택한 모드를 시스템 프롬프트에 반영합니다.",
   "author": { "name": "SaveUs Co., Ltd." },
   "types": "./types/index.d.ts"
