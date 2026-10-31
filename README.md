@@ -48,6 +48,7 @@ npm run build      # 공개 사이트 빌드 → dist/ (콘텐츠 검사 + 페�
 - [호스팅·이전 가이드](docs/hosting.md) — 기존 saveearth.kr 교체 절차, 호스팅별 설정, 출시 점검표
 - [운영 도구 사용 설명서](docs/cms.md) — 상품·가격·성적서·소식 수정과 게시
 - [주문·인보이스·결제·발송 SOP](docs/order-process.md)
+- [미결 사항 (출시 전 확정 필요)](docs/open-items.md)
 
 ## 환경변수 (`.env`, 예시는 `.env.example`)
 
