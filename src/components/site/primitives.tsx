@@ -3,14 +3,27 @@ import { ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import type { ProofStatus } from "@/content/mycerra";
+import { useLang } from "@/i18n/LanguageProvider";
 
 export const Container = ({ children, className }: { children: ReactNode; className?: string }) => (
   <div className={cn("mx-auto w-full max-w-[1400px] px-5 md:px-10", className)}>{children}</div>
 );
 
-export const Eyebrow = ({ children, className }: { children: ReactNode; className?: string }) => (
-  <p className={cn("font-mc-sans text-[11px] uppercase tracking-[0.22em] text-mc-mute", className)}>{children}</p>
-);
+export const Eyebrow = ({ children, className }: { children: ReactNode; className?: string }) => {
+  const { lang } = useLang();
+  // 한글은 넓은 자간에서 글자가 흩어져 보이므로 좁힌다
+  return (
+    <p
+      className={cn(
+        "font-mc-sans text-[11px] uppercase text-mc-mute",
+        lang === "ko" ? "tracking-[0.08em]" : "tracking-[0.22em]",
+        className,
+      )}
+    >
+      {children}
+    </p>
+  );
+};
 
 export const Display = ({
   children,
@@ -20,10 +33,22 @@ export const Display = ({
   children: ReactNode;
   className?: string;
   as?: "h1" | "h2" | "h3";
-}) => (
-  // tailwind-merge는 뒤에 오는 text-* 크기 클래스가 leading을 지우므로 줄 간격을 마지막에 둔다
-  <Tag className={cn("font-mc-serif font-light tracking-[-0.01em]", className, "leading-[1.05]")}>{children}</Tag>
-);
+}) => {
+  const { lang } = useLang();
+  // tailwind-merge는 뒤에 오는 text-* 크기 클래스가 leading을 지우므로 줄 간격을 마지막에 둔다.
+  // 한글 세리프는 받침 때문에 영문보다 넓은 줄 간격이 필요하다.
+  return (
+    <Tag
+      className={cn(
+        "font-mc-serif font-light tracking-[-0.01em]",
+        className,
+        lang === "ko" ? "leading-[1.25]" : "leading-[1.05]",
+      )}
+    >
+      {children}
+    </Tag>
+  );
+};
 
 export const TextLink = ({
   to,
@@ -83,14 +108,40 @@ export const PillButton = ({
   );
 };
 
-export const ProofBadge = ({ status }: { status: ProofStatus }) => (
-  <span
-    className={cn(
-      "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mc-sans text-[10px] uppercase tracking-[0.14em]",
-      status === "published" ? "border-emerald-700/40 text-emerald-800" : "border-mc-ink/20 text-mc-mute",
-    )}
-  >
-    <span className={cn("h-1.5 w-1.5 rounded-full", status === "published" ? "bg-emerald-700" : "bg-mc-mute/60")} />
-    {status === "published" ? "Document available" : "Document in preparation"}
-  </span>
-);
+const proofLabel = {
+  published: { en: "Document available", ko: "문서 공개" },
+  "in-preparation": { en: "Document in preparation", ko: "문서 준비 중" },
+};
+
+export const ProofBadge = ({ status, light = false }: { status: ProofStatus; light?: boolean }) => {
+  const { t } = useLang();
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mc-sans text-[10px] uppercase tracking-[0.14em]",
+        status === "published"
+          ? "border-emerald-700/40 text-emerald-800"
+          : light
+            ? "border-mc-paper/30 text-mc-paper/60"
+            : "border-mc-ink/20 text-mc-mute",
+      )}
+    >
+      <span
+        className={cn("h-1.5 w-1.5 rounded-full", status === "published" ? "bg-emerald-700" : "bg-current opacity-60")}
+      />
+      {t(proofLabel[status])}
+    </span>
+  );
+};
+
+const krw = new Intl.NumberFormat("ko-KR");
+
+/** 가격 미정(null)이면 "가격 문의" */
+export const Price = ({ value, className }: { value: number | null; className?: string }) => {
+  const { t } = useLang();
+  return (
+    <span className={className}>
+      {value === null ? t({ en: "Price on request", ko: "가격 문의" }) : `₩${krw.format(value)}`}
+    </span>
+  );
+};

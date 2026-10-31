@@ -17,8 +17,9 @@ export default {
         display: ['Cormorant Garamond', 'serif'],
         body: ['Lora', 'serif'],
         ui: ['Inter', 'sans-serif'],
-        "mc-serif": ['Fraunces', 'Georgia', 'serif'],
-        "mc-sans": ['Inter', 'system-ui', 'sans-serif'],
+        // 영문 글꼴에 한글 글리프가 없으므로 한글은 자동으로 다음 글꼴로 대체된다
+        "mc-serif": ['Fraunces', '"Noto Serif KR"', 'Georgia', 'serif'],
+        "mc-sans": ['Inter', '"Pretendard Variable"', 'Pretendard', 'system-ui', 'sans-serif'],
       },
       colors: {
         mc: {

@@ -68,6 +68,12 @@ All colors MUST be HSL.
   h1, h2, h3, h4, h5, h6 {
     @apply font-display;
   }
+
+  /* 한글은 어절 단위로 줄바꿈 */
+  html:lang(ko) body {
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
 }
 
 @layer utilities {

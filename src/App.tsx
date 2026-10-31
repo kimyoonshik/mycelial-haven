@@ -11,6 +11,11 @@ import Materials from "./pages/site/Materials";
 import Technology from "./pages/site/Technology";
 import Impact from "./pages/site/Impact";
 import WorkWithUs from "./pages/site/WorkWithUs";
+import Shop from "./pages/shop/Shop";
+import ProductDetail from "./pages/shop/ProductDetail";
+import Cart from "./pages/shop/Cart";
+import { LanguageProvider } from "./i18n/LanguageProvider";
+import { CartProvider } from "./shop/CartProvider";
 
 const queryClient = new QueryClient();
 
@@ -19,21 +24,28 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<SiteLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/mycerra" element={<Materials />} />
-            <Route path="/technology" element={<Technology />} />
-            <Route path="/impact" element={<Impact />} />
-            <Route path="/work-with-us" element={<WorkWithUs />} />
-          </Route>
-          {/* 이전 단일 페이지 버전 — 비교용 */}
-          <Route path="/legacy" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <LanguageProvider>
+        <CartProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<SiteLayout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/mycerra" element={<Materials />} />
+                <Route path="/technology" element={<Technology />} />
+                <Route path="/impact" element={<Impact />} />
+                <Route path="/work-with-us" element={<WorkWithUs />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/shop/p/:sku" element={<ProductDetail />} />
+                <Route path="/shop/cart" element={<Cart />} />
+              </Route>
+              {/* 이전 단일 페이지 버전 — 비교용 */}
+              <Route path="/legacy" element={<Index />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </CartProvider>
+      </LanguageProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
