@@ -7,6 +7,8 @@
 
 ## 빠른 시작
 
+**운영 도구 바로 열기:** `Mycerra-CMS-Windows.bat` (Windows) / `Mycerra-CMS-Mac.command` (Mac) 더블클릭
+
 ```sh
 npm install        # 최초 1회 (Node.js 18 이상)
 npm run dev        # 개발 미리보기  http://localhost:8080

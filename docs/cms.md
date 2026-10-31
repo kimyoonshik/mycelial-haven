@@ -13,19 +13,37 @@
    ```
    git clone https://github.com/kimyoonshik/mycelial-haven.git
    cd mycelial-haven
+   git checkout feature/rea-site-cloner
    npm install
    ```
+   - 출시 전까지는 작업 브랜치(`feature/rea-site-cloner`)를 씁니다. 출시 후 main으로 합치면 세 번째 줄은 필요 없습니다.
 
 ## 2. 실행
 
+### 더블클릭으로 열기 (권장)
+
+저장소 폴더 안의 실행 파일을 더블클릭하면 **최신 내용 받기 → 필요하면 설치 → 운영 도구 실행 → 브라우저 자동 열림**까지 한 번에 됩니다.
+
+| PC | 파일 | 바탕화면에 두는 방법 |
+|----|------|---------------------|
+| Windows | `Mycerra-CMS-Windows.bat` | 파일을 마우스 오른쪽 클릭 → 보내기 → **바탕 화면에 바로 가기 만들기** |
+| Mac | `Mycerra-CMS-Mac.command` | 파일을 선택하고 `Option + Command`를 누른 채 바탕화면이나 Dock으로 끌어 **가상본** 만들기 |
+
+- 실행 파일 자체를 바탕화면으로 옮기지 마세요. 저장소 폴더 안에 있어야 동작합니다.
+- Mac에서 처음 열 때 "확인되지 않은 개발자" 경고가 뜨면: 파일을 Control+클릭 → **열기** → 열기.
+- 끝낼 때: 검은 창(터미널)을 닫거나 `Ctrl + C` (Mac은 `Control + C`).
+
+### 명령어로 열기
+
 ```
+git pull
 npm run cms
 ```
 
 - 브라우저에서 터미널에 표시된 **http://127.0.0.1:8080/admin/content** 로 접속합니다.
 - **보안:** 이 PC에서만 열리고, 실행할 때마다 새 보안 토큰이 만들어집니다. 다른 PC나 다른 웹사이트에서는 접근할 수 없습니다.
 - **종료:** 터미널에서 `Ctrl + C`를 누릅니다.
-- **수정 전 최신 내용 받기:** 매번 `git pull`을 먼저 실행합니다(다른 담당자의 변경을 받아 옵니다).
+- **수정 전 최신 내용 받기:** 실행 파일은 자동으로 받습니다. 명령어로 열 때는 매번 `git pull`을 먼저 실행합니다(다른 담당자의 변경을 받아 옵니다).
 
 ## 3. 탭별 기능
 
@@ -77,7 +95,8 @@ npm run cms
 |------|------|
 | "운영 도구는 npm run cms 로 실행한 화면에서만…" | `npm run dev`가 아니라 `npm run cms`로 실행 |
 | 저장 시 "invalid token" | 터미널에서 서버가 재시작됨 → 브라우저 새로고침 |
-| 게시 실패 (push rejected) | 터미널에서 `git pull` 후 다시 게시 |
+| 게시 실패 (push rejected) | 운영 도구를 닫고 실행 파일을 다시 열기 (자동으로 `git pull`) 후 다시 게시 |
+| 실행 파일 창에 "최신 내용을 받지 못했습니다" | 인터넷·GitHub 로그인 확인. 게시하지 않은 수정이 있으면 먼저 게시 |
 | 실수로 저장함 | `.cms-backups/`의 직전 파일을 `src/content/data/`에 덮어쓰기, 또는 `git checkout -- src/content/data` (게시 전) |
 | 빌드 실패 | 게시 탭 "검사"의 오류 목록을 고친 뒤 다시 빌드 |
 
