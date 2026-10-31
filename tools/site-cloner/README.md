@@ -26,7 +26,7 @@ npm run clone -- https://example.com --render --depth 1
 | `--max-assets <n>` | `2000` | 최대 에셋 수 |
 | `--delay <ms>` | `300` | 요청 간 최소 간격 (서버 부하 방지) |
 | `--render` | 꺼짐 | Playwright(Chromium)로 JS 실행 후 HTML 저장 |
-| `--user-agent <ua>` | `REA-SiteCloner/1.0` | User-Agent |
+| `--user-agent <ua>` | fetch: `REA-SiteCloner/1.0` 포함 UA / `--render`: Chromium 기본값 | User-Agent |
 
 ## 동작 방식
 

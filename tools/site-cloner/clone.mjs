@@ -20,7 +20,7 @@ const HELP = `REA Site Cloner
   --max-assets <n>    최대 에셋 수 (기본: 2000)
   --delay <ms>        요청 간 대기 시간 (기본: 300)
   --render            Playwright(Chromium)로 JS 렌더링 후 저장 (SPA 사이트용)
-  --user-agent <ua>   User-Agent 지정
+  --user-agent <ua>   User-Agent 지정 (기본: fetch는 REA-SiteCloner, --render는 Chromium 기본값)
   -h, --help          도움말
 `;
 
@@ -33,7 +33,7 @@ function parseArgs(argv) {
     maxAssets: 2000,
     delay: 300,
     render: false,
-    userAgent: "REA-SiteCloner/1.0 (+offline archive)",
+    userAgent: null, // 미지정 시 fetch는 DEFAULT_UA, --render는 Chromium 기본값 사용
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -61,6 +61,8 @@ function toInt(name, v) {
   if (!Number.isFinite(n) || n < 0) throw new Error(`${name} 값이 올바르지 않습니다: ${v}`);
   return n;
 }
+
+const DEFAULT_UA = "Mozilla/5.0 (compatible; REA-SiteCloner/1.0; +offline archive)";
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -195,7 +197,7 @@ class SiteCloner {
   async fetchRaw(url) {
     await this.throttle();
     const res = await fetch(url, {
-      headers: { "user-agent": this.opts.userAgent, accept: "*/*" },
+      headers: { "user-agent": this.opts.userAgent ?? DEFAULT_UA, accept: "*/*" },
       redirect: "follow",
       signal: AbortSignal.timeout(30_000),
     });
@@ -212,7 +214,7 @@ class SiteCloner {
         const line = rawLine.replace(/#.*/, "").trim();
         const [key, ...rest] = line.split(":");
         const value = rest.join(":").trim();
-        if (/^user-agent$/i.test(key)) applies = value === "*" || this.opts.userAgent.toLowerCase().includes(value.toLowerCase());
+        if (/^user-agent$/i.test(key)) applies = value === "*" || /rea-sitecloner/i.test(value);
         else if (applies && /^disallow$/i.test(key) && value) this.disallow.push(value);
       }
       if (this.disallow.length) this.log(`robots.txt: 차단 경로 ${this.disallow.length}건 적용`);
@@ -239,9 +241,10 @@ class SiteCloner {
       this.browser = await chromium.launch();
     }
     await this.throttle();
-    const page = await this.browser.newPage({ userAgent: this.opts.userAgent });
+    const page = await this.browser.newPage(this.opts.userAgent ? { userAgent: this.opts.userAgent } : {});
     try {
-      await page.goto(url, { waitUntil: "networkidle", timeout: 45_000 });
+      const res = await page.goto(url, { waitUntil: "networkidle", timeout: 45_000 });
+      if (res && !res.ok()) throw new Error(`HTTP ${res.status()}`);
       return { html: await page.content(), finalUrl: page.url() };
     } finally {
       await page.close();
