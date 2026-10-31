@@ -134,7 +134,11 @@ const PurchaseOrder = () => {
     incoterm: "DAP",
     payTerm: paymentTerms[0].code,
     payMethod: "",
-    notes: "",
+    // 쇼핑몰 "추가 컬러 옵션"에서 들어오면 요청 내용을 미리 적어 둔다
+    notes:
+      params.get("custom") === "reactive"
+        ? "Additional reactive colour request — colour reference (Pantone no. / sample): "
+        : "",
   });
   const [sameAsBilling, setSameAsBilling] = useState(true);
   const [lines, setLines] = useState<CartLine[]>(() => rows.map(({ sku, size, qty }) => ({ sku, size, qty })));

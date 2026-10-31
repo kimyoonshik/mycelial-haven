@@ -34,11 +34,11 @@
         "ko": "반응성염료 적용"
       },
       "summary": {
-        "en": "Coloured with reactive dyes only — no top finish, keeping the mat's natural handfeel.",
-        "ko": "반응성염료로만 염색 — 표면 마감 없이 매트 본연의 촉감을 유지."
+        "en": "Coloured with reactive dyes only — no top finish, keeping the mat's natural handfeel. 12 standard colours; additional colours on request.",
+        "ko": "반응성염료로만 염색 — 표면 마감 없이 매트 본연의 촉감을 유지. 기본 12색, 추가 컬러는 요청 시 제작."
       },
       "priceUSDPerSqft": 30,
-      "target": 20
+      "target": 12
     },
     {
       "id": "finished",
@@ -99,7 +99,7 @@
   "priceOverrides": {},
   "retail": {
     "minSqft": 20,
-    "maxSqft": 100,
+    "maxSqft": 161.5,
     "shippingUSD": 0,
     "sampleMaxPerOrder": 10
   },
@@ -107,10 +107,10 @@
     "company": "SAVE EARTH Inc.",
     "brand": "Mycerra™",
     "email": "contact@saveearth.kr",
-    "address": "[Company address, Republic of Korea]",
-    "businessRegNo": "[Business registration no.]",
+    "address": "47, Incheodong-gil, Seoun-myeon, Anseong-si, Gyeonggi-do, Republic of Korea",
+    "businessRegNo": "673-88-02949",
     "phone": "[Phone]",
     "countryOfOrigin": "Republic of Korea",
-    "hsCode": "[HS code — to be confirmed]"
+    "hsCode": "[HS code — pending customs classification]"
   }
 }

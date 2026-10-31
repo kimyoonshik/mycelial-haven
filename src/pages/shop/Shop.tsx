@@ -1,5 +1,5 @@
 import { useMemo, type ReactNode } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { PriceMatrix } from "@/components/shop/PriceMatrix";
 import { ProductCard } from "@/components/shop/ProductCard";
@@ -15,11 +15,17 @@ const uiCopy = {
     all: "All",
     summary: (available: number, target: number) => `${available} available now · ${target} planned`,
     hideSoon: "Show available only",
+    customTitle: "Additional colours",
+    customBody: "Need a colour beyond the 12 standard shades? Send a colour reference and we develop it with reactive dyes.",
+    customCta: "Request a colour",
   },
   ko: {
     all: "전체",
     summary: (available: number, target: number) => `주문 가능 ${available}종 · 총 ${target}종 구성`,
     hideSoon: "주문 가능 품목만 보기",
+    customTitle: "추가 컬러 옵션",
+    customBody: "기본 12색 외의 컬러가 필요하면 색상 기준(팬톤 번호·샘플)을 보내 주세요. 반응성염료로 맞춤 개발합니다.",
+    customCta: "컬러 요청하기",
   },
 };
 
@@ -132,6 +138,17 @@ const Shop = () => {
                 {list.map((p) => (
                   <ProductCard key={p.sku} product={p} />
                 ))}
+                {category.id === "reactive" && (
+                  <Link
+                    to="/shop/po?custom=reactive"
+                    data-testid="custom-colour"
+                    className="group flex aspect-[4/5] flex-col justify-between border border-dashed border-mc-ink/30 p-5 transition-colors hover:border-mc-ink hover:bg-mc-cream"
+                  >
+                    <span className="font-mc-serif text-2xl leading-tight">{c.customTitle}</span>
+                    <span className="text-xs leading-relaxed text-mc-mute">{c.customBody}</span>
+                    <span className="text-sm underline underline-offset-4">{c.customCta} →</span>
+                  </Link>
+                )}
               </div>
             </section>
           );
