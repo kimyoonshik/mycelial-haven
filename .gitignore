@@ -25,3 +25,6 @@ dist-ssr
 
 # Site cloner output
 clones
+
+# Admin (internal invoice tool) build output
+dist-admin

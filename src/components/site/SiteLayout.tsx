@@ -52,7 +52,8 @@ const LangToggle = ({ overHero }: { overHero: boolean }) => {
 };
 
 const CartButton = () => {
-  const { count } = useCart();
+  const { lines } = useCart();
+  const count = lines.length; // 담긴 품목 수
   const { t } = useLang();
   return (
     <Link to="/shop/cart" className="relative p-1" aria-label={`${t({ en: "Cart", ko: "장바구니" })} (${count})`}>
@@ -86,7 +87,7 @@ const SiteHeader = () => {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-colors duration-500",
+        "fixed inset-x-0 top-0 z-50 transition-colors duration-500 print:hidden",
         overHero ? "bg-transparent text-white" : "border-b border-mc-line/70 bg-mc-paper/90 text-mc-ink backdrop-blur",
       )}
     >
@@ -153,7 +154,7 @@ const SiteHeader = () => {
 const SiteFooter = () => {
   const { t } = useLang();
   return (
-    <footer className="bg-mc-ink text-mc-paper">
+    <footer className="bg-mc-ink text-mc-paper print:hidden">
       <Container className="grid gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-5">
           <p className="font-mc-serif text-3xl font-light leading-tight">
@@ -216,12 +217,12 @@ const ScrollManager = () => {
 export const SiteLayout = () => {
   // 기본 body 배경(구 사이트 버건디)이 오버스크롤 시 비치지 않도록 교체
   useEffect(() => {
-    document.body.classList.add("bg-mc-paper");
-    return () => document.body.classList.remove("bg-mc-paper");
+    document.body.classList.add("bg-mc-paper", "print:bg-white");
+    return () => document.body.classList.remove("bg-mc-paper", "print:bg-white");
   }, []);
 
   return (
-    <div className="min-h-screen bg-mc-paper font-mc-sans text-mc-ink antialiased">
+    <div className="min-h-screen bg-mc-paper font-mc-sans text-mc-ink antialiased print:bg-white">
       <ScrollManager />
       <SiteHeader />
       <main>

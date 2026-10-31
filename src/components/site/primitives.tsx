@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import type { ProofStatus } from "@/content/mycerra";
 import { useLang } from "@/i18n/LanguageProvider";
+import { formatUSD } from "@/content/commerce";
 
 export const Container = ({ children, className }: { children: ReactNode; className?: string }) => (
   <div className={cn("mx-auto w-full max-w-[1400px] px-5 md:px-10", className)}>{children}</div>
@@ -134,14 +135,12 @@ export const ProofBadge = ({ status, light = false }: { status: ProofStatus; lig
   );
 };
 
-const krw = new Intl.NumberFormat("ko-KR");
-
-/** 가격 미정(null)이면 "가격 문의" */
-export const Price = ({ value, className }: { value: number | null; className?: string }) => {
+/** USD 가격. 미정(null)이면 "가격 문의", perSqft 이면 "/ sqft" 단위를 붙인다 */
+export const Price = ({ value, perSqft = false, className }: { value: number | null; perSqft?: boolean; className?: string }) => {
   const { t } = useLang();
   return (
     <span className={className}>
-      {value === null ? t({ en: "Price on request", ko: "가격 문의" }) : `₩${krw.format(value)}`}
+      {value === null ? t({ en: "Price on request", ko: "가격 문의" }) : `${formatUSD(value)}${perSqft ? " / sqft" : ""}`}
     </span>
   );
 };

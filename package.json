@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:admin": "VITE_ENABLE_ADMIN=true vite",
     "build": "vite build",
+    "build:admin": "VITE_ENABLE_ADMIN=true vite build --outDir dist-admin",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",

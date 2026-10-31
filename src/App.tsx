@@ -14,7 +14,14 @@ import WorkWithUs from "./pages/site/WorkWithUs";
 import Shop from "./pages/shop/Shop";
 import ProductDetail from "./pages/shop/ProductDetail";
 import Cart from "./pages/shop/Cart";
+import Checkout from "./pages/shop/Checkout";
+import PurchaseOrder from "./pages/shop/PurchaseOrder";
+import { lazy, Suspense } from "react";
 import { LanguageProvider } from "./i18n/LanguageProvider";
+
+// 내부 인보이스 작성기: VITE_ENABLE_ADMIN=true 빌드에서만 포함 (공개 빌드에서는 코드째 제거됨)
+const InvoiceGenerator =
+  import.meta.env.VITE_ENABLE_ADMIN === "true" ? lazy(() => import("./pages/admin/InvoiceGenerator")) : null;
 import { CartProvider } from "./shop/CartProvider";
 
 const queryClient = new QueryClient();
@@ -37,7 +44,19 @@ const App = () => (
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/p/:sku" element={<ProductDetail />} />
                 <Route path="/shop/cart" element={<Cart />} />
+                <Route path="/shop/checkout" element={<Checkout />} />
+                <Route path="/shop/po" element={<PurchaseOrder />} />
               </Route>
+              {InvoiceGenerator && (
+                <Route
+                  path="/admin/invoice"
+                  element={
+                    <Suspense fallback={null}>
+                      <InvoiceGenerator />
+                    </Suspense>
+                  }
+                />
+              )}
               {/* 이전 단일 페이지 버전 — 비교용 */}
               <Route path="/legacy" element={<Index />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

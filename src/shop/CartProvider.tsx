@@ -1,23 +1,35 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { productBySku, type OrderFormat } from "@/content/shop";
+import { productBySku, unitPriceOf, type Product } from "@/content/shop";
+import { round2 } from "@/content/commerce";
 
+// 주문 단위는 sqft (정수)
 export interface CartLine {
   sku: string;
-  format: OrderFormat;
-  qty: number;
+  sqft: number;
+}
+
+export interface CartRow extends CartLine {
+  product: Product;
+  unitPriceUSD: number;
+  lineTotalUSD: number;
 }
 
 interface CartValue {
   lines: CartLine[];
-  count: number;
-  add: (sku: string, format: OrderFormat, qty: number) => void;
-  setQty: (sku: string, format: OrderFormat, qty: number) => void;
-  remove: (sku: string, format: OrderFormat) => void;
+  rows: CartRow[];
+  totalSqft: number;
+  itemTotalUSD: number;
+  add: (sku: string, sqft: number) => void;
+  setSqft: (sku: string, sqft: number) => void;
+  remove: (sku: string) => void;
   clear: () => void;
 }
 
-const STORAGE_KEY = "mycerra.cart";
-const MAX_QTY = 999;
+// v2: 단위를 형태(스와치/시트)에서 sqft로 바꾸면서 이전 저장 형식과 분리
+const STORAGE_KEY = "mycerra.cart.v2";
+export const MAX_LINE_SQFT = 9999;
+
+const clampSqft = (n: number) => Math.max(1, Math.min(MAX_LINE_SQFT, Math.floor(n)));
 
 const readStored = (): CartLine[] => {
   try {
@@ -27,18 +39,14 @@ const readStored = (): CartLine[] => {
     return raw.filter(
       (l): l is CartLine =>
         typeof l?.sku === "string" &&
-        (l.format === "swatch" || l.format === "sheet") &&
-        Number.isInteger(l.qty) &&
-        l.qty > 0 &&
+        Number.isInteger(l.sqft) &&
+        l.sqft > 0 &&
         productBySku(l.sku)?.status === "available",
     );
   } catch {
     return [];
   }
 };
-
-const clampQty = (qty: number) => Math.max(1, Math.min(MAX_QTY, Math.floor(qty)));
-const sameLine = (l: CartLine, sku: string, format: OrderFormat) => l.sku === sku && l.format === format;
 
 const CartContext = createContext<CartValue | null>(null);
 
@@ -53,29 +61,41 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [lines]);
 
-  const add = useCallback((sku: string, format: OrderFormat, qty: number) => {
+  const add = useCallback((sku: string, sqft: number) => {
     if (productBySku(sku)?.status !== "available") return;
     setLines((prev) => {
-      const hit = prev.find((l) => sameLine(l, sku, format));
-      if (hit) return prev.map((l) => (l === hit ? { ...l, qty: clampQty(l.qty + qty) } : l));
-      return [...prev, { sku, format, qty: clampQty(qty) }];
+      const hit = prev.find((l) => l.sku === sku);
+      if (hit) return prev.map((l) => (l === hit ? { ...l, sqft: clampSqft(l.sqft + sqft) } : l));
+      return [...prev, { sku, sqft: clampSqft(sqft) }];
     });
   }, []);
 
-  const setQty = useCallback((sku: string, format: OrderFormat, qty: number) => {
-    setLines((prev) => prev.map((l) => (sameLine(l, sku, format) ? { ...l, qty: clampQty(qty) } : l)));
+  const setSqft = useCallback((sku: string, sqft: number) => {
+    setLines((prev) => prev.map((l) => (l.sku === sku ? { ...l, sqft: clampSqft(sqft) } : l)));
   }, []);
 
-  const remove = useCallback((sku: string, format: OrderFormat) => {
-    setLines((prev) => prev.filter((l) => !sameLine(l, sku, format)));
-  }, []);
-
+  const remove = useCallback((sku: string) => setLines((prev) => prev.filter((l) => l.sku !== sku)), []);
   const clear = useCallback(() => setLines([]), []);
 
-  const value = useMemo(
-    () => ({ lines, count: lines.reduce((n, l) => n + l.qty, 0), add, setQty, remove, clear }),
-    [lines, add, setQty, remove, clear],
-  );
+  const value = useMemo(() => {
+    const rows = lines.flatMap((l) => {
+      const product = productBySku(l.sku);
+      if (!product) return [];
+      const unitPriceUSD = unitPriceOf(product);
+      return [{ ...l, product, unitPriceUSD, lineTotalUSD: round2(unitPriceUSD * l.sqft) }];
+    });
+    return {
+      lines,
+      rows,
+      totalSqft: rows.reduce((n, r) => n + r.sqft, 0),
+      itemTotalUSD: round2(rows.reduce((n, r) => n + r.lineTotalUSD, 0)),
+      add,
+      setSqft,
+      remove,
+      clear,
+    };
+  }, [lines, add, setSqft, remove, clear]);
+
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 

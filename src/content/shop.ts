@@ -1,10 +1,11 @@
 // Mycerra 쇼핑몰 카탈로그.
 // 4개 카테고리: 순수원단 / 순수원단+엠보(20) / 반응성염료 염색(20) / 최종 피니시(20).
 // 실물 사진이 있는 품목만 "available", 나머지는 라인업 확정 전 자리(coming-soon)로 주문 불가.
-// 가격(null)은 "가격 문의"로 표시되며, 단가가 확정되면 price 에 원화 정수(VAT 별도)를 넣는다.
+// 단가는 commerce.ts 의 retail.unitPriceUSD(sqft당)를 따르며, 품목별로 다르면 unitPriceUSD 로 덮어쓴다.
 
 import type { L } from "@/i18n/LanguageProvider";
 import { expressions } from "./mycerra";
+import { retail } from "./commerce";
 
 export type CategoryId = "pure" | "embossed" | "reactive" | "finished";
 
@@ -50,13 +51,6 @@ export const categories: { id: CategoryId; title: L; summary: L; target: number 
 export type ProductStatus = "available" | "coming-soon";
 
 export const comingSoonLabel: L = { en: "Coming soon", ko: "준비 중" };
-export type OrderFormat = "swatch" | "sheet";
-
-export const formatLabel: Record<OrderFormat, L> = {
-  swatch: { en: "Swatch", ko: "스와치" },
-  sheet: { en: "Full sheet", ko: "풀시트" },
-};
-
 export interface Product {
   sku: string;
   category: CategoryId;
@@ -65,10 +59,10 @@ export interface Product {
   image?: string;
   description: L;
   status: ProductStatus;
-  price: Record<OrderFormat, number | null>;
+  unitPriceUSD?: number; // 품목별 단가 예외 (없으면 기본 단가)
 }
 
-const noPrice = { swatch: null, sheet: null };
+export const unitPriceOf = (p: Product) => p.unitPriceUSD ?? retail.unitPriceUSD;
 const fromLibrary = (code: string) => {
   const e = expressions.find((x) => x.code === code);
   if (!e) throw new Error(`Unknown library code ${code}`);
@@ -85,33 +79,32 @@ const placeholders = (category: CategoryId, prefix: string, from: number, to: nu
       name: `${label.en} ${n}`,
       description: { en: `${label.en} ${n} — in development.`, ko: `${label.ko} ${n} — 개발 중.` },
       status: "coming-soon" as const,
-      price: noPrice,
     };
   });
 
 export const products: Product[] = [
   // 순수원단
-  { sku: "PU-01", category: "pure", ...fromLibrary("PM-00"), status: "available", price: noPrice },
+  { sku: "PU-01", category: "pure", ...fromLibrary("PM-00"), status: "available" },
 
   // 순수원단 + 엠보 (20)
-  { sku: "EM-01", category: "embossed", ...fromLibrary("CR-03"), status: "available", price: noPrice },
-  { sku: "EM-02", category: "embossed", ...fromLibrary("MC-06"), status: "available", price: noPrice },
-  { sku: "EM-03", category: "embossed", ...fromLibrary("MC-08"), status: "available", price: noPrice },
-  { sku: "EM-04", category: "embossed", ...fromLibrary("HP-03"), status: "available", price: noPrice },
+  { sku: "EM-01", category: "embossed", ...fromLibrary("CR-03"), status: "available" },
+  { sku: "EM-02", category: "embossed", ...fromLibrary("MC-06"), status: "available" },
+  { sku: "EM-03", category: "embossed", ...fromLibrary("MC-08"), status: "available" },
+  { sku: "EM-04", category: "embossed", ...fromLibrary("HP-03"), status: "available" },
   ...placeholders("embossed", "EM", 5, 20, { en: "Emboss pattern", ko: "엠보 패턴" }),
 
   // 반응성염료 염색 (20)
   // TODO(CTO 확인): 아래 6색은 사이트에 "3회 염색"으로만 표기됨 — 반응성염료 단독(무마감)인지 확인 후 분류 확정
-  { sku: "RD-01", category: "reactive", ...fromLibrary("MN-02"), status: "available", price: noPrice },
-  { sku: "RD-02", category: "reactive", ...fromLibrary("BG-05"), status: "available", price: noPrice },
-  { sku: "RD-03", category: "reactive", ...fromLibrary("SR-07"), status: "available", price: noPrice },
-  { sku: "RD-04", category: "reactive", ...fromLibrary("BW-01"), status: "available", price: noPrice },
-  { sku: "RD-05", category: "reactive", ...fromLibrary("IB-06"), status: "available", price: noPrice },
-  { sku: "RD-06", category: "reactive", ...fromLibrary("MR-08"), status: "available", price: noPrice },
+  { sku: "RD-01", category: "reactive", ...fromLibrary("MN-02"), status: "available" },
+  { sku: "RD-02", category: "reactive", ...fromLibrary("BG-05"), status: "available" },
+  { sku: "RD-03", category: "reactive", ...fromLibrary("SR-07"), status: "available" },
+  { sku: "RD-04", category: "reactive", ...fromLibrary("BW-01"), status: "available" },
+  { sku: "RD-05", category: "reactive", ...fromLibrary("IB-06"), status: "available" },
+  { sku: "RD-06", category: "reactive", ...fromLibrary("MR-08"), status: "available" },
   ...placeholders("reactive", "RD", 7, 20, { en: "Reactive colour", ko: "반응성 컬러" }),
 
   // 최종 피니시 (20)
-  { sku: "FN-01", category: "finished", ...fromLibrary("MG-02"), status: "available", price: noPrice },
+  { sku: "FN-01", category: "finished", ...fromLibrary("MG-02"), status: "available" },
   ...placeholders("finished", "FN", 2, 20, { en: "Finished leather", ko: "피니시 원단" }),
 ];
 
@@ -121,8 +114,13 @@ export const productBySku = (sku: string) => products.find((p) => p.sku === sku)
 export const productSpecs: { label: L; value: L | null }[] = [
   { label: { en: "Thickness", ko: "두께" }, value: null },
   { label: { en: "Sheet size", ko: "시트 규격" }, value: null },
-  { label: { en: "Swatch size", ko: "스와치 규격" }, value: null },
-  { label: { en: "Minimum order", ko: "최소 주문량" }, value: null },
+  {
+    label: { en: "Minimum order", ko: "최소 주문량" },
+    value: {
+      en: `${retail.minSqft} sqft per order`,
+      ko: `주문당 ${retail.minSqft} sqft`,
+    },
+  },
   { label: { en: "Lead time", ko: "리드타임" }, value: null },
   { label: { en: "Origin", ko: "원산지" }, value: { en: "Korea", ko: "대한민국" } },
 ];
