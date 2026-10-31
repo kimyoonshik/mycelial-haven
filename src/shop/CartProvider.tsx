@@ -1,9 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { priceOf, productBySku, type Product } from "@/content/shop";
-import { areaSqft, round2, sizeById, type OrderVolume } from "@/content/commerce";
+import { round2, sizeById, unitAreaSqft, type OrderVolume } from "@/content/commerce";
 import type { Size } from "@/content/schema";
 
-// 주문 단위: 상품(SKU) × 원단 크기 × 장수
+// 주문 단위: 상품(SKU) × 원단 크기 × 수량 (정규원단은 장, 브로셔는 세트)
 export interface CartLine {
   sku: string;
   size: string;
@@ -13,7 +13,7 @@ export interface CartLine {
 export interface CartRow extends CartLine {
   product: Product;
   sizeInfo: Size;
-  unitPriceUSD: number; // 장당
+  unitPriceUSD: number; // 장당 (브로셔는 세트당)
   areaSqft: number; // 이 줄의 총 면적
   lineTotalUSD: number;
 }
@@ -62,7 +62,7 @@ export const toRows = (lines: CartLine[]): CartRow[] =>
   lines.flatMap((l) => {
     const product = productBySku(l.sku);
     const sizeInfo = sizeById(l.size);
-    if (!product || !sizeInfo) return [];
+    if (!product || !sizeInfo || !product.sizes.some((s) => s.id === l.size)) return [];
     const unitPriceUSD = priceOf(product, l.size);
     return [
       {
@@ -70,16 +70,16 @@ export const toRows = (lines: CartLine[]): CartRow[] =>
         product,
         sizeInfo,
         unitPriceUSD,
-        areaSqft: round2(areaSqft(sizeInfo) * l.qty),
+        areaSqft: round2(unitAreaSqft(sizeInfo) * l.qty),
         lineTotalUSD: round2(unitPriceUSD * l.qty),
       },
     ];
   });
 
-/** 정규원단 면적 합계와 샘플 장수 */
+/** 정규원단 면적 합계와 브로셔 세트 수 */
 export const volumeOf = (rows: CartRow[]): OrderVolume => ({
   regularSqft: round2(rows.filter((r) => r.sizeInfo.kind === "regular").reduce((n, r) => n + r.areaSqft, 0)),
-  sampleCount: rows.filter((r) => r.sizeInfo.kind === "sample").reduce((n, r) => n + r.qty, 0),
+  brochureCount: rows.filter((r) => r.sizeInfo.kind === "brochure").reduce((n, r) => n + r.qty, 0),
 });
 
 const CartContext = createContext<CartValue | null>(null);

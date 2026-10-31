@@ -6,7 +6,7 @@ import { ProductCard, ProductImage } from "@/components/shop/ProductCard";
 import { QuantityStepper } from "@/components/shop/QuantityStepper";
 import { Container, Display, Eyebrow, PillButton, TextLink } from "@/components/site/primitives";
 import { categories, comingSoonLabel, priceOf, productBySku, products, productSpecs } from "@/content/shop";
-import { areaSqft, formatUSD, retail, round2, sizeDims, seller } from "@/content/commerce";
+import { areaSqft, formatUSD, retail, round2, sizeDims, seller, unitAreaSqft, unitLabel } from "@/content/commerce";
 import type { Size } from "@/content/schema";
 import { MAX_LINE_QTY, useCart } from "@/shop/CartProvider";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
@@ -18,6 +18,7 @@ const copy = {
     back: "Back to shop",
     size: "Size",
     perPiece: "per piece",
+    perSet: "per set",
     qty: "Quantity",
     pcs: "pcs",
     area: "Area",
@@ -29,7 +30,7 @@ const copy = {
     notify: "Notify me",
     rules: [
       `Regular sheets: minimum ${retail.minSqft} sqft per order — paid online with PayPal.`,
-      `Samples (30 × 30 cm) can be ordered on their own, up to ${retail.sampleMaxPerOrder} per order.`,
+      `Swatch brochures (10 swatches of 30 × 30 cm) can be ordered on their own, up to ${retail.brochureMaxPerOrder} sets per order. Single swatches are not sold.`,
       `Above ${retail.maxSqft} sqft, or for business terms, send a purchase order request and we reply with an approved invoice.`,
     ],
     specs: "Specifications",
@@ -42,6 +43,7 @@ const copy = {
     back: "쇼핑몰로 돌아가기",
     size: "원단 크기",
     perPiece: "장당",
+    perSet: "세트당",
     qty: "수량",
     pcs: "장",
     area: "면적",
@@ -53,7 +55,7 @@ const copy = {
     notify: "출시 알림 신청",
     rules: [
       `정규원단: 주문당 최소 ${retail.minSqft} sqft, PayPal로 바로 결제합니다.`,
-      `샘플(30 × 30 cm)은 단독 주문 가능하며 주문당 최대 ${retail.sampleMaxPerOrder}장입니다.`,
+      `스와치 브로셔(30 × 30 cm 10장 1세트)는 단독 주문 가능하며 주문당 최대 ${retail.brochureMaxPerOrder}세트입니다. 낱장은 판매하지 않습니다.`,
       `${retail.maxSqft} sqft 초과 또는 기업 거래 조건은 발주희망서를 보내 주세요. 승인 인보이스로 회신합니다.`,
     ],
     specs: "사양",
@@ -64,8 +66,8 @@ const copy = {
   },
 };
 
-/** 크기를 고르면 정규원단은 최소 주문량을 채우는 장수를 기본값으로 */
-const defaultQty = (s: Size) => (s.kind === "sample" ? 1 : Math.max(1, Math.ceil(retail.minSqft / areaSqft(s))));
+/** 크기를 고르면 정규원단은 최소 주문량을 채우는 장수를, 브로셔는 1세트를 기본값으로 */
+const defaultQty = (s: Size) => (s.kind === "brochure" ? 1 : Math.max(1, Math.ceil(retail.minSqft / areaSqft(s))));
 
 const ProductDetail = () => {
   const { sku = "" } = useParams();
@@ -163,11 +165,13 @@ const ProductDetail = () => {
                         >
                           <span className="block font-mc-serif text-lg">{t(s.label)}</span>
                           <span className={cn("block text-xs", active ? "text-mc-paper/70" : "text-mc-mute")}>
-                            {sizeDims(s)} · {areaSqft(s).toFixed(2)} sqft
+                            {sizeDims(s)} · {unitAreaSqft(s).toFixed(2)} sqft
                           </span>
                           <span className="mt-1 block text-sm">
                             {formatUSD(priceOf(product, s.id))}{" "}
-                            <span className={active ? "text-mc-paper/60" : "text-mc-mute"}>{c.perPiece}</span>
+                            <span className={active ? "text-mc-paper/60" : "text-mc-mute"}>
+                              {s.kind === "brochure" ? c.perSet : c.perPiece}
+                            </span>
                           </span>
                         </button>
                       );
@@ -181,12 +185,12 @@ const ProductDetail = () => {
                     <div className="mt-3">
                       <QuantityStepper
                         value={qty}
-                        unit={c.pcs}
+                        unit={t(unitLabel(size))}
                         onChange={(v) => {
                           setQty(v);
                           setAdded(false);
                         }}
-                        max={size.kind === "sample" ? retail.sampleMaxPerOrder : MAX_LINE_QTY}
+                        max={size.kind === "brochure" ? retail.brochureMaxPerOrder : MAX_LINE_QTY}
                         label={c.qty}
                       />
                     </div>
@@ -197,7 +201,7 @@ const ProductDetail = () => {
                       {formatUSD(round2(unit * qty))}
                     </p>
                     <p className="text-xs text-mc-mute" data-testid="line-area">
-                      {c.area} {round2(areaSqft(size) * qty).toFixed(2)} sqft
+                      {c.area} {round2(unitAreaSqft(size) * qty).toFixed(2)} sqft
                     </p>
                   </div>
                 </div>

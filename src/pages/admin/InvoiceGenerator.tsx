@@ -14,12 +14,13 @@ import {
   makeRef,
   paymentMethods,
   paymentTerms,
-  areaSqft,
+  hsCodeFor,
   round2,
   seller,
   sizeById,
   sizeDims,
   sizes,
+  unitAreaSqft,
 } from "@/content/commerce";
 
 type DocType = "proforma" | "commercial";
@@ -30,15 +31,16 @@ interface Line {
   description: string;
   hsCode: string;
   size: string;
-  qty: number; // 장수
-  unitPrice: number; // 장당 USD
+  qty: number; // 장수 (브로셔는 세트 수)
+  unitPrice: number; // 장당(세트당) USD
 }
 
 const defaultSize = sizes.find((z) => z.kind === "regular")?.id ?? sizes[0].id;
 const lineArea = (l: Line) => {
   const z = sizeById(l.size);
-  return z ? round2(areaSqft(z) * l.qty) : 0;
+  return z ? round2(unitAreaSqft(z) * l.qty) : 0;
 };
+const unitOf = (l: Line) => (sizeById(l.size)?.kind === "brochure" ? "sets" : "pcs");
 
 const addDays = (d: number) => new Date(Date.now() + d * 86400000).toISOString().slice(0, 10);
 const today = () => new Date().toISOString().slice(0, 10);
@@ -55,11 +57,15 @@ const Field = ({ label, children, className }: { label: string; children: ReactN
 let lineSeq = 1;
 const newLine = (sku = "", size = defaultSize, qty = 1): Line => {
   const p = products.find((x) => x.sku === sku);
+  // 상품이 그 크기를 팔지 않으면(예: 브로셔 ↔ 정규원단) 상품의 첫 크기로
+  if (p && !p.sizes.some((z) => z.id === size)) size = p.sizes[0].id;
+  const brochure = sizeById(size)?.kind === "brochure";
   return {
     id: lineSeq++,
     sku,
-    description: p ? `${p.name} — pure mycelium mat` : "",
-    hsCode: seller.hsCode,
+    description: p ? `${p.name} — ${brochure ? "swatch brochure, pure mycelium mat" : "pure mycelium mat"}` : "",
+    // 가공 조건별 HS 코드 (CMS 크기·가격 탭), 비어 있으면 판매자 기본값
+    hsCode: p ? hsCodeFor(p.category) : seller.hsCode,
     size,
     qty,
     unitPrice: p ? priceOf(p, size) : 0,
@@ -71,7 +77,7 @@ const parsePoRequest = (text: string) => {
   const field = (k: string) => text.match(new RegExp(`^${k}:\\s*(.+)$`, "mi"))?.[1].trim();
   const ref = text.match(/PURCHASE ORDER REQUEST\s+(POR-[\w-]+)/)?.[1];
   // 줄 형식: "1. EM-01 Crocodile | r1 150 × 100 cm | 3 pcs | …"
-  const lines = [...text.matchAll(/^\d+\.\s+([A-Z]{2}-\d{2,3})\s+.+?\|\s+([a-z0-9-]+)\s.+?\|\s+(\d+)\s+pcs/gm)].map((m) =>
+  const lines = [...text.matchAll(/^\d+\.\s+([A-Z]{2}-\d{2,3})\s+.+?\|\s+([a-z0-9-]+)\s.+?\|\s+(\d+)\s+(?:pcs|sets)/gm)].map((m) =>
     newLine(m[1], sizeById(m[2]) ? m[2] : defaultSize, Number(m[3])),
   );
   const countryName = field("Country");
@@ -172,7 +178,7 @@ const InvoiceGenerator = () => {
       "",
       ...lines.map((l) => {
         const z = sizeById(l.size);
-        return `- ${l.sku} ${l.description} (${z ? sizeDims(z) : l.size}): ${l.qty} pcs × ${formatUSD(l.unitPrice)} = ${formatUSD(l.qty * l.unitPrice)}`;
+        return `- ${l.sku} ${l.description} (${z ? sizeDims(z) : l.size}): ${l.qty} ${unitOf(l)} × ${formatUSD(l.unitPrice)} = ${formatUSD(l.qty * l.unitPrice)}`;
       }),
       ...(totals.discount ? [`Discount: −${formatUSD(totals.discount)}`] : []),
       `Shipping: ${totals.shipping ? formatUSD(totals.shipping) : "included"}`,
@@ -292,7 +298,7 @@ const InvoiceGenerator = () => {
                     value={l.sku}
                     onChange={(e) => {
                       const n = newLine(e.target.value, l.size, l.qty);
-                      setLine(l.id, { sku: n.sku, description: n.description, unitPrice: n.unitPrice });
+                      setLine(l.id, { sku: n.sku, size: n.size, description: n.description, hsCode: n.hsCode, unitPrice: n.unitPrice });
                     }}
                     className={cn(inputCls, "col-span-3")}
                     aria-label="SKU"
@@ -338,7 +344,7 @@ const InvoiceGenerator = () => {
                     value={l.qty}
                     onChange={(e) => setLine(l.id, { qty: Math.max(0, Math.floor(num(e.target.value))) })}
                     className={cn(inputCls, "col-span-3")}
-                    aria-label="Quantity (pcs)"
+                    aria-label="Quantity (pcs / sets)"
                   />
                   <input
                     inputMode="decimal"
@@ -506,9 +512,9 @@ const InvoiceGenerator = () => {
                 <th className="py-2 pr-2 font-normal">Description</th>
                 <th className="py-2 pr-2 font-normal">HS code</th>
                 <th className="py-2 pr-2 font-normal">Size</th>
-                <th className="py-2 pr-2 text-right font-normal">Qty pcs</th>
+                <th className="py-2 pr-2 text-right font-normal">Qty</th>
                 <th className="py-2 pr-2 text-right font-normal">sqft</th>
-                <th className="py-2 pr-2 text-right font-normal">USD/pc</th>
+                <th className="py-2 pr-2 text-right font-normal">USD/unit</th>
                 <th className="py-2 text-right font-normal">Amount USD</th>
               </tr>
             </thead>
@@ -522,7 +528,9 @@ const InvoiceGenerator = () => {
                   </td>
                   <td className="py-2 pr-2">{l.hsCode}</td>
                   <td className="py-2 pr-2">{sizeById(l.size) ? sizeDims(sizeById(l.size)!) : l.size}</td>
-                  <td className="py-2 pr-2 text-right">{l.qty}</td>
+                  <td className="py-2 pr-2 text-right">
+                    {l.qty} <span className="text-mc-mute">{unitOf(l)}</span>
+                  </td>
                   <td className="py-2 pr-2 text-right">{lineArea(l).toFixed(2)}</td>
                   <td className="py-2 pr-2 text-right">{l.unitPrice.toFixed(2)}</td>
                   <td className="py-2 text-right">{(l.qty * l.unitPrice).toFixed(2)}</td>

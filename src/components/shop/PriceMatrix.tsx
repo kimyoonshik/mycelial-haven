@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { areaSqft, conditions, formatUSD, piecePrice, sizeDims, sizes } from "@/content/commerce";
+import { conditions, formatUSD, piecePrice, sizeDims, sizes, unitAreaSqft } from "@/content/commerce";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
 
 const copy = {
-  en: { condition: "Condition", perPiece: "Price per piece (USD)", perSqft: "/ sqft" },
-  ko: { condition: "가공 조건", perPiece: "장당 가격 (USD)", perSqft: "/ sqft" },
+  en: { condition: "Condition", perPiece: "Price per sheet or brochure set (USD)", perSqft: "/ sqft", perSet: "per set", perSheet: "per sheet" },
+  ko: { condition: "가공 조건", perPiece: "장당·세트당 가격 (USD)", perSqft: "/ sqft", perSet: "세트당", perSheet: "장당" },
 };
 
 // 원단 크기 × 가공 조건 가격표 — commerce.json 의 크기·단가에서 계산
@@ -22,8 +22,9 @@ export const PriceMatrix = () => {
               <th key={s.id} className="py-3 pr-4 font-normal">
                 <span className="block font-mc-serif text-base text-mc-ink">{t(s.label)}</span>
                 <span className="block text-xs text-mc-mute">
-                  {sizeDims(s)} · {areaSqft(s).toFixed(2)} sqft
+                  {sizeDims(s)} · {unitAreaSqft(s).toFixed(2)} sqft
                 </span>
+                <span className="block text-xs text-mc-mute">{s.kind === "brochure" ? c.perSet : c.perSheet}</span>
               </th>
             ))}
           </tr>

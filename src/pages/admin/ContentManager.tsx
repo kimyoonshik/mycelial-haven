@@ -43,13 +43,15 @@ const ProductsTab = ({ data, setData, commerce }: { data: ProductData[]; setData
     (x) => (filter === "all" || x.condition === filter) && `${x.sku} ${x.name}`.toLowerCase().includes(q.toLowerCase()),
   );
   const update = (patch: Partial<ProductData>) => setData(data.map((x) => (x.sku === selected ? { ...x, ...patch } : x)));
-  const nextSku = (c: ConditionId) => {
-    const prefix = SKU_PREFIX[c];
+  const brochureIds = commerce.sizes.filter((z) => z.kind === "brochure").map((z) => z.id);
+  const isBrochureItem = (x: ProductData) => !!x.sizes?.length && x.sizes.every((z) => brochureIds.includes(z));
+  const nextSku = (c: ConditionId, brochure = false) => {
+    const prefix = brochure ? "SB" : SKU_PREFIX[c];
     const nums = data.filter((x) => x.sku.startsWith(`${prefix}-`)).map((x) => Number(x.sku.split("-")[1]) || 0);
     return `${prefix}-${String(Math.max(0, ...nums) + 1).padStart(2, "0")}`;
   };
   const add = (c: ConditionId, base?: ProductData) => {
-    const sku = nextSku(c);
+    const sku = nextSku(c, !!base && isBrochureItem(base));
     const item: ProductData = base
       ? { ...base, sku, condition: c, status: "coming-soon" }
       : { sku, condition: c, name: "New material", description: { en: "Description", ko: "설명" }, status: "coming-soon" };
@@ -151,22 +153,24 @@ const ProductsTab = ({ data, setData, commerce }: { data: ProductData[]; setData
             <Field label="사진" hint="webp 권장, 1920px 이하·8MB 이하">
               <MediaPicker folder="products" value={p.image} onChange={(image) => update({ image })} accept="image/webp,image/jpeg,image/png" />
             </Field>
-            <Field label="판매 크기" hint="모두 해제하면 전체 크기를 판매합니다">
+            <Field label="판매 크기" hint="모두 해제하면 정규원단 크기 전체를 판매합니다. 브로셔 상품은 브로셔만 선택 (정규원단과 섞을 수 없음)">
               <div className="flex flex-wrap gap-3">
                 {commerce.sizes.map((s) => {
-                  const on = p.sizes ? p.sizes.includes(s.id) : true;
+                  const regularIds = commerce.sizes.filter((z) => z.kind === "regular").map((z) => z.id);
+                  const on = p.sizes ? p.sizes.includes(s.id) : s.kind === "regular";
                   return (
                     <label key={s.id} className="flex items-center gap-1.5 text-sm">
                       <input
                         type="checkbox"
                         checked={on}
                         onChange={() => {
-                          const cur = p.sizes ?? commerce.sizes.map((z) => z.id);
+                          const cur = p.sizes ?? regularIds;
                           const next = on ? cur.filter((x) => x !== s.id) : [...cur, s.id];
-                          update({ sizes: next.length && next.length < commerce.sizes.length ? next : undefined });
+                          const allRegular = next.length === regularIds.length && regularIds.every((x) => next.includes(x));
+                          update({ sizes: next.length && !allRegular ? next : undefined });
                         }}
                       />
-                      {s.label.ko} ({s.widthCm}×{s.heightCm})
+                      {s.label.ko} ({s.kind === "brochure" ? `${s.pieces ?? 1}장 × ` : ""}{s.widthCm}×{s.heightCm})
                     </label>
                   );
                 })}
@@ -190,6 +194,8 @@ const ProductsTab = ({ data, setData, commerce }: { data: ProductData[]; setData
 
 const CommerceTab = ({ data, setData }: { data: Commerce; setData: (d: Commerce) => void }) => {
   const area = (s: Size) => round2(((s.widthCm * s.heightCm) / 10000) * SQFT_PER_M2);
+  // 판매 단위 1개의 면적 (브로셔는 스와치 장수만큼)
+  const unitArea = (s: Size) => round2(area(s) * (s.kind === "brochure" ? s.pieces ?? 1 : 1));
   const setCond = (i: number, patch: Partial<Commerce["conditions"][number]>) =>
     setData({ ...data, conditions: data.conditions.map((c, j) => (j === i ? { ...c, ...patch } : c)) });
   const setSize = (i: number, patch: Partial<Size>) => setData({ ...data, sizes: data.sizes.map((s, j) => (j === i ? { ...s, ...patch } : s)) });
@@ -216,6 +222,9 @@ const CommerceTab = ({ data, setData }: { data: Commerce; setData: (d: Commerce)
               <Field label="구성 목표 종수" className="md:col-span-2">
                 <Num value={c.target} step="1" onChange={(target) => setCond(i, { target })} />
               </Field>
+              <Field label="HS 코드 (조건별)" hint="품목분류 사전심사 결과 입력. 비우면 판매자 정보의 기본 HS 코드로 인쇄" className="md:col-span-4">
+                <input value={c.hsCode ?? ""} onChange={(e) => setCond(i, { hsCode: e.target.value })} placeholder="예: 1404.90" className={inputCls} />
+              </Field>
               <div className="md:col-span-12">
                 <LInput label="설명" value={c.summary} onChange={(summary) => setCond(i, { summary })} multiline />
               </div>
@@ -233,9 +242,16 @@ const CommerceTab = ({ data, setData }: { data: Commerce; setData: (d: Commerce)
                 <input value={s.id} onChange={(e) => setSize(i, { id: e.target.value })} className={inputCls} />
               </Field>
               <Field label="구분" className="md:col-span-2">
-                <select value={s.kind} onChange={(e) => setSize(i, { kind: e.target.value as Size["kind"] })} className={inputCls}>
-                  <option value="sample">샘플</option>
-                  <option value="regular">정규원단</option>
+                <select
+                  value={s.kind}
+                  onChange={(e) => {
+                    const kind = e.target.value as Size["kind"];
+                    setSize(i, kind === "brochure" ? { kind, pieces: s.pieces ?? 10 } : { kind, pieces: undefined });
+                  }}
+                  className={inputCls}
+                >
+                  <option value="regular">정규원단 (장)</option>
+                  <option value="brochure">스와치 브로셔 (세트)</option>
                 </select>
               </Field>
               <Field label="이름 (영문)" className="md:col-span-2">
@@ -250,7 +266,16 @@ const CommerceTab = ({ data, setData }: { data: Commerce; setData: (d: Commerce)
               <Field label="세로 cm" className="md:col-span-1">
                 <Num value={s.heightCm} onChange={(heightCm) => setSize(i, { heightCm })} />
               </Field>
-              <p className="pb-2 text-xs text-mc-mute md:col-span-2">{area(s).toFixed(2)} sqft / 장</p>
+              {s.kind === "brochure" ? (
+                <Field label="세트당 장수" className="md:col-span-1">
+                  <Num value={s.pieces ?? 10} step="1" onChange={(pieces) => setSize(i, { pieces })} />
+                </Field>
+              ) : (
+                <span className="md:col-span-1" />
+              )}
+              <p className="pb-2 text-xs text-mc-mute md:col-span-1">
+                {unitArea(s).toFixed(2)} sqft / {s.kind === "brochure" ? "세트" : "장"}
+              </p>
               <div className="md:col-span-1">
                 <Btn variant="danger" onClick={() => setData({ ...data, sizes: data.sizes.filter((_, j) => j !== i) })}>
                   <Trash2 className="h-3.5 w-3.5" />
@@ -269,7 +294,7 @@ const CommerceTab = ({ data, setData }: { data: Commerce; setData: (d: Commerce)
       </section>
 
       <section>
-        <h3 className="font-mc-serif text-xl">장당 가격표 (USD)</h3>
+        <h3 className="font-mc-serif text-xl">장당·세트당 가격표 (USD)</h3>
         <p className="mt-1 text-xs text-mc-mute">빈칸 = 면적 × 단가 자동 계산 (회색 숫자). 값을 넣으면 그 칸만 개별 가격으로 고정됩니다.</p>
         <div className="mt-3 overflow-x-auto">
           <table className="min-w-[640px] border border-mc-line bg-white text-sm">
@@ -280,6 +305,7 @@ const CommerceTab = ({ data, setData }: { data: Commerce; setData: (d: Commerce)
                   <th key={s.id} className="p-2 text-left font-normal">
                     {s.label.ko}
                     <span className="block text-[11px] text-mc-mute">
+                      {s.kind === "brochure" ? `${s.pieces ?? 1}장 × ` : ""}
                       {s.widthCm}×{s.heightCm}cm
                     </span>
                   </th>
@@ -292,7 +318,7 @@ const CommerceTab = ({ data, setData }: { data: Commerce; setData: (d: Commerce)
                   <td className="p-2">{c.title.ko}</td>
                   {data.sizes.map((s) => {
                     const key = `${c.id}:${s.id}`;
-                    const auto = round2(area(s) * c.priceUSDPerSqft);
+                    const auto = round2(unitArea(s) * c.priceUSDPerSqft);
                     return (
                       <td key={s.id} className="p-2">
                         <input
@@ -323,8 +349,8 @@ const CommerceTab = ({ data, setData }: { data: Commerce; setData: (d: Commerce)
           <Field label="개인 주문 상한 sqft" hint="초과 시 발주서 경로">
             <Num value={data.retail.maxSqft} onChange={(maxSqft) => setData({ ...data, retail: { ...data.retail, maxSqft } })} />
           </Field>
-          <Field label="주문당 샘플 최대 장수">
-            <Num value={data.retail.sampleMaxPerOrder} step="1" onChange={(sampleMaxPerOrder) => setData({ ...data, retail: { ...data.retail, sampleMaxPerOrder } })} />
+          <Field label="주문당 브로셔 최대 세트 수" hint="초과 시 발주서 경로">
+            <Num value={data.retail.brochureMaxPerOrder} step="1" onChange={(brochureMaxPerOrder) => setData({ ...data, retail: { ...data.retail, brochureMaxPerOrder } })} />
           </Field>
           <Field label="개인 주문 배송비 USD" hint="0 = 단가에 포함">
             <Num value={data.retail.shippingUSD} onChange={(shippingUSD) => setData({ ...data, retail: { ...data.retail, shippingUSD } })} />

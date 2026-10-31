@@ -74,7 +74,7 @@ const money = (n: number) => ({ currency_code: CURRENCY, value: n.toFixed(2) });
 
 /** Orders v2 주문 본문. invoice_id 에 주문번호를 넣어 PayPal 거래와 내부 기록을 연결한다 */
 export const buildOrder = (ref: string, rows: CartRow[], buyer: Buyer) => {
-  const { regularSqft, sampleCount } = volumeOf(rows);
+  const { regularSqft, brochureCount } = volumeOf(rows);
   const t = orderTotals(rows.reduce((n, r) => n + r.lineTotalUSD, 0));
   const hasAddress = buyer.country !== "OTHER";
   return {
@@ -83,9 +83,9 @@ export const buildOrder = (ref: string, rows: CartRow[], buyer: Buyer) => {
       {
         reference_id: ref,
         invoice_id: ref,
-        // 출고 대조용 물량 요약: 정규원단 면적 / 샘플 장수
-        custom_id: `${regularSqft}sqft/${sampleCount}smp`,
-        description: `Mycerra pure mycelium material — ${regularSqft} sqft regular, ${sampleCount} samples`.slice(0, 127),
+        // 출고 대조용 물량 요약: 정규원단 면적 / 브로셔 세트 수
+        custom_id: `${regularSqft}sqft/${brochureCount}set`,
+        description: `Mycerra pure mycelium material — ${regularSqft} sqft regular, ${brochureCount} swatch brochures`.slice(0, 127),
         amount: { ...money(t.total), breakdown: { item_total: money(t.itemTotal), shipping: money(t.shipping) } },
         items: rows.map((r) => ({
           // 예: "Crocodile — Regular 1 150 × 100 cm"

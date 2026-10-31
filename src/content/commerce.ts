@@ -2,9 +2,10 @@
 // 가격·크기·가공 조건·물량 기준은 src/content/data/commerce.json (운영 도구 CMS로 편집)에서 읽는다.
 // 원가 모델·IR 자료의 단가와 일치하는지 확인 후 반영할 것.
 //
-// 판매 단위: 원단 장(piece). 장당 가격 = 면적(sqft) × 가공 조건별 sqft 단가 (priceOverrides 로 개별 지정 가능)
+// 판매 단위: 정규원단 장(piece), 스와치 브로셔 세트(set — 30×30 cm 스와치 10장, 낱장 판매 없음)
+//   장당 가격 = 면적(sqft) × 가공 조건별 sqft 단가, 브로셔는 스와치 면적 × 장수 × 단가 (priceOverrides 로 개별 지정 가능)
 // 주문 경로
-//   개인 주문(Retail):  정규원단 합계 최소~상한 sqft, 또는 샘플만 주문 → PayPal 즉시 결제
+//   개인 주문(Retail):  정규원단 합계 최소~상한 sqft, 또는 브로셔만 주문 → PayPal 즉시 결제
 //   발주(PO Request):   정규원단 합계가 상한 초과, 또는 국내(한국) 구매자, 또는 기업 거래 조건 요청
 //                       → 발주희망서 → 승인 인보이스 → 결제 → 원단 발송
 
@@ -32,20 +33,37 @@ export const SQFT_PER_M2 = 10.7639104;
 
 export const sizeById = (id: string) => sizes.find((s) => s.id === id);
 
-/** 원단 1장의 면적 (sqft, 소수 2자리) */
+export const isBrochureSize = (s: Size) => s.kind === "brochure";
+export const regularSizes = sizes.filter((s) => s.kind === "regular");
+
+/** 판매 단위 1개(정규원단 1장 또는 브로셔 1세트)에 든 스와치·원단 장수 */
+export const piecesOf = (s: Size) => (isBrochureSize(s) ? s.pieces ?? 1 : 1);
+
+/** 원단 1장(브로셔는 스와치 1장)의 면적 (sqft, 소수 2자리) */
 export const areaSqft = (s: Size) => round2(((s.widthCm * s.heightCm) / 10000) * SQFT_PER_M2);
 
-/** 크기 표기: "150 × 100 cm" */
-export const sizeDims = (s: Size) => `${s.widthCm} × ${s.heightCm} cm`;
+/** 판매 단위 1개의 면적 (브로셔는 스와치 면적 × 장수) */
+export const unitAreaSqft = (s: Size) => round2(areaSqft(s) * piecesOf(s));
 
-/** 가공 조건 × 크기의 장당 가격 (USD) */
+/** 크기 표기: "150 × 100 cm", 브로셔는 "10 pcs · 30 × 30 cm" */
+export const sizeDims = (s: Size) =>
+  isBrochureSize(s) ? `${piecesOf(s)} pcs · ${s.widthCm} × ${s.heightCm} cm` : `${s.widthCm} × ${s.heightCm} cm`;
+
+/** 수량 단위 */
+export const unitLabel = (s: Size): L => (isBrochureSize(s) ? { en: "sets", ko: "세트" } : { en: "pcs", ko: "장" });
+
+/** 가공 조건의 HS 코드 (확정 전이면 판매자 기본값) */
+export const hsCodeFor = (condition: ConditionId) =>
+  conditions.find((c) => c.id === condition)?.hsCode?.trim() || seller.hsCode;
+
+/** 가공 조건 × 크기의 판매 단위당 가격 (USD) — 정규원단은 장당, 브로셔는 세트당 */
 export const piecePrice = (condition: ConditionId, sizeId: string): number => {
   const override = commerce.priceOverrides[`${condition}:${sizeId}`];
   if (override !== undefined) return override;
   const size = sizeById(sizeId);
   const cond = conditions.find((c) => c.id === condition);
   if (!size || !cond) return 0;
-  return round2(areaSqft(size) * cond.priceUSDPerSqft);
+  return round2(unitAreaSqft(size) * cond.priceUSDPerSqft);
 };
 
 export const incoterms: { code: string; label: L }[] = [
@@ -76,22 +94,22 @@ export const orderTotals = (itemTotalUSD: number, shippingUSD = retail.shippingU
   return { itemTotal, shipping: shippingUSD, total: round2(itemTotal + shippingUSD) };
 };
 
-export type OrderRoute = "empty" | "below-min" | "samples-over" | "retail" | "po-volume" | "po-domestic";
+export type OrderRoute = "empty" | "below-min" | "brochures-over" | "retail" | "po-volume" | "po-domestic";
 
 export interface OrderVolume {
   regularSqft: number; // 정규원단 면적 합계 (최소·상한 판단 기준)
-  sampleCount: number; // 샘플 장수 (최소 물량 계산에서 제외)
+  brochureCount: number; // 스와치 브로셔 세트 수 (최소 물량 계산에서 제외)
 }
 
 /**
  * 주문 물량과 구매자 국가로 결제 경로를 결정한다.
- * - 샘플은 최소 물량 계산에서 제외하며, 샘플만 주문할 때는 장수 상한만 적용한다.
+ * - 브로셔는 최소 물량 계산에서 제외하며, 브로셔만 주문할 때는 세트 수 상한만 적용한다.
  * - 정규원단이 있으면 그 면적 합계가 최소 물량 이상이어야 한다.
  */
-export const routeFor = ({ regularSqft, sampleCount }: OrderVolume, country: string | null): OrderRoute => {
-  if (regularSqft === 0 && sampleCount === 0) return "empty";
+export const routeFor = ({ regularSqft, brochureCount }: OrderVolume, country: string | null): OrderRoute => {
+  if (regularSqft === 0 && brochureCount === 0) return "empty";
   if (regularSqft > 0 && regularSqft < retail.minSqft) return "below-min";
-  if (sampleCount > retail.sampleMaxPerOrder) return "samples-over";
+  if (brochureCount > retail.brochureMaxPerOrder) return "brochures-over";
   if (country === DOMESTIC_COUNTRY) return "po-domestic";
   if (regularSqft > retail.maxSqft) return "po-volume";
   return "retail";

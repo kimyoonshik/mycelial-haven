@@ -20,14 +20,18 @@ export const ConditionSchema = z.object({
   summary: LSchema,
   priceUSDPerSqft: z.number().positive().max(10000),
   target: z.number().int().min(0).max(999),
+  // 가공 조건별 HS 코드 (품목분류 사전심사 결과). 비어 있으면 판매자 정보의 기본 HS 코드를 쓴다
+  hsCode: z.string().trim().max(40).optional(),
 });
 
 export const SizeSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]{1,20}$/, "크기 ID는 영문 소문자·숫자·하이픈"),
-  kind: z.enum(["sample", "regular"]),
+  // regular: 정규원단 1장 / brochure: 스와치 브로셔 1세트 (widthCm×heightCm 스와치 pieces장 묶음)
+  kind: z.enum(["brochure", "regular"]),
   label: LSchema,
   widthCm: z.number().positive().max(1000),
   heightCm: z.number().positive().max(1000),
+  pieces: z.number().int().min(1).max(100).optional(),
 });
 
 export const CommerceSchema = z.object({
@@ -40,7 +44,7 @@ export const CommerceSchema = z.object({
     minSqft: z.number().positive(),
     maxSqft: z.number().positive(),
     shippingUSD: z.number().min(0),
-    sampleMaxPerOrder: z.number().int().positive(),
+    brochureMaxPerOrder: z.number().int().positive(),
   }),
   seller: z.object({
     company: text,
@@ -62,7 +66,7 @@ export const ProductSchema = z.object({
   image: mediaPath.optional(),
   description: LSchema,
   status: z.enum(["available", "coming-soon"]),
-  sizes: z.array(z.string()).min(1).optional(), // 없으면 모든 크기 판매
+  sizes: z.array(z.string()).min(1).optional(), // 없으면 정규원단 크기 전체 판매. 브로셔 상품은 브로셔 크기만
 });
 
 export const NewsSchema = z.object({
@@ -206,20 +210,22 @@ export interface Condition {
   summary: Lx;
   priceUSDPerSqft: number;
   target: number;
+  hsCode?: string;
 }
 export interface Size {
   id: string;
-  kind: "sample" | "regular";
+  kind: "brochure" | "regular";
   label: Lx;
   widthCm: number;
   heightCm: number;
+  pieces?: number;
 }
 export interface Commerce {
   currency: "USD";
   conditions: Condition[];
   sizes: Size[];
   priceOverrides: Record<string, number>;
-  retail: { minSqft: number; maxSqft: number; shippingUSD: number; sampleMaxPerOrder: number };
+  retail: { minSqft: number; maxSqft: number; shippingUSD: number; brochureMaxPerOrder: number };
   seller: {
     company: string;
     brand: string;
@@ -344,6 +350,9 @@ export const validateContent = (data: ContentSet, mediaExists: (path: string) =>
     if (new Set(ids).size !== 4) errors.push("commerce.json › conditions: 순수·엠보·반응성·피니시 4개 조건이 한 번씩 있어야 합니다");
     dupes(commerce.sizes.map((s) => s.id)).forEach((d) => errors.push(`commerce.json › sizes: 크기 ID 중복 "${d}"`));
     if (!commerce.sizes.some((s) => s.kind === "regular")) errors.push("commerce.json › sizes: 정규원단 크기가 최소 1개 필요합니다");
+    commerce.sizes.forEach((s) => {
+      if (s.kind === "brochure" && !s.pieces) errors.push(`commerce.json › sizes › ${s.id}: 브로셔는 세트당 스와치 장수(pieces)가 필요합니다`);
+    });
     if (commerce.retail.minSqft >= commerce.retail.maxSqft)
       errors.push("commerce.json › retail: 최소 물량은 개인 주문 상한보다 작아야 합니다");
     Object.keys(commerce.priceOverrides).forEach((k) => {
@@ -362,6 +371,10 @@ export const validateContent = (data: ContentSet, mediaExists: (path: string) =>
       p.sizes?.forEach((s) => {
         if (commerce && !commerce.sizes.some((x) => x.id === s)) errors.push(`products.json › ${p.sku}: 없는 크기 "${s}"`);
       });
+      if (commerce && p.sizes) {
+        const kinds = new Set(p.sizes.map((s) => commerce.sizes.find((x) => x.id === s)?.kind).filter(Boolean));
+        if (kinds.size > 1) errors.push(`products.json › ${p.sku}: 브로셔 크기와 정규원단 크기를 한 상품에 섞을 수 없습니다`);
+      }
     });
   }
   if (news) dupes(news.map((n) => n.id)).forEach((d) => errors.push(`news.json: ID 중복 "${d}"`));

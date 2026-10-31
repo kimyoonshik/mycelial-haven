@@ -5,7 +5,7 @@ import { ProductImage } from "@/components/shop/ProductCard";
 import { QuantityStepper } from "@/components/shop/QuantityStepper";
 import { Container, Display, Eyebrow, PillButton } from "@/components/site/primitives";
 import { categories } from "@/content/shop";
-import { formatUSD, orderTotals, retail, routeFor, sizeDims } from "@/content/commerce";
+import { formatUSD, orderTotals, retail, routeFor, sizeDims, unitLabel } from "@/content/commerce";
 import { MAX_LINE_QTY, useCart } from "@/shop/CartProvider";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
 
@@ -19,22 +19,23 @@ const copy = {
     qty: "Quantity",
     pcs: "pcs",
     regular: "Regular sheets",
-    samples: "Samples",
+    brochures: "Swatch brochures",
+    sets: "sets",
     items: "Items",
     shipping: "Shipping",
     included: "Included",
     total: "Total",
     clear: "Clear cart",
     belowMin: (missing: string) =>
-      `Regular sheets total ${retail.minSqft} sqft minimum — add ${missing} sqft more, or order samples only.`,
-    samplesOver: `Up to ${retail.sampleMaxPerOrder} samples per order. For more, send a purchase order request.`,
+      `Regular sheets total ${retail.minSqft} sqft minimum — add ${missing} sqft more, or order swatch brochures only.`,
+    brochuresOver: `Up to ${retail.brochureMaxPerOrder} swatch brochures per order. For more, send a purchase order request.`,
     retailOk: "Pay now with PayPal, or send a purchase order request for business terms.",
     overMax: `Orders above ${retail.maxSqft} sqft of regular sheets are handled by purchase order: we reply with an approved invoice covering price, quantity and terms.`,
     checkout: "Checkout with PayPal",
     po: "Send a purchase order request",
     rulesTitle: "How ordering works",
     rules: [
-      `Samples · 30 × 30 cm · order on their own, up to ${retail.sampleMaxPerOrder} per order`,
+      `Swatch brochures · 10 swatches of 30 × 30 cm per set · order on their own, up to ${retail.brochureMaxPerOrder} sets per order (no single swatches)`,
       `Regular sheets · ${retail.minSqft}–${retail.maxSqft} sqft per order · instant PayPal payment`,
       `Volume & business orders · above ${retail.maxSqft} sqft or custom terms · purchase order → approved invoice → payment → shipment`,
       "Buyers in Korea · domestic bank transfer with a tax invoice (PayPal does not support payments between Korean accounts)",
@@ -49,21 +50,22 @@ const copy = {
     qty: "수량",
     pcs: "장",
     regular: "정규원단",
-    samples: "샘플",
+    brochures: "스와치 브로셔",
+    sets: "세트",
     items: "상품 금액",
     shipping: "배송비",
     included: "포함",
     total: "합계",
     clear: "장바구니 비우기",
-    belowMin: (missing: string) => `정규원단은 합계 ${retail.minSqft} sqft 이상이어야 합니다. ${missing} sqft를 더 담거나 샘플만 주문해 주세요.`,
-    samplesOver: `샘플은 주문당 최대 ${retail.sampleMaxPerOrder}장입니다. 더 필요하면 발주희망서를 보내 주세요.`,
+    belowMin: (missing: string) => `정규원단은 합계 ${retail.minSqft} sqft 이상이어야 합니다. ${missing} sqft를 더 담거나 스와치 브로셔만 주문해 주세요.`,
+    brochuresOver: `스와치 브로셔는 주문당 최대 ${retail.brochureMaxPerOrder}세트입니다. 더 필요하면 발주희망서를 보내 주세요.`,
     retailOk: "PayPal로 바로 결제하거나, 기업 거래 조건이 필요하면 발주희망서를 보내 주세요.",
     overMax: `정규원단 ${retail.maxSqft} sqft 초과 주문은 발주서로 진행합니다. 가격·물량·거래조건을 담은 승인 인보이스로 회신합니다.`,
     checkout: "PayPal로 결제하기",
     po: "발주희망서 보내기",
     rulesTitle: "주문 방법",
     rules: [
-      `샘플 · 30 × 30 cm · 단독 주문 가능, 주문당 최대 ${retail.sampleMaxPerOrder}장`,
+      `스와치 브로셔 · 30 × 30 cm 스와치 10장 1세트 · 단독 주문 가능, 주문당 최대 ${retail.brochureMaxPerOrder}세트 (낱장 판매 없음)`,
       `정규원단 · 주문당 ${retail.minSqft}–${retail.maxSqft} sqft · PayPal 즉시 결제`,
       `대량·기업 주문 · ${retail.maxSqft} sqft 초과 또는 별도 조건 · 발주희망서 → 승인 인보이스 → 결제 → 발송`,
       "국내 구매자 · 원화 계좌이체와 세금계산서 (한국 계정 간 PayPal 결제 불가)",
@@ -74,7 +76,7 @@ const copy = {
 const Cart = () => {
   const c = useCopy(copy);
   const { t } = useLang();
-  const { rows, regularSqft, sampleCount, itemTotalUSD, setQty, remove, clear } = useCart();
+  const { rows, regularSqft, brochureCount, itemTotalUSD, setQty, remove, clear } = useCart();
 
   if (!rows.length) {
     return (
@@ -91,13 +93,13 @@ const Cart = () => {
   }
 
   const totals = orderTotals(itemTotalUSD);
-  const route = routeFor({ regularSqft, sampleCount }, null);
+  const route = routeFor({ regularSqft, brochureCount }, null);
   const canCheckout = route === "retail";
   const message =
     route === "below-min"
       ? c.belowMin((retail.minSqft - regularSqft).toFixed(2))
-      : route === "samples-over"
-        ? c.samplesOver
+      : route === "brochures-over"
+        ? c.brochuresOver
         : route === "po-volume"
           ? c.overMax
           : c.retailOk;
@@ -127,7 +129,7 @@ const Cart = () => {
                         {r.sku} · {t(categories.find((x) => x.id === r.product.category)!.title)}
                       </p>
                       <p className="text-xs text-mc-mute">
-                        {t(r.sizeInfo.label)} {sizeDims(r.sizeInfo)} · {formatUSD(r.unitPriceUSD)} / {c.pcs}
+                        {t(r.sizeInfo.label)} {sizeDims(r.sizeInfo)} · {formatUSD(r.unitPriceUSD)} / {t(unitLabel(r.sizeInfo)).replace(/s$/, "")}
                       </p>
                     </div>
                     <button
@@ -142,10 +144,10 @@ const Cart = () => {
                   <div className="flex items-center justify-between gap-3">
                     <QuantityStepper
                       size="sm"
-                      unit={c.pcs}
+                      unit={t(unitLabel(r.sizeInfo))}
                       value={r.qty}
                       onChange={(v) => setQty(r.sku, r.size, v)}
-                      max={r.sizeInfo.kind === "sample" ? retail.sampleMaxPerOrder : MAX_LINE_QTY}
+                      max={r.sizeInfo.kind === "brochure" ? retail.brochureMaxPerOrder : MAX_LINE_QTY}
                       label={`${c.qty} ${r.sku} ${r.size}`}
                     />
                     <span className="text-right text-sm">
@@ -169,9 +171,9 @@ const Cart = () => {
               <dd data-testid="regular-sqft">{regularSqft.toFixed(2)} sqft</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-mc-mute">{c.samples}</dt>
-              <dd data-testid="sample-count">
-                {sampleCount} {c.pcs}
+              <dt className="text-mc-mute">{c.brochures}</dt>
+              <dd data-testid="brochure-count">
+                {brochureCount} {c.sets}
               </dd>
             </div>
             <div className="flex justify-between">
@@ -212,7 +214,7 @@ const Cart = () => {
               to="/shop/po"
               className={cn(
                 "rounded-full px-8 py-3.5 text-center text-sm transition-colors",
-                route === "po-volume" || route === "samples-over"
+                route === "po-volume" || route === "brochures-over"
                   ? "bg-mc-ink text-mc-paper hover:bg-mc-burgundy"
                   : "border border-mc-ink/30 hover:border-mc-ink",
               )}

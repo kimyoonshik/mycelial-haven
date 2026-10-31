@@ -15,8 +15,8 @@ const copy = {
     title: "Individual order",
     empty: "Your cart is empty.",
     browse: "Browse the shop",
-    belowMin: `Regular sheets need ${retail.minSqft} sqft minimum per order (samples can be ordered on their own).`,
-    samplesOver: `Up to ${retail.sampleMaxPerOrder} samples per order — send a purchase order request for more.`,
+    belowMin: `Regular sheets need ${retail.minSqft} sqft minimum per order (swatch brochures can be ordered on their own).`,
+    brochuresOver: `Up to ${retail.brochureMaxPerOrder} swatch brochures per order — send a purchase order request for more.`,
     overMax: `Orders above ${retail.maxSqft} sqft of regular sheets are handled by purchase order.`,
     backToCart: "Back to cart",
     toPo: "Send a purchase order request",
@@ -62,8 +62,8 @@ const copy = {
     title: "개인 주문",
     empty: "장바구니가 비어 있습니다.",
     browse: "쇼핑몰 둘러보기",
-    belowMin: `정규원단은 주문당 최소 ${retail.minSqft} sqft입니다 (샘플은 단독 주문 가능).`,
-    samplesOver: `샘플은 주문당 최대 ${retail.sampleMaxPerOrder}장입니다. 더 필요하면 발주희망서를 보내 주세요.`,
+    belowMin: `정규원단은 주문당 최소 ${retail.minSqft} sqft입니다 (스와치 브로셔는 단독 주문 가능).`,
+    brochuresOver: `스와치 브로셔는 주문당 최대 ${retail.brochureMaxPerOrder}세트입니다. 더 필요하면 발주희망서를 보내 주세요.`,
     overMax: `정규원단 ${retail.maxSqft} sqft 초과 주문은 발주서로 진행합니다.`,
     backToCart: "장바구니로 돌아가기",
     toPo: "발주희망서 보내기",
@@ -205,7 +205,7 @@ const PayPalButtons = ({
 const Checkout = () => {
   const c = useCopy(copy);
   const { lang } = useLang();
-  const { rows, regularSqft, sampleCount, itemTotalUSD, clear } = useCart();
+  const { rows, regularSqft, brochureCount, itemTotalUSD, clear } = useCart();
   const [orderRef] = useState(() => makeRef("MYC"));
   const [buyer, setBuyer] = useState<Buyer>(loadBuyer);
   const [agreed, setAgreed] = useState(false);
@@ -221,7 +221,7 @@ const Checkout = () => {
   useEffect(() => saveBuyer(buyer), [buyer]);
 
   const totals = orderTotals(itemTotalUSD);
-  const route = routeFor({ regularSqft, sampleCount }, buyer.country || null);
+  const route = routeFor({ regularSqft, brochureCount }, buyer.country || null);
   const ready = buyerComplete(buyer) && agreed;
 
   const onPaid = useCallback(
@@ -272,12 +272,12 @@ const Checkout = () => {
     );
   }
 
-  if (route === "below-min" || route === "po-volume" || route === "samples-over") {
+  if (route === "below-min" || route === "po-volume" || route === "brochures-over") {
     return (
       <Container className="pb-32 pt-36 md:pt-44">
         <Eyebrow>{c.eyebrow}</Eyebrow>
         <Display as="h1" className="mt-5 max-w-3xl text-4xl md:text-5xl">
-          {route === "below-min" ? c.belowMin : route === "samples-over" ? c.samplesOver : c.overMax}
+          {route === "below-min" ? c.belowMin : route === "brochures-over" ? c.brochuresOver : c.overMax}
         </Display>
         <div className="mt-10 flex flex-wrap gap-3">
           <PillButton to="/shop/cart" variant="outline">
@@ -294,9 +294,9 @@ const Checkout = () => {
       `ORDER ${orderRef} — PayPal invoice requested`,
       ...rows.map(
         (r) =>
-          `- ${r.sku} ${r.product.name} | ${r.sizeInfo.label.en} ${sizeDims(r.sizeInfo)} | ${r.qty} pcs × ${formatUSD(r.unitPriceUSD)} = ${formatUSD(r.lineTotalUSD)}`,
+          `- ${r.sku} ${r.product.name} | ${r.sizeInfo.label.en} ${sizeDims(r.sizeInfo)} | ${r.qty} ${r.sizeInfo.kind === "brochure" ? "sets" : "pcs"} × ${formatUSD(r.unitPriceUSD)} = ${formatUSD(r.lineTotalUSD)}`,
       ),
-      `Total: ${formatUSD(totals.total)} (regular ${regularSqft} sqft, samples ${sampleCount}, shipping ${totals.shipping === 0 ? "included" : formatUSD(totals.shipping)})`,
+      `Total: ${formatUSD(totals.total)} (regular ${regularSqft} sqft, swatch brochures ${brochureCount}, shipping ${totals.shipping === 0 ? "included" : formatUSD(totals.shipping)})`,
       "",
       `Name: ${buyer.name}`,
       `Email: ${buyer.email}`,

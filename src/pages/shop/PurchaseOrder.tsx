@@ -17,6 +17,7 @@ import {
   seller,
 
   sizeDims,
+  unitLabel,
   sizes,
 } from "@/content/commerce";
 import { toRows, useCart, volumeOf, type CartLine } from "@/shop/CartProvider";
@@ -144,6 +145,8 @@ const PurchaseOrder = () => {
   const [lines, setLines] = useState<CartLine[]>(() => rows.map(({ sku, size, qty }) => ({ sku, size, qty })));
   const [addSku, setAddSku] = useState("");
   const [addSize, setAddSize] = useState(sizes.find((s) => s.kind === "regular")?.id ?? sizes[0].id);
+  // 고른 상품이 파는 크기만 (브로셔 상품은 브로셔 세트만)
+  const addSizes = products.find((p) => p.sku === addSku)?.sizes ?? sizes.filter((s) => s.kind === "regular");
   const [error, setError] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -157,7 +160,7 @@ const PurchaseOrder = () => {
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const docRows = useMemo(() => toRows(lines), [lines]);
-  const { regularSqft, sampleCount } = volumeOf(docRows);
+  const { regularSqft, brochureCount } = volumeOf(docRows);
   const subtotal = round2(docRows.reduce((n, r) => n + r.lineTotalUSD, 0));
   const same = (l: CartLine, sku: string, size: string) => l.sku === sku && l.size === size;
   const shipTo = sameAsBilling ? form.billing : form.shipping;
@@ -190,9 +193,9 @@ const PurchaseOrder = () => {
       // 형식은 내부 인보이스 작성기의 가져오기(parsePoRequest)와 맞춰야 한다
       ...docRows.map(
         (r, i) =>
-          `${i + 1}. ${r.sku} ${r.product.name} | ${r.size} ${sizeDims(r.sizeInfo)} | ${r.qty} pcs | ${r.areaSqft.toFixed(2)} sqft | list ${formatUSD(r.unitPriceUSD)}/pc | ${formatUSD(r.lineTotalUSD)}`,
+          `${i + 1}. ${r.sku} ${r.product.name} | ${r.size} ${sizeDims(r.sizeInfo)} | ${r.qty} ${r.sizeInfo.kind === "brochure" ? "sets" : "pcs"} | ${r.areaSqft.toFixed(2)} sqft | list ${formatUSD(r.unitPriceUSD)}/${r.sizeInfo.kind === "brochure" ? "set" : "pc"} | ${formatUSD(r.lineTotalUSD)}`,
       ),
-      `Total: regular ${regularSqft.toFixed(2)} sqft, samples ${sampleCount} pcs | list subtotal ${formatUSD(subtotal)}`,
+      `Total: regular ${regularSqft.toFixed(2)} sqft, swatch brochures ${brochureCount} sets | list subtotal ${formatUSD(subtotal)}`,
       `Target price: ${form.targetPrice ? `USD ${form.targetPrice}/sqft` : "-"}`,
       "",
       `Requested delivery: ${form.delivery || "-"}`,
@@ -288,7 +291,7 @@ const PurchaseOrder = () => {
                   <span className="flex items-center gap-2">
                     <QuantityStepper
                       size="sm"
-                      unit={c.pcs}
+                      unit={t(unitLabel(r.sizeInfo))}
                       value={r.qty}
                       label={`${c.qty} ${r.sku} ${r.size}`}
                       onChange={(v) => setLines((ls) => ls.map((l) => (same(l, r.sku, r.size) ? { ...l, qty: v } : l)))}
@@ -306,7 +309,13 @@ const PurchaseOrder = () => {
               ))}
             </ul>
             <div className="mt-3 flex flex-wrap gap-2">
-              <select value={addSku} onChange={(e) => setAddSku(e.target.value)} className={cn(inputCls, "min-w-0 flex-1 basis-48")} aria-label={c.addLine}>
+              <select
+                value={addSku}
+                onChange={(e) => {
+                  const next = products.find((p) => p.sku === e.target.value);
+                  setAddSku(e.target.value);
+                  if (next && !next.sizes.some((z) => z.id === addSize)) setAddSize(next.sizes[0].id);
+                }} className={cn(inputCls, "min-w-0 flex-1 basis-48")} aria-label={c.addLine}>
                 <option value="">{c.addLine}…</option>
                 {available.map((p) => (
                   <option key={p.sku} value={p.sku}>
@@ -315,7 +324,7 @@ const PurchaseOrder = () => {
                 ))}
               </select>
               <select value={addSize} onChange={(e) => setAddSize(e.target.value)} className={cn(inputCls, "w-40")} aria-label={c.size}>
-                {sizes.map((z) => (
+                {addSizes.map((z) => (
                   <option key={z.id} value={z.id}>
                     {t(z.label)} {sizeDims(z)}
                   </option>
@@ -478,7 +487,7 @@ const PurchaseOrder = () => {
             <tfoot>
               <tr>
                 <td colSpan={5} className="pt-3 font-medium">
-                  Total / 합계 <span className="font-normal text-mc-mute">(samples / 샘플 {sampleCount})</span>
+                  Total / 합계 <span className="font-normal text-mc-mute">(swatch brochures / 스와치 브로셔 {brochureCount})</span>
                 </td>
                 <td className="pt-3 text-right font-medium" data-testid="po-total-sqft">
                   {regularSqft.toFixed(2)}

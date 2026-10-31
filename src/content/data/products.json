@@ -1,5 +1,57 @@
 [
   {
+    "sku": "SB-01",
+    "condition": "pure",
+    "name": "Pure Swatch Brochure",
+    "description": {
+      "en": "Ten 30 × 30 cm swatches of pure Mycerra — the material as grown and stabilized. Thickness range to be confirmed.",
+      "ko": "순수 Mycerra 30 × 30 cm 스와치 10장 — 배양·안정화만 거친 그대로의 소재. 두께 구성은 확정 예정."
+    },
+    "status": "coming-soon",
+    "sizes": [
+      "swatch"
+    ]
+  },
+  {
+    "sku": "SB-02",
+    "condition": "embossed",
+    "name": "Embossed Swatch Brochure",
+    "description": {
+      "en": "Ten 30 × 30 cm swatches covering the embossed grain range on undyed pure mycelium mat.",
+      "ko": "무염색 순수 균사 매트에 엠보 그레인을 적용한 30 × 30 cm 스와치 10종."
+    },
+    "status": "coming-soon",
+    "sizes": [
+      "swatch"
+    ]
+  },
+  {
+    "sku": "SB-03",
+    "condition": "reactive",
+    "name": "Reactive Colour Swatch Brochure",
+    "description": {
+      "en": "Ten 30 × 30 cm swatches from the standard reactive-dyed colour range — no top finish.",
+      "ko": "반응성염료 기본 컬러에서 고른 30 × 30 cm 스와치 10종 — 표면 마감 없음."
+    },
+    "status": "coming-soon",
+    "sizes": [
+      "swatch"
+    ]
+  },
+  {
+    "sku": "SB-04",
+    "condition": "finished",
+    "name": "Finished Swatch Brochure",
+    "description": {
+      "en": "Ten 30 × 30 cm swatches of fully finished Mycerra, dyed and top-finished for product making.",
+      "ko": "염색과 표면 마감까지 완료한 최종 피니시 Mycerra 30 × 30 cm 스와치 10종."
+    },
+    "status": "coming-soon",
+    "sizes": [
+      "swatch"
+    ]
+  },
+  {
     "sku": "PU-01",
     "condition": "pure",
     "name": "Pure Mycerra",

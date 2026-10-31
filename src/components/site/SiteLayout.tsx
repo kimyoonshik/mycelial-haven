@@ -205,12 +205,20 @@ const SiteFooter = () => {
 const ScrollManager = () => {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    if (hash) {
-      // 레이아웃이 그려진 뒤 앵커로 이동
-      requestAnimationFrame(() => document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: "smooth" }));
-    } else {
+    if (!hash) {
       window.scrollTo(0, 0);
+      return;
     }
+    // 페이지를 나눠 불러오므로(lazy) 앵커 요소가 그려질 때까지 최대 3초 기다렸다가 이동
+    let frame = 0;
+    const started = performance.now();
+    const seek = () => {
+      const el = document.getElementById(decodeURIComponent(hash.slice(1)));
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+      else if (performance.now() - started < 3000) frame = requestAnimationFrame(seek);
+    };
+    frame = requestAnimationFrame(seek);
+    return () => cancelAnimationFrame(frame);
   }, [pathname, hash]);
   return null;
 };

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { PriceMatrix } from "@/components/shop/PriceMatrix";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { Container, Display, Eyebrow } from "@/components/site/primitives";
-import { categories, products, type CategoryId } from "@/content/shop";
+import { categories, fabrics, products, type CategoryId } from "@/content/shop";
 import { usePageCopy } from "@/content/site";
 import { Sections } from "@/components/site/Sections";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
@@ -88,7 +88,7 @@ const Shop = () => {
         <Container className="flex flex-col gap-3 py-3 md:flex-row md:items-center md:justify-between">
           <div className="-mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:px-0" role="tablist">
             {[null, ...categories.map((x) => x.id)].map((id) => {
-              const count = id ? products.filter((p) => p.category === id).length : products.length;
+              const count = id ? fabrics.filter((p) => p.category === id).length : fabrics.length;
               const label = id ? t(categories.find((x) => x.id === id)!.title) : c.all;
               return (
                 <button
@@ -124,7 +124,7 @@ const Shop = () => {
         {visibleCategories.map((category) => {
           const list = shown.filter((p) => p.category === category.id);
           if (!list.length) return null;
-          const availableCount = products.filter((p) => p.category === category.id && p.status === "available").length;
+          const availableCount = fabrics.filter((p) => p.category === category.id && p.status === "available").length;
           return (
             <section key={category.id} id={category.id} className="scroll-mt-40 border-b border-mc-line py-14 last:border-0">
               <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">

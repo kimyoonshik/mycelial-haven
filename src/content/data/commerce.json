@@ -12,7 +12,8 @@
         "ko": "배양·안정화만 거친 그대로의 소재 — 무엠보, 무염색 순수 균사 매트."
       },
       "priceUSDPerSqft": 30,
-      "target": 1
+      "target": 1,
+      "hsCode": ""
     },
     {
       "id": "embossed",
@@ -25,7 +26,8 @@
         "ko": "순수 균사 매트에 표면 엠보 그레인을 적용한 무염색 원단."
       },
       "priceUSDPerSqft": 30,
-      "target": 20
+      "target": 20,
+      "hsCode": ""
     },
     {
       "id": "reactive",
@@ -38,7 +40,8 @@
         "ko": "반응성염료로만 염색 — 표면 마감 없이 매트 본연의 촉감을 유지. 기본 12색, 추가 컬러는 요청 시 제작."
       },
       "priceUSDPerSqft": 30,
-      "target": 12
+      "target": 12,
+      "hsCode": ""
     },
     {
       "id": "finished",
@@ -51,19 +54,21 @@
         "ko": "염색과 표면 마감까지 완료되어 재단·제품 생산에 바로 쓰는 원단."
       },
       "priceUSDPerSqft": 30,
-      "target": 20
+      "target": 20,
+      "hsCode": ""
     }
   ],
   "sizes": [
     {
-      "id": "sample",
-      "kind": "sample",
+      "id": "swatch",
+      "kind": "brochure",
       "label": {
-        "en": "Sample",
-        "ko": "샘플"
+        "en": "Swatch brochure",
+        "ko": "스와치 브로셔"
       },
       "widthCm": 30,
-      "heightCm": 30
+      "heightCm": 30,
+      "pieces": 10
     },
     {
       "id": "r1",
@@ -101,7 +106,7 @@
     "minSqft": 20,
     "maxSqft": 161.5,
     "shippingUSD": 0,
-    "sampleMaxPerOrder": 10
+    "brochureMaxPerOrder": 4
   },
   "seller": {
     "company": "SAVE EARTH Inc.",
