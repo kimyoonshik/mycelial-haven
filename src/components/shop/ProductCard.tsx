@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Price } from "@/components/site/primitives";
-import { comingSoonLabel, unitPriceOf, type Product } from "@/content/shop";
+import { comingSoonLabel, fromPrice, type Product } from "@/content/shop";
 import { useLang } from "@/i18n/LanguageProvider";
 
 /** 실물 사진이 없는 품목의 자리 표시 타일 */
@@ -49,7 +49,13 @@ export const ProductCard = ({ product }: { product: Product }) => {
         <span className="shrink-0 text-[11px] tracking-[0.16em] text-mc-mute">{product.sku}</span>
       </div>
       <p className="mt-0.5 text-xs text-mc-mute">
-        {soon ? t(comingSoonLabel) : <Price value={unitPriceOf(product)} perSqft />}
+        {soon ? (
+          t(comingSoonLabel)
+        ) : (
+          <>
+            {t({ en: "From", ko: "최저" })} <Price value={fromPrice(product)} />
+          </>
+        )}
       </p>
     </Link>
   );

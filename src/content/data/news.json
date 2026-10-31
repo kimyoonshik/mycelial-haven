@@ -1,0 +1,47 @@
+[
+  {
+    "id": "lineapelle-2026",
+    "tag": {
+      "en": "Exhibition",
+      "ko": "전시"
+    },
+    "title": {
+      "en": "Mycerra at LINEAPELLE Milan",
+      "ko": "LINEAPELLE 밀라노 참가"
+    },
+    "meta": {
+      "en": "Fiera Milano Rho · February 2026",
+      "ko": "피에라 밀라노 로 · 2026년 2월"
+    }
+  },
+  {
+    "id": "ebs-extreme-jobs",
+    "tag": {
+      "en": "Broadcast",
+      "ko": "방송"
+    },
+    "title": {
+      "en": "EBS Extreme Jobs",
+      "ko": "EBS 극한직업"
+    },
+    "meta": {
+      "en": "A story of biomaterial innovation through mycelium",
+      "ko": "균사로 만드는 바이오소재 혁신 이야기"
+    }
+  },
+  {
+    "id": "natv",
+    "tag": {
+      "en": "Broadcast",
+      "ko": "방송"
+    },
+    "title": {
+      "en": "National Assembly Broadcasting",
+      "ko": "국회방송"
+    },
+    "meta": {
+      "en": "Exploring the science and craftsmanship behind Mycerra",
+      "ko": "Mycerra에 담긴 과학과 장인정신"
+    }
+  }
+]

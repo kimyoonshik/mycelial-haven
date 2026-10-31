@@ -1,0 +1,636 @@
+[
+  {
+    "sku": "PU-01",
+    "condition": "pure",
+    "name": "Pure Mycerra",
+    "libraryCode": "PM-00",
+    "image": "/media/materials/finish-pure.webp",
+    "description": {
+      "en": "Pure mycelium mat — unembossed, undyed.",
+      "ko": "순수 균사 매트 — 무엠보, 무염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "EM-01",
+    "condition": "embossed",
+    "name": "Crocodile",
+    "libraryCode": "CR-03",
+    "image": "/media/materials/finish-crocodile-03.webp",
+    "description": {
+      "en": "Pure mycelium mat — crocodile embossed, undyed.",
+      "ko": "순수 균사 매트 — 크로커다일 엠보, 무염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "EM-02",
+    "condition": "embossed",
+    "name": "Marble Caviar",
+    "libraryCode": "MC-06",
+    "image": "/media/materials/finish-marble-caviar-06.webp",
+    "description": {
+      "en": "Pure mycelium mat — Marble Caviar embossed, undyed.",
+      "ko": "순수 균사 매트 — 마블 캐비어 엠보, 무염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "EM-03",
+    "condition": "embossed",
+    "name": "Marble Caviar",
+    "libraryCode": "MC-08",
+    "image": "/media/materials/finish-marble-caviar-08.webp",
+    "description": {
+      "en": "Pure mycelium mat — Marble Caviar embossed, undyed.",
+      "ko": "순수 균사 매트 — 마블 캐비어 엠보, 무염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "EM-04",
+    "condition": "embossed",
+    "name": "Hypha Pebble",
+    "libraryCode": "HP-03",
+    "image": "/media/materials/finish-hypha-pebble-03.webp",
+    "description": {
+      "en": "Pure mycelium mat — Hypha Pebble embossed, undyed.",
+      "ko": "순수 균사 매트 — 하이파 페블 엠보, 무염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "EM-05",
+    "condition": "embossed",
+    "name": "Emboss pattern 05",
+    "description": {
+      "en": "Emboss pattern 05 — in development.",
+      "ko": "엠보 패턴 05 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-06",
+    "condition": "embossed",
+    "name": "Emboss pattern 06",
+    "description": {
+      "en": "Emboss pattern 06 — in development.",
+      "ko": "엠보 패턴 06 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-07",
+    "condition": "embossed",
+    "name": "Emboss pattern 07",
+    "description": {
+      "en": "Emboss pattern 07 — in development.",
+      "ko": "엠보 패턴 07 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-08",
+    "condition": "embossed",
+    "name": "Emboss pattern 08",
+    "description": {
+      "en": "Emboss pattern 08 — in development.",
+      "ko": "엠보 패턴 08 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-09",
+    "condition": "embossed",
+    "name": "Emboss pattern 09",
+    "description": {
+      "en": "Emboss pattern 09 — in development.",
+      "ko": "엠보 패턴 09 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-10",
+    "condition": "embossed",
+    "name": "Emboss pattern 10",
+    "description": {
+      "en": "Emboss pattern 10 — in development.",
+      "ko": "엠보 패턴 10 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-11",
+    "condition": "embossed",
+    "name": "Emboss pattern 11",
+    "description": {
+      "en": "Emboss pattern 11 — in development.",
+      "ko": "엠보 패턴 11 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-12",
+    "condition": "embossed",
+    "name": "Emboss pattern 12",
+    "description": {
+      "en": "Emboss pattern 12 — in development.",
+      "ko": "엠보 패턴 12 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-13",
+    "condition": "embossed",
+    "name": "Emboss pattern 13",
+    "description": {
+      "en": "Emboss pattern 13 — in development.",
+      "ko": "엠보 패턴 13 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-14",
+    "condition": "embossed",
+    "name": "Emboss pattern 14",
+    "description": {
+      "en": "Emboss pattern 14 — in development.",
+      "ko": "엠보 패턴 14 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-15",
+    "condition": "embossed",
+    "name": "Emboss pattern 15",
+    "description": {
+      "en": "Emboss pattern 15 — in development.",
+      "ko": "엠보 패턴 15 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-16",
+    "condition": "embossed",
+    "name": "Emboss pattern 16",
+    "description": {
+      "en": "Emboss pattern 16 — in development.",
+      "ko": "엠보 패턴 16 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-17",
+    "condition": "embossed",
+    "name": "Emboss pattern 17",
+    "description": {
+      "en": "Emboss pattern 17 — in development.",
+      "ko": "엠보 패턴 17 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-18",
+    "condition": "embossed",
+    "name": "Emboss pattern 18",
+    "description": {
+      "en": "Emboss pattern 18 — in development.",
+      "ko": "엠보 패턴 18 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-19",
+    "condition": "embossed",
+    "name": "Emboss pattern 19",
+    "description": {
+      "en": "Emboss pattern 19 — in development.",
+      "ko": "엠보 패턴 19 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "EM-20",
+    "condition": "embossed",
+    "name": "Emboss pattern 20",
+    "description": {
+      "en": "Emboss pattern 20 — in development.",
+      "ko": "엠보 패턴 20 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-01",
+    "condition": "reactive",
+    "name": "Midnight Navy",
+    "libraryCode": "MN-02",
+    "image": "/media/materials/color-midnight-navy-02.webp",
+    "description": {
+      "en": "Pure mycelium mat, dyed three times.",
+      "ko": "순수 균사 매트, 3회 염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "RD-02",
+    "condition": "reactive",
+    "name": "Burgundy",
+    "libraryCode": "BG-05",
+    "image": "/media/materials/color-burgundy-05.webp",
+    "description": {
+      "en": "Pure mycelium mat, dyed three times.",
+      "ko": "순수 균사 매트, 3회 염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "RD-03",
+    "condition": "reactive",
+    "name": "Scarlet Red",
+    "libraryCode": "SR-07",
+    "image": "/media/materials/color-scarlet-red-07.webp",
+    "description": {
+      "en": "Pure mycelium mat, dyed three times.",
+      "ko": "순수 균사 매트, 3회 염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "RD-04",
+    "condition": "reactive",
+    "name": "Bone White",
+    "libraryCode": "BW-01",
+    "image": "/media/materials/color-bone-white-01.webp",
+    "description": {
+      "en": "Pure mycelium mat, dyed three times.",
+      "ko": "순수 균사 매트, 3회 염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "RD-05",
+    "condition": "reactive",
+    "name": "Ice Blue",
+    "libraryCode": "IB-06",
+    "image": "/media/materials/color-ice-blue-06.webp",
+    "description": {
+      "en": "Pure mycelium mat, dyed three times.",
+      "ko": "순수 균사 매트, 3회 염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "RD-06",
+    "condition": "reactive",
+    "name": "Marigold",
+    "libraryCode": "MR-08",
+    "image": "/media/materials/color-marigold-08.webp",
+    "description": {
+      "en": "Pure mycelium mat, dyed three times.",
+      "ko": "순수 균사 매트, 3회 염색."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "RD-07",
+    "condition": "reactive",
+    "name": "Reactive colour 07",
+    "description": {
+      "en": "Reactive colour 07 — in development.",
+      "ko": "반응성 컬러 07 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-08",
+    "condition": "reactive",
+    "name": "Reactive colour 08",
+    "description": {
+      "en": "Reactive colour 08 — in development.",
+      "ko": "반응성 컬러 08 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-09",
+    "condition": "reactive",
+    "name": "Reactive colour 09",
+    "description": {
+      "en": "Reactive colour 09 — in development.",
+      "ko": "반응성 컬러 09 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-10",
+    "condition": "reactive",
+    "name": "Reactive colour 10",
+    "description": {
+      "en": "Reactive colour 10 — in development.",
+      "ko": "반응성 컬러 10 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-11",
+    "condition": "reactive",
+    "name": "Reactive colour 11",
+    "description": {
+      "en": "Reactive colour 11 — in development.",
+      "ko": "반응성 컬러 11 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-12",
+    "condition": "reactive",
+    "name": "Reactive colour 12",
+    "description": {
+      "en": "Reactive colour 12 — in development.",
+      "ko": "반응성 컬러 12 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-13",
+    "condition": "reactive",
+    "name": "Reactive colour 13",
+    "description": {
+      "en": "Reactive colour 13 — in development.",
+      "ko": "반응성 컬러 13 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-14",
+    "condition": "reactive",
+    "name": "Reactive colour 14",
+    "description": {
+      "en": "Reactive colour 14 — in development.",
+      "ko": "반응성 컬러 14 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-15",
+    "condition": "reactive",
+    "name": "Reactive colour 15",
+    "description": {
+      "en": "Reactive colour 15 — in development.",
+      "ko": "반응성 컬러 15 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-16",
+    "condition": "reactive",
+    "name": "Reactive colour 16",
+    "description": {
+      "en": "Reactive colour 16 — in development.",
+      "ko": "반응성 컬러 16 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-17",
+    "condition": "reactive",
+    "name": "Reactive colour 17",
+    "description": {
+      "en": "Reactive colour 17 — in development.",
+      "ko": "반응성 컬러 17 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-18",
+    "condition": "reactive",
+    "name": "Reactive colour 18",
+    "description": {
+      "en": "Reactive colour 18 — in development.",
+      "ko": "반응성 컬러 18 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-19",
+    "condition": "reactive",
+    "name": "Reactive colour 19",
+    "description": {
+      "en": "Reactive colour 19 — in development.",
+      "ko": "반응성 컬러 19 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "RD-20",
+    "condition": "reactive",
+    "name": "Reactive colour 20",
+    "description": {
+      "en": "Reactive colour 20 — in development.",
+      "ko": "반응성 컬러 20 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-01",
+    "condition": "finished",
+    "name": "Mocha Grain",
+    "libraryCode": "MG-02",
+    "image": "/media/materials/finish-mocha-grain-02.webp",
+    "description": {
+      "en": "Aniline-finished pure mycelium mat.",
+      "ko": "아닐린 마감 순수 균사 매트."
+    },
+    "status": "available"
+  },
+  {
+    "sku": "FN-02",
+    "condition": "finished",
+    "name": "Finished leather 02",
+    "description": {
+      "en": "Finished leather 02 — in development.",
+      "ko": "피니시 원단 02 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-03",
+    "condition": "finished",
+    "name": "Finished leather 03",
+    "description": {
+      "en": "Finished leather 03 — in development.",
+      "ko": "피니시 원단 03 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-04",
+    "condition": "finished",
+    "name": "Finished leather 04",
+    "description": {
+      "en": "Finished leather 04 — in development.",
+      "ko": "피니시 원단 04 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-05",
+    "condition": "finished",
+    "name": "Finished leather 05",
+    "description": {
+      "en": "Finished leather 05 — in development.",
+      "ko": "피니시 원단 05 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-06",
+    "condition": "finished",
+    "name": "Finished leather 06",
+    "description": {
+      "en": "Finished leather 06 — in development.",
+      "ko": "피니시 원단 06 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-07",
+    "condition": "finished",
+    "name": "Finished leather 07",
+    "description": {
+      "en": "Finished leather 07 — in development.",
+      "ko": "피니시 원단 07 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-08",
+    "condition": "finished",
+    "name": "Finished leather 08",
+    "description": {
+      "en": "Finished leather 08 — in development.",
+      "ko": "피니시 원단 08 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-09",
+    "condition": "finished",
+    "name": "Finished leather 09",
+    "description": {
+      "en": "Finished leather 09 — in development.",
+      "ko": "피니시 원단 09 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-10",
+    "condition": "finished",
+    "name": "Finished leather 10",
+    "description": {
+      "en": "Finished leather 10 — in development.",
+      "ko": "피니시 원단 10 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-11",
+    "condition": "finished",
+    "name": "Finished leather 11",
+    "description": {
+      "en": "Finished leather 11 — in development.",
+      "ko": "피니시 원단 11 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-12",
+    "condition": "finished",
+    "name": "Finished leather 12",
+    "description": {
+      "en": "Finished leather 12 — in development.",
+      "ko": "피니시 원단 12 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-13",
+    "condition": "finished",
+    "name": "Finished leather 13",
+    "description": {
+      "en": "Finished leather 13 — in development.",
+      "ko": "피니시 원단 13 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-14",
+    "condition": "finished",
+    "name": "Finished leather 14",
+    "description": {
+      "en": "Finished leather 14 — in development.",
+      "ko": "피니시 원단 14 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-15",
+    "condition": "finished",
+    "name": "Finished leather 15",
+    "description": {
+      "en": "Finished leather 15 — in development.",
+      "ko": "피니시 원단 15 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-16",
+    "condition": "finished",
+    "name": "Finished leather 16",
+    "description": {
+      "en": "Finished leather 16 — in development.",
+      "ko": "피니시 원단 16 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-17",
+    "condition": "finished",
+    "name": "Finished leather 17",
+    "description": {
+      "en": "Finished leather 17 — in development.",
+      "ko": "피니시 원단 17 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-18",
+    "condition": "finished",
+    "name": "Finished leather 18",
+    "description": {
+      "en": "Finished leather 18 — in development.",
+      "ko": "피니시 원단 18 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-19",
+    "condition": "finished",
+    "name": "Finished leather 19",
+    "description": {
+      "en": "Finished leather 19 — in development.",
+      "ko": "피니시 원단 19 — 개발 중."
+    },
+    "status": "coming-soon"
+  },
+  {
+    "sku": "FN-20",
+    "condition": "finished",
+    "name": "Finished leather 20",
+    "description": {
+      "en": "Finished leather 20 — in development.",
+      "ko": "피니시 원단 20 — 개발 중."
+    },
+    "status": "coming-soon"
+  }
+]

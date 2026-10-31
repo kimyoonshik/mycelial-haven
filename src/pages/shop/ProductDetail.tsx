@@ -1,21 +1,26 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { ProductCard, ProductImage } from "@/components/shop/ProductCard";
-import { SqftStepper } from "@/components/shop/SqftStepper";
-import { Container, Display, Eyebrow, PillButton, Price, TextLink } from "@/components/site/primitives";
-import { categories, comingSoonLabel, productBySku, products, productSpecs, unitPriceOf } from "@/content/shop";
-import { formatUSD, retail, round2 } from "@/content/commerce";
-import { company } from "@/content/mycerra";
-import { MAX_LINE_SQFT, useCart } from "@/shop/CartProvider";
+import { QuantityStepper } from "@/components/shop/QuantityStepper";
+import { Container, Display, Eyebrow, PillButton, TextLink } from "@/components/site/primitives";
+import { categories, comingSoonLabel, priceOf, productBySku, products, productSpecs } from "@/content/shop";
+import { areaSqft, formatUSD, retail, round2, sizeDims, seller } from "@/content/commerce";
+import type { Size } from "@/content/schema";
+import { MAX_LINE_QTY, useCart } from "@/shop/CartProvider";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
-import NotFound from "@/pages/NotFound";
+import { useSeo } from "@/lib/seo";
+import NotFound from "@/pages/site/NotFound";
 
 const copy = {
   en: {
     back: "Back to shop",
+    size: "Size",
+    perPiece: "per piece",
     qty: "Quantity",
-    unit: "Unit price",
+    pcs: "pcs",
+    area: "Area",
     lineTotal: "Line total",
     add: "Add to cart",
     added: "Added to cart",
@@ -23,8 +28,9 @@ const copy = {
     soonBody: "This item is part of the planned range and is not yet available to order. Leave your details and we will notify you.",
     notify: "Notify me",
     rules: [
-      `Individual orders: minimum ${retail.minSqft} sqft per order, paid online with PayPal.`,
-      `Orders above ${retail.maxSqft} sqft, or business terms: send a purchase order request and we reply with an approved invoice.`,
+      `Regular sheets: minimum ${retail.minSqft} sqft per order — paid online with PayPal.`,
+      `Samples (30 × 30 cm) can be ordered on their own, up to ${retail.sampleMaxPerOrder} per order.`,
+      `Above ${retail.maxSqft} sqft, or for business terms, send a purchase order request and we reply with an approved invoice.`,
     ],
     specs: "Specifications",
     onRequest: "On request",
@@ -34,8 +40,11 @@ const copy = {
   },
   ko: {
     back: "쇼핑몰로 돌아가기",
+    size: "원단 크기",
+    perPiece: "장당",
     qty: "수량",
-    unit: "단가",
+    pcs: "장",
+    area: "면적",
     lineTotal: "품목 금액",
     add: "장바구니 담기",
     added: "장바구니에 담았습니다",
@@ -43,8 +52,9 @@ const copy = {
     soonBody: "이 품목은 구성 예정 라인업으로 아직 주문할 수 없습니다. 연락처를 남겨 주시면 출시 시 알려 드립니다.",
     notify: "출시 알림 신청",
     rules: [
-      `개인 주문: 주문당 최소 ${retail.minSqft} sqft, PayPal로 바로 결제합니다.`,
-      `${retail.maxSqft} sqft 초과 주문이나 기업 거래 조건이 필요하면 발주희망서를 보내 주세요. 승인 인보이스로 회신합니다.`,
+      `정규원단: 주문당 최소 ${retail.minSqft} sqft, PayPal로 바로 결제합니다.`,
+      `샘플(30 × 30 cm)은 단독 주문 가능하며 주문당 최대 ${retail.sampleMaxPerOrder}장입니다.`,
+      `${retail.maxSqft} sqft 초과 또는 기업 거래 조건은 발주희망서를 보내 주세요. 승인 인보이스로 회신합니다.`,
     ],
     specs: "사양",
     onRequest: "문의",
@@ -54,20 +64,36 @@ const copy = {
   },
 };
 
+/** 크기를 고르면 정규원단은 최소 주문량을 채우는 장수를 기본값으로 */
+const defaultQty = (s: Size) => (s.kind === "sample" ? 1 : Math.max(1, Math.ceil(retail.minSqft / areaSqft(s))));
+
 const ProductDetail = () => {
   const { sku = "" } = useParams();
   const product = productBySku(sku);
   const c = useCopy(copy);
   const { t } = useLang();
   const { add } = useCart();
-  const [sqft, setSqft] = useState<number>(retail.minSqft);
+  const firstRegular = product?.sizes.find((s) => s.kind === "regular") ?? product?.sizes[0];
+  const [sizeId, setSizeId] = useState(firstRegular?.id ?? "");
+  const [qty, setQty] = useState(firstRegular ? defaultQty(firstRegular) : 1);
   const [added, setAdded] = useState(false);
+
+  useSeo(
+    product
+      ? {
+          title: `${product.name} (${product.sku}) — Mycerra™ Shop`,
+          description: t(product.description),
+          image: product.image,
+        }
+      : null,
+  );
 
   if (!product) return <NotFound />;
 
   const category = categories.find((x) => x.id === product.category)!;
   const soon = product.status === "coming-soon";
-  const unit = unitPriceOf(product);
+  const size = product.sizes.find((s) => s.id === sizeId) ?? product.sizes[0];
+  const unit = priceOf(product, size.id);
   const related = products.filter((p) => p.category === product.category && p.sku !== product.sku).slice(0, 5);
 
   return (
@@ -106,29 +132,61 @@ const ProductDetail = () => {
                 </span>
                 <p className="mt-5 text-[15px] leading-relaxed text-mc-mute">{c.soonBody}</p>
                 <PillButton
-                  href={`mailto:${company.email}?subject=${encodeURIComponent(`[Mycerra Shop] Notify me: ${product.sku}`)}`}
+                  href={`mailto:${seller.email}?subject=${encodeURIComponent(`[Mycerra Shop] Notify me: ${product.sku}`)}`}
                   className="mt-6"
                 >
                   {c.notify}
                 </PillButton>
               </div>
             ) : (
-              <div className="mt-10 space-y-6 border-t border-mc-line pt-8">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-[11px] uppercase tracking-[0.18em] text-mc-mute">{c.unit}</span>
-                  <Price value={unit} perSqft className="font-mc-serif text-2xl" />
-                </div>
+              <div className="mt-10 space-y-7 border-t border-mc-line pt-8">
+                <fieldset>
+                  <legend className="text-[11px] uppercase tracking-[0.18em] text-mc-mute">{c.size}</legend>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    {product.sizes.map((s) => {
+                      const active = s.id === size.id;
+                      return (
+                        <button
+                          key={s.id}
+                          type="button"
+                          aria-pressed={active}
+                          data-size={s.id}
+                          onClick={() => {
+                            setSizeId(s.id);
+                            setQty(defaultQty(s));
+                            setAdded(false);
+                          }}
+                          className={cn(
+                            "border p-3 text-left transition-colors",
+                            active ? "border-mc-ink bg-mc-ink text-mc-paper" : "border-mc-line hover:border-mc-ink",
+                          )}
+                        >
+                          <span className="block font-mc-serif text-lg">{t(s.label)}</span>
+                          <span className={cn("block text-xs", active ? "text-mc-paper/70" : "text-mc-mute")}>
+                            {sizeDims(s)} · {areaSqft(s).toFixed(2)} sqft
+                          </span>
+                          <span className="mt-1 block text-sm">
+                            {formatUSD(priceOf(product, s.id))}{" "}
+                            <span className={active ? "text-mc-paper/60" : "text-mc-mute"}>{c.perPiece}</span>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </fieldset>
+
                 <div className="flex flex-wrap items-end justify-between gap-4">
                   <div>
                     <p className="text-[11px] uppercase tracking-[0.18em] text-mc-mute">{c.qty}</p>
                     <div className="mt-3">
-                      <SqftStepper
-                        value={sqft}
+                      <QuantityStepper
+                        value={qty}
+                        unit={c.pcs}
                         onChange={(v) => {
-                          setSqft(v);
+                          setQty(v);
                           setAdded(false);
                         }}
-                        max={MAX_LINE_SQFT}
+                        max={size.kind === "sample" ? retail.sampleMaxPerOrder : MAX_LINE_QTY}
                         label={c.qty}
                       />
                     </div>
@@ -136,14 +194,17 @@ const ProductDetail = () => {
                   <div className="text-right">
                     <p className="text-[11px] uppercase tracking-[0.18em] text-mc-mute">{c.lineTotal}</p>
                     <p className="mt-3 font-mc-serif text-2xl" data-testid="line-total">
-                      {formatUSD(round2(unit * sqft))}
+                      {formatUSD(round2(unit * qty))}
+                    </p>
+                    <p className="text-xs text-mc-mute" data-testid="line-area">
+                      {c.area} {round2(areaSqft(size) * qty).toFixed(2)} sqft
                     </p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => {
-                    add(product.sku, sqft);
+                    add(product.sku, size.id, qty);
                     setAdded(true);
                   }}
                   className="w-full rounded-full bg-mc-ink px-8 py-3.5 text-sm text-mc-paper transition-colors hover:bg-mc-burgundy"
@@ -177,7 +238,7 @@ const ProductDetail = () => {
                 {productSpecs.map((s) => (
                   <div key={s.label.en} className="flex justify-between gap-6 py-3">
                     <dt className="text-mc-mute">{t(s.label)}</dt>
-                    <dd>{s.value ? t(s.value) : <span className="text-mc-mute">{c.onRequest}</span>}</dd>
+                    <dd className="text-right">{s.value ? t(s.value) : <span className="text-mc-mute">{c.onRequest}</span>}</dd>
                   </div>
                 ))}
               </dl>
@@ -206,7 +267,7 @@ const ProductDetail = () => {
   );
 };
 
-// 다른 상품으로 이동하면 수량 선택을 초기화한다
+// 다른 상품으로 이동하면 크기·수량 선택을 초기화한다
 const ProductDetailPage = () => {
   const { sku } = useParams();
   return <ProductDetail key={sku} />;

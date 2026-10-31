@@ -3,11 +3,15 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "vite",
-    "dev:admin": "VITE_ENABLE_ADMIN=true vite",
-    "build": "vite build",
-    "build:admin": "VITE_ENABLE_ADMIN=true vite build --outDir dist-admin",
+    "cms": "vite --mode cms",
+    "admin": "vite --mode admin",
+    "build": "vite build && node scripts/prerender.mjs",
+    "build:admin": "vite build --mode admin --outDir dist-admin",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",

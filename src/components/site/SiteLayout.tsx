@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { company } from "@/content/mycerra";
 import { useLang, type L } from "@/i18n/LanguageProvider";
 import { useCart } from "@/shop/CartProvider";
+import { useRouteSeo } from "@/lib/seo";
 import { Container } from "./primitives";
 
 const nav: { to: string; label: L }[] = [
@@ -215,6 +216,7 @@ const ScrollManager = () => {
 };
 
 export const SiteLayout = () => {
+  useRouteSeo();
   // 기본 body 배경(구 사이트 버건디)이 오버스크롤 시 비치지 않도록 교체
   useEffect(() => {
     document.body.classList.add("bg-mc-paper", "print:bg-white");

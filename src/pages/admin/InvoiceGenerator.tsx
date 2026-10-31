@@ -5,7 +5,7 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { ClipboardPaste, Mail, Plus, Printer, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { products, unitPriceOf } from "@/content/shop";
+import { priceOf, products } from "@/content/shop";
 import { bankAccounts } from "@/content/bankAccounts";
 import {
   countries,
@@ -14,9 +14,12 @@ import {
   makeRef,
   paymentMethods,
   paymentTerms,
-  retail,
+  areaSqft,
   round2,
   seller,
+  sizeById,
+  sizeDims,
+  sizes,
 } from "@/content/commerce";
 
 type DocType = "proforma" | "commercial";
@@ -26,9 +29,16 @@ interface Line {
   sku: string;
   description: string;
   hsCode: string;
-  sqft: number;
-  unitPrice: number;
+  size: string;
+  qty: number; // 장수
+  unitPrice: number; // 장당 USD
 }
+
+const defaultSize = sizes.find((z) => z.kind === "regular")?.id ?? sizes[0].id;
+const lineArea = (l: Line) => {
+  const z = sizeById(l.size);
+  return z ? round2(areaSqft(z) * l.qty) : 0;
+};
 
 const addDays = (d: number) => new Date(Date.now() + d * 86400000).toISOString().slice(0, 10);
 const today = () => new Date().toISOString().slice(0, 10);
@@ -43,15 +53,16 @@ const Field = ({ label, children, className }: { label: string; children: ReactN
 );
 
 let lineSeq = 1;
-const newLine = (sku = ""): Line => {
+const newLine = (sku = "", size = defaultSize, qty = 1): Line => {
   const p = products.find((x) => x.sku === sku);
   return {
     id: lineSeq++,
     sku,
     description: p ? `${p.name} — pure mycelium mat` : "",
     hsCode: seller.hsCode,
-    sqft: retail.minSqft,
-    unitPrice: p ? unitPriceOf(p) : retail.unitPriceUSD,
+    size,
+    qty,
+    unitPrice: p ? priceOf(p, size) : 0,
   };
 };
 
@@ -59,10 +70,10 @@ const newLine = (sku = ""): Line => {
 const parsePoRequest = (text: string) => {
   const field = (k: string) => text.match(new RegExp(`^${k}:\\s*(.+)$`, "mi"))?.[1].trim();
   const ref = text.match(/PURCHASE ORDER REQUEST\s+(POR-[\w-]+)/)?.[1];
-  const lines = [...text.matchAll(/^\d+\.\s+([A-Z]{2}-\d{2})\s+(.+?)\s+\|\s+(\d+)\s+sqft/gm)].map((m) => ({
-    ...newLine(m[1]),
-    sqft: Number(m[3]),
-  }));
+  // 줄 형식: "1. EM-01 Crocodile | r1 150 × 100 cm | 3 pcs | …"
+  const lines = [...text.matchAll(/^\d+\.\s+([A-Z]{2}-\d{2,3})\s+.+?\|\s+([a-z0-9-]+)\s.+?\|\s+(\d+)\s+pcs/gm)].map((m) =>
+    newLine(m[1], sizeById(m[2]) ? m[2] : defaultSize, Number(m[3])),
+  );
   const countryName = field("Country");
   return {
     ref,
@@ -117,8 +128,8 @@ const InvoiceGenerator = () => {
 
   const num = (s: string) => (Number.isFinite(Number(s)) ? Number(s) : 0);
   const totals = useMemo(() => {
-    const sqft = lines.reduce((n, l) => n + l.sqft, 0);
-    const subtotal = round2(lines.reduce((n, l) => n + l.sqft * l.unitPrice, 0));
+    const sqft = round2(lines.reduce((n, l) => n + lineArea(l), 0));
+    const subtotal = round2(lines.reduce((n, l) => n + l.qty * l.unitPrice, 0));
     const discount = round2((subtotal * num(h.discountPct)) / 100);
     const shipping = round2(num(h.shipping));
     const taxable = round2(subtotal - discount + shipping);
@@ -159,7 +170,10 @@ const InvoiceGenerator = () => {
       "",
       `Thank you for your purchase order request${h.poRef ? ` ${h.poRef}` : ""}. We are pleased to confirm it with ${title.toLowerCase()} ${h.invoiceNo}:`,
       "",
-      ...lines.map((l) => `- ${l.sku} ${l.description}: ${l.sqft} sqft × ${formatUSD(l.unitPrice)} = ${formatUSD(l.sqft * l.unitPrice)}`),
+      ...lines.map((l) => {
+        const z = sizeById(l.size);
+        return `- ${l.sku} ${l.description} (${z ? sizeDims(z) : l.size}): ${l.qty} pcs × ${formatUSD(l.unitPrice)} = ${formatUSD(l.qty * l.unitPrice)}`;
+      }),
       ...(totals.discount ? [`Discount: −${formatUSD(totals.discount)}`] : []),
       `Shipping: ${totals.shipping ? formatUSD(totals.shipping) : "included"}`,
       ...(totals.vat ? [`VAT ${h.vatPct}%: ${formatUSD(totals.vat)}`] : []),
@@ -277,10 +291,10 @@ const InvoiceGenerator = () => {
                   <select
                     value={l.sku}
                     onChange={(e) => {
-                      const n = newLine(e.target.value);
+                      const n = newLine(e.target.value, l.size, l.qty);
                       setLine(l.id, { sku: n.sku, description: n.description, unitPrice: n.unitPrice });
                     }}
-                    className={cn(inputCls, "col-span-4")}
+                    className={cn(inputCls, "col-span-3")}
                     aria-label="SKU"
                   >
                     <option value="">SKU</option>
@@ -295,9 +309,24 @@ const InvoiceGenerator = () => {
                   <input
                     value={l.description}
                     onChange={(e) => setLine(l.id, { description: e.target.value })}
-                    className={cn(inputCls, "col-span-8")}
+                    className={cn(inputCls, "col-span-5")}
                     aria-label="Description"
                   />
+                  <select
+                    value={l.size}
+                    onChange={(e) => {
+                      const p = products.find((x) => x.sku === l.sku);
+                      setLine(l.id, { size: e.target.value, ...(p && { unitPrice: priceOf(p, e.target.value) }) });
+                    }}
+                    className={cn(inputCls, "col-span-4")}
+                    aria-label="Size"
+                  >
+                    {sizes.map((z) => (
+                      <option key={z.id} value={z.id}>
+                        {z.label.en} {sizeDims(z)}
+                      </option>
+                    ))}
+                  </select>
                   <input
                     value={l.hsCode}
                     onChange={(e) => setLine(l.id, { hsCode: e.target.value })}
@@ -306,17 +335,17 @@ const InvoiceGenerator = () => {
                   />
                   <input
                     inputMode="numeric"
-                    value={l.sqft}
-                    onChange={(e) => setLine(l.id, { sqft: Math.max(0, Math.floor(num(e.target.value))) })}
+                    value={l.qty}
+                    onChange={(e) => setLine(l.id, { qty: Math.max(0, Math.floor(num(e.target.value))) })}
                     className={cn(inputCls, "col-span-3")}
-                    aria-label="sqft"
+                    aria-label="Quantity (pcs)"
                   />
                   <input
                     inputMode="decimal"
                     value={l.unitPrice}
                     onChange={(e) => setLine(l.id, { unitPrice: Math.max(0, num(e.target.value)) })}
                     className={cn(inputCls, "col-span-3")}
-                    aria-label="Unit price USD/sqft"
+                    aria-label="Unit price USD/pc"
                   />
                   <button
                     type="button"
@@ -476,8 +505,10 @@ const InvoiceGenerator = () => {
                 <th className="py-2 pr-2 font-normal">#</th>
                 <th className="py-2 pr-2 font-normal">Description</th>
                 <th className="py-2 pr-2 font-normal">HS code</th>
-                <th className="py-2 pr-2 text-right font-normal">Qty sqft</th>
-                <th className="py-2 pr-2 text-right font-normal">USD/sqft</th>
+                <th className="py-2 pr-2 font-normal">Size</th>
+                <th className="py-2 pr-2 text-right font-normal">Qty pcs</th>
+                <th className="py-2 pr-2 text-right font-normal">sqft</th>
+                <th className="py-2 pr-2 text-right font-normal">USD/pc</th>
                 <th className="py-2 text-right font-normal">Amount USD</th>
               </tr>
             </thead>
@@ -490,9 +521,11 @@ const InvoiceGenerator = () => {
                     {l.description}
                   </td>
                   <td className="py-2 pr-2">{l.hsCode}</td>
-                  <td className="py-2 pr-2 text-right">{l.sqft}</td>
+                  <td className="py-2 pr-2">{sizeById(l.size) ? sizeDims(sizeById(l.size)!) : l.size}</td>
+                  <td className="py-2 pr-2 text-right">{l.qty}</td>
+                  <td className="py-2 pr-2 text-right">{lineArea(l).toFixed(2)}</td>
                   <td className="py-2 pr-2 text-right">{l.unitPrice.toFixed(2)}</td>
-                  <td className="py-2 text-right">{(l.sqft * l.unitPrice).toFixed(2)}</td>
+                  <td className="py-2 text-right">{(l.qty * l.unitPrice).toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
@@ -500,7 +533,7 @@ const InvoiceGenerator = () => {
 
           <dl className="ml-auto mt-4 w-full max-w-xs space-y-1">
             <div className="flex justify-between">
-              <dt className="text-mc-mute">Subtotal ({totals.sqft} sqft)</dt>
+              <dt className="text-mc-mute">Subtotal ({totals.sqft.toFixed(2)} sqft)</dt>
               <dd>{formatUSD(totals.subtotal)}</dd>
             </div>
             {totals.discount > 0 && (

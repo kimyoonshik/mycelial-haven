@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Container, Display, Eyebrow, PillButton } from "@/components/site/primitives";
-import { countries, formatUSD, makeRef, orderTotals, paypalClientId, retail, routeFor, seller } from "@/content/commerce";
+import { countries, formatUSD, makeRef, orderTotals, paypalClientId, retail, routeFor, seller, sizeDims } from "@/content/commerce";
 import { useCart, type CartRow } from "@/shop/CartProvider";
 import { buildOrder, loadPayPal, type Buyer, type PayPalCapture } from "@/shop/paypal";
 import { loadBuyer, saveBuyer } from "@/shop/buyerStore";
@@ -15,8 +15,9 @@ const copy = {
     title: "Individual order",
     empty: "Your cart is empty.",
     browse: "Browse the shop",
-    belowMin: `The minimum order is ${retail.minSqft} sqft. Please add more material to your cart.`,
-    overMax: `Orders above ${retail.maxSqft} sqft are handled by purchase order.`,
+    belowMin: `Regular sheets need ${retail.minSqft} sqft minimum per order (samples can be ordered on their own).`,
+    samplesOver: `Up to ${retail.sampleMaxPerOrder} samples per order — send a purchase order request for more.`,
+    overMax: `Orders above ${retail.maxSqft} sqft of regular sheets are handled by purchase order.`,
     backToCart: "Back to cart",
     toPo: "Send a purchase order request",
     details: "Shipping details",
@@ -61,8 +62,9 @@ const copy = {
     title: "개인 주문",
     empty: "장바구니가 비어 있습니다.",
     browse: "쇼핑몰 둘러보기",
-    belowMin: `최소 주문량은 ${retail.minSqft} sqft입니다. 장바구니에 원단을 더 담아 주세요.`,
-    overMax: `${retail.maxSqft} sqft 초과 주문은 발주서로 진행합니다.`,
+    belowMin: `정규원단은 주문당 최소 ${retail.minSqft} sqft입니다 (샘플은 단독 주문 가능).`,
+    samplesOver: `샘플은 주문당 최대 ${retail.sampleMaxPerOrder}장입니다. 더 필요하면 발주희망서를 보내 주세요.`,
+    overMax: `정규원단 ${retail.maxSqft} sqft 초과 주문은 발주서로 진행합니다.`,
     backToCart: "장바구니로 돌아가기",
     toPo: "발주희망서 보내기",
     details: "배송 정보",
@@ -128,7 +130,7 @@ const Summary = ({ c, rows, orderRef, totals }: { c: Copy; rows: CartRow[]; orde
       {rows.map((r) => (
         <li key={r.sku} className="flex justify-between gap-4">
           <span>
-            {r.product.name} <span className="text-mc-mute">· {r.sku} · {r.sqft} sqft</span>
+            {r.product.name} <span className="text-mc-mute">· {r.sku} · {sizeDims(r.sizeInfo)} × {r.qty}</span>
           </span>
           <span>{formatUSD(r.lineTotalUSD)}</span>
         </li>
@@ -203,7 +205,7 @@ const PayPalButtons = ({
 const Checkout = () => {
   const c = useCopy(copy);
   const { lang } = useLang();
-  const { rows, totalSqft, itemTotalUSD, clear } = useCart();
+  const { rows, regularSqft, sampleCount, itemTotalUSD, clear } = useCart();
   const [orderRef] = useState(() => makeRef("MYC"));
   const [buyer, setBuyer] = useState<Buyer>(loadBuyer);
   const [agreed, setAgreed] = useState(false);
@@ -219,7 +221,7 @@ const Checkout = () => {
   useEffect(() => saveBuyer(buyer), [buyer]);
 
   const totals = orderTotals(itemTotalUSD);
-  const route = routeFor(totalSqft, buyer.country || null);
+  const route = routeFor({ regularSqft, sampleCount }, buyer.country || null);
   const ready = buyerComplete(buyer) && agreed;
 
   const onPaid = useCallback(
@@ -270,18 +272,18 @@ const Checkout = () => {
     );
   }
 
-  if (route === "below-min" || route === "po-volume") {
+  if (route === "below-min" || route === "po-volume" || route === "samples-over") {
     return (
       <Container className="pb-32 pt-36 md:pt-44">
         <Eyebrow>{c.eyebrow}</Eyebrow>
         <Display as="h1" className="mt-5 max-w-3xl text-4xl md:text-5xl">
-          {route === "below-min" ? c.belowMin : c.overMax}
+          {route === "below-min" ? c.belowMin : route === "samples-over" ? c.samplesOver : c.overMax}
         </Display>
         <div className="mt-10 flex flex-wrap gap-3">
           <PillButton to="/shop/cart" variant="outline">
             {c.backToCart}
           </PillButton>
-          {route === "po-volume" && <PillButton to="/shop/po">{c.toPo}</PillButton>}
+          {route !== "below-min" && <PillButton to="/shop/po">{c.toPo}</PillButton>}
         </div>
       </Container>
     );
@@ -290,8 +292,11 @@ const Checkout = () => {
   const requestInvoice = () => {
     const body = [
       `ORDER ${orderRef} — PayPal invoice requested`,
-      ...rows.map((r) => `- ${r.sku} ${r.product.name} | ${r.sqft} sqft × ${formatUSD(r.unitPriceUSD)} = ${formatUSD(r.lineTotalUSD)}`),
-      `Total: ${formatUSD(totals.total)} (${totalSqft} sqft, shipping ${totals.shipping === 0 ? "included" : formatUSD(totals.shipping)})`,
+      ...rows.map(
+        (r) =>
+          `- ${r.sku} ${r.product.name} | ${r.sizeInfo.label.en} ${sizeDims(r.sizeInfo)} | ${r.qty} pcs × ${formatUSD(r.unitPriceUSD)} = ${formatUSD(r.lineTotalUSD)}`,
+      ),
+      `Total: ${formatUSD(totals.total)} (regular ${regularSqft} sqft, samples ${sampleCount}, shipping ${totals.shipping === 0 ? "included" : formatUSD(totals.shipping)})`,
       "",
       `Name: ${buyer.name}`,
       `Email: ${buyer.email}`,

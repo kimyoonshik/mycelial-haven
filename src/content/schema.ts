@@ -1,0 +1,265 @@
+// 운영 도구(CMS)로 편집하는 콘텐츠(src/content/data/*.json)의 규칙.
+// - 사이트 코드는 아래 타입만 사용한다 (import type → zod 는 공개 번들에 포함되지 않음)
+// - 빌드 시(vite 플러그인)와 CMS 저장 시 validateContent 로 검사해, 잘못된 데이터는 배포·저장되지 않는다.
+
+import { z } from "zod";
+
+const text = z.string().trim().min(1);
+export const LSchema = z.object({ en: text, ko: text });
+
+export const ConditionId = z.enum(["pure", "embossed", "reactive", "finished"]);
+export type ConditionId = "pure" | "embossed" | "reactive" | "finished";
+
+const mediaPath = z
+  .string()
+  .regex(/^\/media\/[\w\-/.]+\.(webp|jpg|jpeg|png)$/i, "이미지 경로는 /media/… 의 webp/jpg/png 파일이어야 합니다");
+
+export const ConditionSchema = z.object({
+  id: ConditionId,
+  title: LSchema,
+  summary: LSchema,
+  priceUSDPerSqft: z.number().positive().max(10000),
+  target: z.number().int().min(0).max(999),
+});
+
+export const SizeSchema = z.object({
+  id: z.string().regex(/^[a-z0-9-]{1,20}$/, "크기 ID는 영문 소문자·숫자·하이픈"),
+  kind: z.enum(["sample", "regular"]),
+  label: LSchema,
+  widthCm: z.number().positive().max(1000),
+  heightCm: z.number().positive().max(1000),
+});
+
+export const CommerceSchema = z.object({
+  currency: z.literal("USD"),
+  conditions: z.array(ConditionSchema).length(4),
+  sizes: z.array(SizeSchema).min(1).max(12),
+  // 개별 단가 예외: "조건ID:크기ID" → 장당 USD
+  priceOverrides: z.record(z.string().regex(/^[a-z]+:[a-z0-9-]+$/), z.number().positive()),
+  retail: z.object({
+    minSqft: z.number().positive(),
+    maxSqft: z.number().positive(),
+    shippingUSD: z.number().min(0),
+    sampleMaxPerOrder: z.number().int().positive(),
+  }),
+  seller: z.object({
+    company: text,
+    brand: text,
+    email: z.string().email(),
+    address: text,
+    businessRegNo: text,
+    phone: text,
+    countryOfOrigin: text,
+    hsCode: text,
+  }),
+});
+
+export const ProductSchema = z.object({
+  sku: z.string().regex(/^[A-Z]{2}-\d{2,3}$/, "SKU 형식: 영문 대문자 2자 + 하이픈 + 숫자 (예: EM-05)"),
+  condition: ConditionId,
+  name: text.max(80),
+  libraryCode: z.string().optional(),
+  image: mediaPath.optional(),
+  description: LSchema,
+  status: z.enum(["available", "coming-soon"]),
+  sizes: z.array(z.string()).min(1).optional(), // 없으면 모든 크기 판매
+});
+
+export const NewsSchema = z.object({
+  id: z.string().regex(/^[a-z0-9-]{1,60}$/, "ID는 영문 소문자·숫자·하이픈"),
+  tag: LSchema,
+  title: LSchema,
+  meta: LSchema,
+  url: z.string().url().optional(),
+});
+
+export const TestItemSchema = z.object({
+  id: z.string().regex(/^[a-z0-9-]{1,40}$/),
+  group: z.enum(["physical", "colour", "comfort"]),
+  name: LSchema,
+  method: text,
+  unit: text,
+  result: z.string().trim().min(1).nullable(),
+  lab: z.string().trim().min(1).nullable(),
+  reportDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable(),
+  reportUrl: z.string().regex(/^(\/media\/reports\/[\w\-.]+\.pdf|https:\/\/.+)$/i).nullable(),
+});
+
+export const SeoSchema = z.object({
+  siteName: text,
+  siteUrl: z.string().url().refine((u) => !u.endsWith("/"), "siteUrl 끝에 / 를 붙이지 마세요"),
+  defaultImage: z.string().startsWith("/"),
+  routes: z.record(z.string().startsWith("/"), z.object({ title: LSchema, description: LSchema })),
+  noindex: z.array(z.string().startsWith("/")),
+});
+
+// 사이트 코드용 타입. 프로젝트가 strict 모드가 아니라 z.infer 가 모든 필드를 선택 항목으로 만들기 때문에
+// 명시적으로 선언하고, 아래 _check 로 스키마와 어긋나지 않는지 컴파일 시 대조한다.
+type Lx = { en: string; ko: string };
+export interface Condition {
+  id: ConditionId;
+  title: Lx;
+  summary: Lx;
+  priceUSDPerSqft: number;
+  target: number;
+}
+export interface Size {
+  id: string;
+  kind: "sample" | "regular";
+  label: Lx;
+  widthCm: number;
+  heightCm: number;
+}
+export interface Commerce {
+  currency: "USD";
+  conditions: Condition[];
+  sizes: Size[];
+  priceOverrides: Record<string, number>;
+  retail: { minSqft: number; maxSqft: number; shippingUSD: number; sampleMaxPerOrder: number };
+  seller: {
+    company: string;
+    brand: string;
+    email: string;
+    address: string;
+    businessRegNo: string;
+    phone: string;
+    countryOfOrigin: string;
+    hsCode: string;
+  };
+}
+export interface ProductData {
+  sku: string;
+  condition: ConditionId;
+  name: string;
+  libraryCode?: string;
+  image?: string;
+  description: Lx;
+  status: "available" | "coming-soon";
+  sizes?: string[];
+}
+export interface NewsItem {
+  id: string;
+  tag: Lx;
+  title: Lx;
+  meta: Lx;
+  url?: string;
+}
+export interface TestItemData {
+  id: string;
+  group: "physical" | "colour" | "comfort";
+  name: Lx;
+  method: string;
+  unit: string;
+  result: string | null;
+  lab: string | null;
+  reportDate: string | null;
+  reportUrl: string | null;
+}
+export interface Seo {
+  siteName: string;
+  siteUrl: string;
+  defaultImage: string;
+  routes: Record<string, { title: Lx; description: Lx }>;
+  noindex: string[];
+}
+
+// 스키마 ↔ 타입 대조 (필드 이름이 어긋나면 컴파일 오류)
+type SameKeys<A, B> = keyof A extends keyof B ? (keyof B extends keyof A ? true : never) : never;
+export const _check: [
+  SameKeys<z.infer<typeof CommerceSchema>, Commerce>,
+  SameKeys<z.infer<typeof ProductSchema>, ProductData>,
+  SameKeys<z.infer<typeof NewsSchema>, NewsItem>,
+  SameKeys<z.infer<typeof TestItemSchema>, TestItemData>,
+  SameKeys<z.infer<typeof SeoSchema>, Seo>,
+  SameKeys<z.infer<typeof SizeSchema>, Size>,
+  SameKeys<z.infer<typeof ConditionSchema>, Condition>,
+] = [true, true, true, true, true, true, true];
+
+export const collections = {
+  products: z.array(ProductSchema),
+  commerce: CommerceSchema,
+  news: z.array(NewsSchema),
+  "test-reports": z.array(TestItemSchema),
+  seo: SeoSchema,
+} as const;
+export type CollectionName = keyof typeof collections;
+
+export interface ContentSet {
+  products: unknown;
+  commerce: unknown;
+  news: unknown;
+  "test-reports": unknown;
+  seo: unknown;
+}
+
+/**
+ * 전체 콘텐츠 검사. 형식 검사 + 서로 참조하는 값(크기·조건·이미지 파일) 검사.
+ * mediaExists: /media/… 경로의 파일 존재 여부 (빌드·CMS 서버에서 디스크를 확인)
+ */
+export const validateContent = (data: ContentSet, mediaExists: (path: string) => boolean): string[] => {
+  const errors: string[] = [];
+  const parsed: Partial<Record<CollectionName, unknown>> = {};
+  const report = (name: string, issues: z.ZodIssue[], prefix: (string | number)[] = []) =>
+    issues.forEach((i) => errors.push(`${name}.json › ${[...prefix, ...i.path].join(".") || "(root)"}: ${i.message}`));
+  // 목록형 데이터는 항목별로 검사해, 일부가 잘못돼도 나머지로 참조 검사를 계속한다 (오류를 한 번에 모두 보여 주기 위해)
+  const items: Partial<Record<CollectionName, z.ZodTypeAny>> = {
+    products: ProductSchema,
+    news: NewsSchema,
+    "test-reports": TestItemSchema,
+  };
+  (Object.keys(collections) as CollectionName[]).forEach((name) => {
+    const item = items[name];
+    const raw = data[name];
+    if (item && Array.isArray(raw)) {
+      parsed[name] = raw.flatMap((x, idx) => {
+        const r = item.safeParse(x);
+        if (r.success) return [r.data];
+        report(name, r.error.issues, [idx]);
+        return [];
+      });
+      return;
+    }
+    const r = collections[name].safeParse(raw);
+    if (r.success) parsed[name] = r.data;
+    else report(name, r.error.issues);
+  });
+
+  const commerce = parsed.commerce as Commerce | undefined;
+  const products = parsed.products as ProductData[] | undefined;
+  const news = parsed.news as NewsItem[] | undefined;
+  const tests = parsed["test-reports"] as TestItemData[] | undefined;
+
+  const dupes = (ids: string[]) => ids.filter((id, i) => ids.indexOf(id) !== i);
+  if (commerce) {
+    const ids = commerce.conditions.map((c) => c.id);
+    if (new Set(ids).size !== 4) errors.push("commerce.json › conditions: 순수·엠보·반응성·피니시 4개 조건이 한 번씩 있어야 합니다");
+    dupes(commerce.sizes.map((s) => s.id)).forEach((d) => errors.push(`commerce.json › sizes: 크기 ID 중복 "${d}"`));
+    if (!commerce.sizes.some((s) => s.kind === "regular")) errors.push("commerce.json › sizes: 정규원단 크기가 최소 1개 필요합니다");
+    if (commerce.retail.minSqft >= commerce.retail.maxSqft)
+      errors.push("commerce.json › retail: 최소 물량은 개인 주문 상한보다 작아야 합니다");
+    Object.keys(commerce.priceOverrides).forEach((k) => {
+      const [c, s] = k.split(":");
+      if (!ids.includes(c as ConditionId) || !commerce.sizes.some((x) => x.id === s))
+        errors.push(`commerce.json › priceOverrides: "${k}" 는 없는 조건 또는 크기입니다`);
+    });
+  }
+  if (products) {
+    dupes(products.map((p) => p.sku)).forEach((d) => errors.push(`products.json: SKU 중복 "${d}"`));
+    products.forEach((p) => {
+      if (p.image && !mediaExists(p.image)) errors.push(`products.json › ${p.sku}: 이미지 파일 없음 ${p.image}`);
+      if (p.status === "available" && !p.image) errors.push(`products.json › ${p.sku}: 판매 중 상품에는 이미지가 필요합니다`);
+      p.sizes?.forEach((s) => {
+        if (commerce && !commerce.sizes.some((x) => x.id === s)) errors.push(`products.json › ${p.sku}: 없는 크기 "${s}"`);
+      });
+    });
+  }
+  if (news) dupes(news.map((n) => n.id)).forEach((d) => errors.push(`news.json: ID 중복 "${d}"`));
+  if (tests) {
+    dupes(tests.map((t) => t.id)).forEach((d) => errors.push(`test-reports.json: ID 중복 "${d}"`));
+    tests.forEach((t) => {
+      if (t.reportUrl?.startsWith("/media/") && !mediaExists(t.reportUrl))
+        errors.push(`test-reports.json › ${t.id}: 성적서 파일 없음 ${t.reportUrl}`);
+    });
+  }
+  return errors;
+};

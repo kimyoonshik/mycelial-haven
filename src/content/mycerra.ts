@@ -4,22 +4,25 @@
 // 확정 시 이 파일만 수정하면 전 페이지에 반영된다 (원가 모델·IR 자료와 수치 일치 확인 필수).
 
 import type { L } from "@/i18n/LanguageProvider";
-import finishMocha from "@/assets/mycerra/finish-mocha-grain-02.webp";
-import finishMarble06 from "@/assets/mycerra/finish-marble-caviar-06.webp";
-import finishCroc from "@/assets/mycerra/finish-crocodile-03.webp";
-import finishMarble08 from "@/assets/mycerra/finish-marble-caviar-08.webp";
-import finishPebble from "@/assets/mycerra/finish-hypha-pebble-03.webp";
-import finishPure from "@/assets/mycerra/finish-pure.webp";
-import colorNavy from "@/assets/mycerra/color-midnight-navy-02.webp";
-import colorBurgundy from "@/assets/mycerra/color-burgundy-05.webp";
-import colorScarlet from "@/assets/mycerra/color-scarlet-red-07.webp";
-import colorBone from "@/assets/mycerra/color-bone-white-01.webp";
-import colorIce from "@/assets/mycerra/color-ice-blue-06.webp";
-import colorMarigold from "@/assets/mycerra/color-marigold-08.webp";
+import newsData from "./data/news.json";
 import productSatchel from "@/assets/mycerra/product-flap-satchel.webp";
 import productMessenger from "@/assets/mycerra/product-urban-messenger.webp";
 import productWallet from "@/assets/mycerra/product-truffle-wallet.webp";
 import productTote from "@/assets/mycerra/product-ivory-marble-tote.webp";
+
+// 소재 사진은 운영 도구(CMS)로 교체할 수 있도록 public/media 에 둔다
+const finishMocha = "/media/materials/finish-mocha-grain-02.webp";
+const finishMarble06 = "/media/materials/finish-marble-caviar-06.webp";
+const finishCroc = "/media/materials/finish-crocodile-03.webp";
+const finishMarble08 = "/media/materials/finish-marble-caviar-08.webp";
+const finishPebble = "/media/materials/finish-hypha-pebble-03.webp";
+const finishPure = "/media/materials/finish-pure.webp";
+const colorNavy = "/media/materials/color-midnight-navy-02.webp";
+const colorBurgundy = "/media/materials/color-burgundy-05.webp";
+const colorScarlet = "/media/materials/color-scarlet-red-07.webp";
+const colorBone = "/media/materials/color-bone-white-01.webp";
+const colorIce = "/media/materials/color-ice-blue-06.webp";
+const colorMarigold = "/media/materials/color-marigold-08.webp";
 
 export const company = {
   name: "SAVE EARTH Inc.",
@@ -277,23 +280,8 @@ export const collections: { title: string; body: L; image: string }[] = [
   },
 ];
 
-export const news: { tag: L; title: L; meta: L }[] = [
-  {
-    tag: { en: "Exhibition", ko: "전시" },
-    title: { en: "Mycerra at LINEAPELLE Milan", ko: "LINEAPELLE 밀라노 참가" },
-    meta: { en: "Fiera Milano Rho · February 2026", ko: "피에라 밀라노 로 · 2026년 2월" },
-  },
-  {
-    tag: { en: "Broadcast", ko: "방송" },
-    title: { en: "EBS Extreme Jobs", ko: "EBS 극한직업" },
-    meta: { en: "A story of biomaterial innovation through mycelium", ko: "균사로 만드는 바이오소재 혁신 이야기" },
-  },
-  {
-    tag: { en: "Broadcast", ko: "방송" },
-    title: { en: "National Assembly Broadcasting", ko: "국회방송" },
-    meta: { en: "Exploring the science and craftsmanship behind Mycerra", ko: "Mycerra에 담긴 과학과 장인정신" },
-  },
-];
+// 소식 — 운영 도구(CMS)로 편집하는 src/content/data/news.json
+export const news: { id: string; tag: L; title: L; meta: L }[] = newsData;
 
 export const futurePlatform: { title: L; body: L }[] = [
   {

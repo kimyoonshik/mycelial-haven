@@ -1,0 +1,116 @@
+{
+  "currency": "USD",
+  "conditions": [
+    {
+      "id": "pure",
+      "title": {
+        "en": "Pure Mycerra",
+        "ko": "순수원단"
+      },
+      "summary": {
+        "en": "The material as grown and stabilized — unembossed, undyed pure mycelium mat.",
+        "ko": "배양·안정화만 거친 그대로의 소재 — 무엠보, 무염색 순수 균사 매트."
+      },
+      "priceUSDPerSqft": 30,
+      "target": 1
+    },
+    {
+      "id": "embossed",
+      "title": {
+        "en": "Pure + Embossed",
+        "ko": "순수원단 + 엠보 적용"
+      },
+      "summary": {
+        "en": "Pure mycelium mat with embossed surface grains, undyed.",
+        "ko": "순수 균사 매트에 표면 엠보 그레인을 적용한 무염색 원단."
+      },
+      "priceUSDPerSqft": 30,
+      "target": 20
+    },
+    {
+      "id": "reactive",
+      "title": {
+        "en": "Reactive-dyed",
+        "ko": "반응성염료 적용"
+      },
+      "summary": {
+        "en": "Coloured with reactive dyes only — no top finish, keeping the mat's natural handfeel.",
+        "ko": "반응성염료로만 염색 — 표면 마감 없이 매트 본연의 촉감을 유지."
+      },
+      "priceUSDPerSqft": 30,
+      "target": 20
+    },
+    {
+      "id": "finished",
+      "title": {
+        "en": "Fully finished",
+        "ko": "최종 피니시 적용"
+      },
+      "summary": {
+        "en": "Dyed and top-finished, ready for cutting and product making.",
+        "ko": "염색과 표면 마감까지 완료되어 재단·제품 생산에 바로 쓰는 원단."
+      },
+      "priceUSDPerSqft": 30,
+      "target": 20
+    }
+  ],
+  "sizes": [
+    {
+      "id": "sample",
+      "kind": "sample",
+      "label": {
+        "en": "Sample",
+        "ko": "샘플"
+      },
+      "widthCm": 30,
+      "heightCm": 30
+    },
+    {
+      "id": "r1",
+      "kind": "regular",
+      "label": {
+        "en": "Regular 1",
+        "ko": "정규원단 1"
+      },
+      "widthCm": 150,
+      "heightCm": 100
+    },
+    {
+      "id": "r2",
+      "kind": "regular",
+      "label": {
+        "en": "Regular 2",
+        "ko": "정규원단 2"
+      },
+      "widthCm": 100,
+      "heightCm": 100
+    },
+    {
+      "id": "r3",
+      "kind": "regular",
+      "label": {
+        "en": "Regular 3",
+        "ko": "정규원단 3"
+      },
+      "widthCm": 90,
+      "heightCm": 60
+    }
+  ],
+  "priceOverrides": {},
+  "retail": {
+    "minSqft": 20,
+    "maxSqft": 100,
+    "shippingUSD": 0,
+    "sampleMaxPerOrder": 10
+  },
+  "seller": {
+    "company": "SAVE EARTH Inc.",
+    "brand": "Mycerra™",
+    "email": "contact@saveearth.kr",
+    "address": "[Company address, Republic of Korea]",
+    "businessRegNo": "[Business registration no.]",
+    "phone": "[Phone]",
+    "countryOfOrigin": "Republic of Korea",
+    "hsCode": "[HS code — to be confirmed]"
+  }
+}

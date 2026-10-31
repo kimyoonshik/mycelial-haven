@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Printer, Send, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SqftStepper } from "@/components/shop/SqftStepper";
+import { QuantityStepper } from "@/components/shop/QuantityStepper";
 import { Container, Display, Eyebrow } from "@/components/site/primitives";
-import { productBySku, products, unitPriceOf } from "@/content/shop";
+import { products } from "@/content/shop";
 import {
   DOMESTIC_COUNTRY,
   countries,
@@ -13,11 +13,13 @@ import {
   makeRef,
   paymentMethods,
   paymentTerms,
-  retail,
   round2,
   seller,
+
+  sizeDims,
+  sizes,
 } from "@/content/commerce";
-import { useCart } from "@/shop/CartProvider";
+import { toRows, useCart, volumeOf, type CartLine } from "@/shop/CartProvider";
 import { loadBuyer } from "@/shop/buyerStore";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
 
@@ -54,7 +56,9 @@ const copy = {
     sent: "Your email app should now be open with the purchase order. You can attach the PDF as well. We reply with an approved invoice within 2 business days.",
     domesticNote:
       "Domestic orders (Korea): prices exclude 10% VAT. We issue a tax invoice and you pay by KRW bank transfer.",
-    listNote: `List price ${formatUSD(retail.unitPriceUSD)} / sqft is indicative. Final price, quantity and terms are confirmed in the approved invoice.`,
+    listNote: "List prices are indicative. Final price, quantity and terms are confirmed in the approved invoice.",
+    size: "Size",
+    pcs: "pcs",
   },
   ko: {
     eyebrow: "발주희망서",
@@ -87,14 +91,11 @@ const copy = {
     missing: "필수 항목(*)을 입력하고 원단을 하나 이상 추가해 주세요.",
     sent: "메일 앱이 열렸습니다. PDF를 첨부하셔도 됩니다. 영업일 2일 이내에 승인 인보이스로 회신해 드립니다.",
     domesticNote: "국내 거래: 가격은 부가세 10% 별도이며, 세금계산서를 발행하고 원화 계좌이체로 결제합니다.",
-    listNote: `정가 sqft당 ${formatUSD(retail.unitPriceUSD)}는 참고 가격입니다. 최종 가격·물량·조건은 승인 인보이스에서 확정됩니다.`,
+    listNote: "정가는 참고 가격입니다. 최종 가격·물량·조건은 승인 인보이스에서 확정됩니다.",
+    size: "크기",
+    pcs: "장",
   },
 };
-
-interface PoLine {
-  sku: string;
-  sqft: number;
-}
 
 const inputCls =
   "w-full border-0 border-b border-mc-line bg-transparent px-0 py-2.5 text-[15px] outline-none transition-colors focus:border-mc-ink";
@@ -107,6 +108,7 @@ const Field = ({ label, children, className }: { label: string; children: ReactN
 );
 
 const available = products.filter((p) => p.status === "available");
+
 const today = () => new Date().toISOString().slice(0, 10);
 
 const PurchaseOrder = () => {
@@ -135,10 +137,9 @@ const PurchaseOrder = () => {
     notes: "",
   });
   const [sameAsBilling, setSameAsBilling] = useState(true);
-  const [lines, setLines] = useState<PoLine[]>(() =>
-    rows.map((r) => ({ sku: r.sku, sqft: r.sqft })),
-  );
+  const [lines, setLines] = useState<CartLine[]>(() => rows.map(({ sku, size, qty }) => ({ sku, size, qty })));
   const [addSku, setAddSku] = useState("");
+  const [addSize, setAddSize] = useState(sizes.find((s) => s.kind === "regular")?.id ?? sizes[0].id);
   const [error, setError] = useState(false);
   const [sent, setSent] = useState(false);
 
@@ -151,18 +152,10 @@ const PurchaseOrder = () => {
   const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const docRows = useMemo(
-    () =>
-      lines.flatMap((l) => {
-        const p = productBySku(l.sku);
-        if (!p) return [];
-        const unit = unitPriceOf(p);
-        return [{ ...l, product: p, unit, amount: round2(unit * l.sqft) }];
-      }),
-    [lines],
-  );
-  const totalSqft = docRows.reduce((n, r) => n + r.sqft, 0);
-  const subtotal = round2(docRows.reduce((n, r) => n + r.amount, 0));
+  const docRows = useMemo(() => toRows(lines), [lines]);
+  const { regularSqft, sampleCount } = volumeOf(docRows);
+  const subtotal = round2(docRows.reduce((n, r) => n + r.lineTotalUSD, 0));
+  const same = (l: CartLine, sku: string, size: string) => l.sku === sku && l.size === size;
   const shipTo = sameAsBilling ? form.billing : form.shipping;
   const countryName = countries.find((x) => x.code === form.country)?.name ?? form.country;
   const label = (list: { code: string; label: { en: string; ko: string } }[], code: string) =>
@@ -190,9 +183,13 @@ const PurchaseOrder = () => {
       `Shipping address: ${shipTo || form.billing}`,
       "",
       "MATERIALS",
-      ...docRows.map((r, i) => `${i + 1}. ${r.sku} ${r.product.name} | ${r.sqft} sqft | list ${formatUSD(r.unit)}/sqft | ${formatUSD(r.amount)}`),
-      `Total: ${totalSqft} sqft | list subtotal ${formatUSD(subtotal)}`,
-      `Target unit price: ${form.targetPrice ? `USD ${form.targetPrice}/sqft` : "-"}`,
+      // 형식은 내부 인보이스 작성기의 가져오기(parsePoRequest)와 맞춰야 한다
+      ...docRows.map(
+        (r, i) =>
+          `${i + 1}. ${r.sku} ${r.product.name} | ${r.size} ${sizeDims(r.sizeInfo)} | ${r.qty} pcs | ${r.areaSqft.toFixed(2)} sqft | list ${formatUSD(r.unitPriceUSD)}/pc | ${formatUSD(r.lineTotalUSD)}`,
+      ),
+      `Total: regular ${regularSqft.toFixed(2)} sqft, samples ${sampleCount} pcs | list subtotal ${formatUSD(subtotal)}`,
+      `Target price: ${form.targetPrice ? `USD ${form.targetPrice}/sqft` : "-"}`,
       "",
       `Requested delivery: ${form.delivery || "-"}`,
       `Incoterms: ${form.incoterm}`,
@@ -202,7 +199,7 @@ const PurchaseOrder = () => {
       "",
       `Notes: ${form.notes || "-"}`,
     ].join("\n");
-    const subject = `[Mycerra PO Request] ${ref} — ${form.company} (${totalSqft} sqft)`;
+    const subject = `[Mycerra PO Request] ${ref} — ${form.company} (${regularSqft.toFixed(0)} sqft)`;
     window.location.href = `mailto:${seller.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSent(true);
   };
@@ -227,7 +224,7 @@ const PurchaseOrder = () => {
 
       <div className="mt-12 grid gap-12 xl:grid-cols-12 print:mt-0 print:block">
         {/* 입력 양식 */}
-        <form className="space-y-10 xl:col-span-5 print:hidden" onSubmit={(e) => e.preventDefault()}>
+        <form className="min-w-0 space-y-10 xl:col-span-5 print:hidden" onSubmit={(e) => e.preventDefault()}>
           <div className="grid gap-6 sm:grid-cols-2">
             <Field label={c.company}>
               <input value={form.company} onChange={set("company")} className={inputCls} autoComplete="organization" />
@@ -277,21 +274,25 @@ const PurchaseOrder = () => {
             <legend className="text-[11px] uppercase tracking-[0.16em] text-mc-mute">{c.lines}</legend>
             <ul className="mt-3 divide-y divide-mc-line border-y border-mc-line">
               {docRows.map((r) => (
-                <li key={r.sku} className="flex flex-wrap items-center justify-between gap-3 py-3">
+                <li key={`${r.sku}-${r.size}`} className="flex flex-wrap items-center justify-between gap-3 py-3">
                   <span className="text-sm">
                     {r.product.name} <span className="text-mc-mute">· {r.sku}</span>
+                    <span className="block text-xs text-mc-mute">
+                      {t(r.sizeInfo.label)} {sizeDims(r.sizeInfo)} · {r.areaSqft.toFixed(2)} sqft
+                    </span>
                   </span>
                   <span className="flex items-center gap-2">
-                    <SqftStepper
+                    <QuantityStepper
                       size="sm"
-                      value={r.sqft}
-                      label={`${c.qty} ${r.sku}`}
-                      onChange={(v) => setLines((ls) => ls.map((l) => (l.sku === r.sku ? { ...l, sqft: v } : l)))}
+                      unit={c.pcs}
+                      value={r.qty}
+                      label={`${c.qty} ${r.sku} ${r.size}`}
+                      onChange={(v) => setLines((ls) => ls.map((l) => (same(l, r.sku, r.size) ? { ...l, qty: v } : l)))}
                     />
                     <button
                       type="button"
-                      aria-label={`Remove ${r.sku}`}
-                      onClick={() => setLines((ls) => ls.filter((l) => l.sku !== r.sku))}
+                      aria-label={`Remove ${r.sku} ${r.size}`}
+                      onClick={() => setLines((ls) => ls.filter((l) => !same(l, r.sku, r.size)))}
                       className="p-1.5 text-mc-mute hover:text-mc-ink"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -300,25 +301,35 @@ const PurchaseOrder = () => {
                 </li>
               ))}
             </ul>
-            <div className="mt-3 flex gap-2">
-              <select value={addSku} onChange={(e) => setAddSku(e.target.value)} className={cn(inputCls, "flex-1")} aria-label={c.addLine}>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <select value={addSku} onChange={(e) => setAddSku(e.target.value)} className={cn(inputCls, "min-w-0 flex-1 basis-48")} aria-label={c.addLine}>
                 <option value="">{c.addLine}…</option>
-                {available
-                  .filter((p) => !lines.some((l) => l.sku === p.sku))
-                  .map((p) => (
-                    <option key={p.sku} value={p.sku}>
-                      {p.sku} — {p.name}
-                    </option>
-                  ))}
+                {available.map((p) => (
+                  <option key={p.sku} value={p.sku}>
+                    {p.sku} — {p.name}
+                  </option>
+                ))}
+              </select>
+              <select value={addSize} onChange={(e) => setAddSize(e.target.value)} className={cn(inputCls, "w-40")} aria-label={c.size}>
+                {sizes.map((z) => (
+                  <option key={z.id} value={z.id}>
+                    {t(z.label)} {sizeDims(z)}
+                  </option>
+                ))}
               </select>
               <button
                 type="button"
                 disabled={!addSku}
                 onClick={() => {
-                  setLines((ls) => [...ls, { sku: addSku, sqft: retail.minSqft }]);
+                  setLines((ls) =>
+                    ls.some((l) => same(l, addSku, addSize))
+                      ? ls.map((l) => (same(l, addSku, addSize) ? { ...l, qty: l.qty + 1 } : l))
+                      : [...ls, { sku: addSku, size: addSize, qty: 1 }],
+                  );
                   setAddSku("");
                 }}
                 className="rounded-full border border-mc-ink/30 px-4 text-sm disabled:opacity-40"
+                aria-label={c.addLine}
               >
                 +
               </button>
@@ -394,7 +405,7 @@ const PurchaseOrder = () => {
         {/* 발주서 문서 — 인쇄 시 이 영역만 출력 */}
         <article
           data-testid="po-document"
-          className="border border-mc-line bg-white p-6 text-[13px] leading-relaxed text-mc-ink shadow-sm md:p-10 xl:col-span-7 print:border-0 print:p-0 print:shadow-none"
+          className="min-w-0 border border-mc-line bg-white p-6 text-[13px] leading-relaxed text-mc-ink shadow-sm md:p-10 xl:col-span-7 print:border-0 print:p-0 print:shadow-none"
         >
           <header className="flex items-start justify-between gap-6 border-b border-mc-ink pb-5">
             <div>
@@ -432,49 +443,55 @@ const PurchaseOrder = () => {
             </div>
           </section>
 
-          <table className="mt-5 w-full text-left">
+          <div className="overflow-x-auto print:overflow-visible">
+          <table className="mt-5 w-full min-w-[560px] text-left print:min-w-0">
             <thead>
               <tr className="border-b border-mc-ink text-[10px] uppercase tracking-[0.12em] text-mc-mute">
                 <th className="py-2 pr-2 font-normal">#</th>
                 <th className="py-2 pr-2 font-normal">SKU</th>
                 <th className="py-2 pr-2 font-normal">Description / 품명</th>
-                <th className="py-2 pr-2 text-right font-normal">Qty (sqft)</th>
-                <th className="py-2 pr-2 text-right font-normal">List USD/sqft</th>
+                <th className="py-2 pr-2 font-normal">Size / 크기</th>
+                <th className="py-2 pr-2 text-right font-normal">Qty / 장</th>
+                <th className="py-2 pr-2 text-right font-normal">sqft</th>
+                <th className="py-2 pr-2 text-right font-normal">List USD/pc</th>
                 <th className="py-2 text-right font-normal">Amount USD</th>
               </tr>
             </thead>
             <tbody>
               {docRows.map((r, i) => (
-                <tr key={r.sku} className="border-b border-mc-line">
+                <tr key={`${r.sku}-${r.size}`} className="border-b border-mc-line">
                   <td className="py-2 pr-2">{i + 1}</td>
                   <td className="py-2 pr-2">{r.sku}</td>
-                  <td className="py-2 pr-2">{r.product.name} — pure mycelium mat</td>
-                  <td className="py-2 pr-2 text-right">{r.sqft}</td>
-                  <td className="py-2 pr-2 text-right">{r.unit.toFixed(2)}</td>
-                  <td className="py-2 text-right">{r.amount.toFixed(2)}</td>
+                  <td className="py-2 pr-2">{r.product.name}</td>
+                  <td className="py-2 pr-2">{sizeDims(r.sizeInfo)}</td>
+                  <td className="py-2 pr-2 text-right">{r.qty}</td>
+                  <td className="py-2 pr-2 text-right">{r.areaSqft.toFixed(2)}</td>
+                  <td className="py-2 pr-2 text-right">{r.unitPriceUSD.toFixed(2)}</td>
+                  <td className="py-2 text-right">{r.lineTotalUSD.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot>
               <tr>
-                <td colSpan={3} className="pt-3 font-medium">
-                  Total / 합계
+                <td colSpan={5} className="pt-3 font-medium">
+                  Total / 합계 <span className="font-normal text-mc-mute">(samples / 샘플 {sampleCount})</span>
                 </td>
                 <td className="pt-3 text-right font-medium" data-testid="po-total-sqft">
-                  {totalSqft}
+                  {regularSqft.toFixed(2)}
                 </td>
                 <td />
                 <td className="pt-3 text-right font-medium">{subtotal.toFixed(2)}</td>
               </tr>
               {form.targetPrice && (
                 <tr>
-                  <td colSpan={6} className="pt-1 text-right text-mc-mute">
-                    Target unit price / 희망 단가: USD {form.targetPrice} / sqft
+                  <td colSpan={8} className="pt-1 text-right text-mc-mute">
+                    Target price / 희망 단가: USD {form.targetPrice} / sqft
                   </td>
                 </tr>
               )}
             </tfoot>
           </table>
+          </div>
 
           <dl className="mt-6 grid gap-x-6 gap-y-2 border-t border-mc-line pt-5 sm:grid-cols-2">
             {[

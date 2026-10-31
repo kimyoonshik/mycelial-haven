@@ -1,72 +1,58 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { lazy, Suspense, type ReactNode } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 import { SiteLayout } from "./components/site/SiteLayout";
 import Home from "./pages/site/Home";
-import Materials from "./pages/site/Materials";
-import Technology from "./pages/site/Technology";
-import Impact from "./pages/site/Impact";
-import WorkWithUs from "./pages/site/WorkWithUs";
-import Shop from "./pages/shop/Shop";
-import ProductDetail from "./pages/shop/ProductDetail";
-import Cart from "./pages/shop/Cart";
-import Checkout from "./pages/shop/Checkout";
-import PurchaseOrder from "./pages/shop/PurchaseOrder";
-import { lazy, Suspense } from "react";
 import { LanguageProvider } from "./i18n/LanguageProvider";
-
-// 내부 인보이스 작성기: VITE_ENABLE_ADMIN=true 빌드에서만 포함 (공개 빌드에서는 코드째 제거됨)
-const InvoiceGenerator =
-  import.meta.env.VITE_ENABLE_ADMIN === "true" ? lazy(() => import("./pages/admin/InvoiceGenerator")) : null;
 import { CartProvider } from "./shop/CartProvider";
 
-const queryClient = new QueryClient();
+// 첫 화면(홈)만 즉시 불러오고, 나머지 페이지는 이동할 때 내려받는다
+const Materials = lazy(() => import("./pages/site/Materials"));
+const Technology = lazy(() => import("./pages/site/Technology"));
+const Impact = lazy(() => import("./pages/site/Impact"));
+const WorkWithUs = lazy(() => import("./pages/site/WorkWithUs"));
+const Shop = lazy(() => import("./pages/shop/Shop"));
+const ProductDetail = lazy(() => import("./pages/shop/ProductDetail"));
+const Cart = lazy(() => import("./pages/shop/Cart"));
+const Checkout = lazy(() => import("./pages/shop/Checkout"));
+const PurchaseOrder = lazy(() => import("./pages/shop/PurchaseOrder"));
+const NotFound = lazy(() => import("./pages/site/NotFound"));
+
+// 내부 도구: VITE_ENABLE_ADMIN=true 빌드에서만 포함 (공개 빌드에서는 코드째 제거됨)
+const ADMIN = import.meta.env.VITE_ENABLE_ADMIN === "true";
+const InvoiceGenerator = ADMIN ? lazy(() => import("./pages/admin/InvoiceGenerator")) : null;
+const ContentManager = ADMIN ? lazy(() => import("./pages/admin/ContentManager")) : null;
+// 이전 단일 페이지 버전 — 개발 서버에서만 비교용으로 제공
+const Legacy = import.meta.env.DEV ? lazy(() => import("./pages/Index")) : null;
+
+const Page = ({ children }: { children: ReactNode }) => (
+  <Suspense fallback={<div className="min-h-screen" />}>{children}</Suspense>
+);
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <LanguageProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route element={<SiteLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/mycerra" element={<Materials />} />
-                <Route path="/technology" element={<Technology />} />
-                <Route path="/impact" element={<Impact />} />
-                <Route path="/work-with-us" element={<WorkWithUs />} />
-                <Route path="/shop" element={<Shop />} />
-                <Route path="/shop/p/:sku" element={<ProductDetail />} />
-                <Route path="/shop/cart" element={<Cart />} />
-                <Route path="/shop/checkout" element={<Checkout />} />
-                <Route path="/shop/po" element={<PurchaseOrder />} />
-              </Route>
-              {InvoiceGenerator && (
-                <Route
-                  path="/admin/invoice"
-                  element={
-                    <Suspense fallback={null}>
-                      <InvoiceGenerator />
-                    </Suspense>
-                  }
-                />
-              )}
-              {/* 이전 단일 페이지 버전 — 비교용 */}
-              <Route path="/legacy" element={<Index />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </CartProvider>
-      </LanguageProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <LanguageProvider>
+    <CartProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<SiteLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/mycerra" element={<Page><Materials /></Page>} />
+            <Route path="/technology" element={<Page><Technology /></Page>} />
+            <Route path="/impact" element={<Page><Impact /></Page>} />
+            <Route path="/work-with-us" element={<Page><WorkWithUs /></Page>} />
+            <Route path="/shop" element={<Page><Shop /></Page>} />
+            <Route path="/shop/p/:sku" element={<Page><ProductDetail /></Page>} />
+            <Route path="/shop/cart" element={<Page><Cart /></Page>} />
+            <Route path="/shop/checkout" element={<Page><Checkout /></Page>} />
+            <Route path="/shop/po" element={<Page><PurchaseOrder /></Page>} />
+            <Route path="*" element={<Page><NotFound /></Page>} />
+          </Route>
+          {InvoiceGenerator && <Route path="/admin/invoice" element={<Page><InvoiceGenerator /></Page>} />}
+          {ContentManager && <Route path="/admin/content" element={<Page><ContentManager /></Page>} />}
+          {Legacy && <Route path="/legacy" element={<Page><Legacy /></Page>} />}
+        </Routes>
+      </BrowserRouter>
+    </CartProvider>
+  </LanguageProvider>
 );
 
 export default App;

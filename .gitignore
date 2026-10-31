@@ -28,3 +28,6 @@ clones
 
 # Admin (internal invoice tool) build output
 dist-admin
+
+# 운영 도구(CMS) 저장 전 백업
+.cms-backups

@@ -1,23 +1,23 @@
-// 쇼핑몰 거래 조건 단일 소스. 가격·물량 기준을 바꿀 때는 이 파일만 수정한다.
+// 쇼핑몰 거래 조건.
+// 가격·크기·가공 조건·물량 기준은 src/content/data/commerce.json (운영 도구 CMS로 편집)에서 읽는다.
 // 원가 모델·IR 자료의 단가와 일치하는지 확인 후 반영할 것.
 //
+// 판매 단위: 원단 장(piece). 장당 가격 = 면적(sqft) × 가공 조건별 sqft 단가 (priceOverrides 로 개별 지정 가능)
 // 주문 경로
-//   개인 주문(Retail):   최소 20 sqft ~ 개인 주문 상한, sqft당 USD 30, PayPal 즉시 결제
-//   발주(PO Request):    개인 주문 상한 초과, 또는 국내(한국) 구매자, 또는 구매자가 기업 거래를 원할 때
-//                        → 발주희망서 접수 → 가격·물량·거래조건 승인 인보이스 발송 → 결제 → 원단 발송
+//   개인 주문(Retail):  정규원단 합계 최소~상한 sqft, 또는 샘플만 주문 → PayPal 즉시 결제
+//   발주(PO Request):   정규원단 합계가 상한 초과, 또는 국내(한국) 구매자, 또는 기업 거래 조건 요청
+//                       → 발주희망서 → 승인 인보이스 → 결제 → 원단 발송
 
 import type { L } from "@/i18n/LanguageProvider";
+import type { Commerce, ConditionId, Size } from "./schema";
+import commerceData from "./data/commerce.json";
 
-export const CURRENCY = "USD";
-
-export const retail = {
-  unitPriceUSD: 30, // sqft당 단가
-  minSqft: 20, // 개인 주문 최소 물량 (주문 합계 기준)
-  // TODO(확정 필요): 개인 주문으로 받을 최대 물량. 초과 시 발주서 경로로 전환된다.
-  maxSqft: 100,
-  // TODO(확정 필요): 개인 주문 배송비. 0이면 "단가에 포함"으로 표시된다.
-  shippingUSD: 0,
-};
+export const commerce = commerceData as Commerce;
+export const CURRENCY = commerce.currency;
+export const retail = commerce.retail;
+export const seller = commerce.seller;
+export const sizes: Size[] = commerce.sizes;
+export const conditions = commerce.conditions;
 
 // 한국 PayPal 계정끼리는 결제가 불가 (PayPal Korea 정책) → 국내 구매자는 발주·계좌이체 경로
 export const DOMESTIC_COUNTRY = "KR";
@@ -26,17 +26,26 @@ export const DOMESTIC_COUNTRY = "KR";
 // 비어 있으면 결제 버튼 대신 "PayPal 인보이스 요청"으로 동작한다.
 export const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID ?? "";
 
-export const seller = {
-  company: "SAVE EARTH Inc.",
-  brand: "Mycerra™",
-  email: "contact@saveearth.kr",
-  // TODO(입력 필요): 인보이스에 인쇄되는 판매자 정보
-  address: "[Company address, Republic of Korea]",
-  businessRegNo: "[Business registration no.]",
-  phone: "[Phone]",
-  countryOfOrigin: "Republic of Korea",
-  // TODO(관세사 확인): 균사 매트의 HS 코드
-  hsCode: "[HS code — to be confirmed]",
+// ---------- 크기·가격 ----------
+
+export const SQFT_PER_M2 = 10.7639104;
+
+export const sizeById = (id: string) => sizes.find((s) => s.id === id);
+
+/** 원단 1장의 면적 (sqft, 소수 2자리) */
+export const areaSqft = (s: Size) => round2(((s.widthCm * s.heightCm) / 10000) * SQFT_PER_M2);
+
+/** 크기 표기: "150 × 100 cm" */
+export const sizeDims = (s: Size) => `${s.widthCm} × ${s.heightCm} cm`;
+
+/** 가공 조건 × 크기의 장당 가격 (USD) */
+export const piecePrice = (condition: ConditionId, sizeId: string): number => {
+  const override = commerce.priceOverrides[`${condition}:${sizeId}`];
+  if (override !== undefined) return override;
+  const size = sizeById(sizeId);
+  const cond = conditions.find((c) => c.id === condition);
+  if (!size || !cond) return 0;
+  return round2(areaSqft(size) * cond.priceUSDPerSqft);
 };
 
 export const incoterms: { code: string; label: L }[] = [
@@ -61,19 +70,30 @@ export const paymentMethods: { code: string; label: L }[] = [
 
 // ---------- 계산 ----------
 
-/** 품목 금액 합계(품목별 단가 × sqft의 합)에 배송비를 더한다 */
+/** 품목 금액 합계에 배송비를 더한다 */
 export const orderTotals = (itemTotalUSD: number, shippingUSD = retail.shippingUSD) => {
   const itemTotal = round2(itemTotalUSD);
   return { itemTotal, shipping: shippingUSD, total: round2(itemTotal + shippingUSD) };
 };
 
-export type OrderRoute = "below-min" | "retail" | "po-volume" | "po-domestic";
+export type OrderRoute = "empty" | "below-min" | "samples-over" | "retail" | "po-volume" | "po-domestic";
 
-/** 주문 합계 물량과 구매자 국가로 결제 경로를 결정한다 */
-export const routeFor = (totalSqft: number, country: string | null): OrderRoute => {
-  if (totalSqft < retail.minSqft) return "below-min";
+export interface OrderVolume {
+  regularSqft: number; // 정규원단 면적 합계 (최소·상한 판단 기준)
+  sampleCount: number; // 샘플 장수 (최소 물량 계산에서 제외)
+}
+
+/**
+ * 주문 물량과 구매자 국가로 결제 경로를 결정한다.
+ * - 샘플은 최소 물량 계산에서 제외하며, 샘플만 주문할 때는 장수 상한만 적용한다.
+ * - 정규원단이 있으면 그 면적 합계가 최소 물량 이상이어야 한다.
+ */
+export const routeFor = ({ regularSqft, sampleCount }: OrderVolume, country: string | null): OrderRoute => {
+  if (regularSqft === 0 && sampleCount === 0) return "empty";
+  if (regularSqft > 0 && regularSqft < retail.minSqft) return "below-min";
+  if (sampleCount > retail.sampleMaxPerOrder) return "samples-over";
   if (country === DOMESTIC_COUNTRY) return "po-domestic";
-  if (totalSqft > retail.maxSqft) return "po-volume";
+  if (regularSqft > retail.maxSqft) return "po-volume";
   return "retail";
 };
 

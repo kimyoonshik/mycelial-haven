@@ -1,12 +1,12 @@
 // PayPal JS SDK 로더와 주문 생성 데이터.
 //
 // 현재 단계(1단계): 브라우저에서 Orders v2 주문을 생성·승인한다. PayPal은 이 방식을 시제품용으로 안내하므로,
-// 발송 전에 PayPal 대시보드의 결제 금액이 (sqft × 단가 + 배송비)와 일치하는지 반드시 대조한다 (docs/order-process.md).
+// 발송 전에 PayPal 대시보드의 결제 금액이 (장수 × 장당 가격 + 배송비)와 일치하는지 반드시 대조한다 (docs/order-process.md).
 // 2단계: createOrder / capture 를 서버 함수(Supabase Edge Function 등)로 옮겨 서버에서 금액을 계산하고
 //        결제 완료 웹훅(PAYMENT.CAPTURE.COMPLETED)으로 주문을 기록한다. 이 파일의 buildOrder 를 서버로 옮기면 된다.
 
-import { CURRENCY, orderTotals } from "@/content/commerce";
-import type { CartRow } from "./CartProvider";
+import { CURRENCY, orderTotals, sizeDims } from "@/content/commerce";
+import { volumeOf, type CartRow } from "./CartProvider";
 
 export interface Buyer {
   name: string;
@@ -74,7 +74,7 @@ const money = (n: number) => ({ currency_code: CURRENCY, value: n.toFixed(2) });
 
 /** Orders v2 주문 본문. invoice_id 에 주문번호를 넣어 PayPal 거래와 내부 기록을 연결한다 */
 export const buildOrder = (ref: string, rows: CartRow[], buyer: Buyer) => {
-  const totalSqft = rows.reduce((n, r) => n + r.sqft, 0);
+  const { regularSqft, sampleCount } = volumeOf(rows);
   const t = orderTotals(rows.reduce((n, r) => n + r.lineTotalUSD, 0));
   const hasAddress = buyer.country !== "OTHER";
   return {
@@ -83,13 +83,15 @@ export const buildOrder = (ref: string, rows: CartRow[], buyer: Buyer) => {
       {
         reference_id: ref,
         invoice_id: ref,
-        custom_id: `${totalSqft}sqft`,
-        description: `Mycerra pure mycelium material — ${totalSqft} sqft`,
+        // 출고 대조용 물량 요약: 정규원단 면적 / 샘플 장수
+        custom_id: `${regularSqft}sqft/${sampleCount}smp`,
+        description: `Mycerra pure mycelium material — ${regularSqft} sqft regular, ${sampleCount} samples`.slice(0, 127),
         amount: { ...money(t.total), breakdown: { item_total: money(t.itemTotal), shipping: money(t.shipping) } },
         items: rows.map((r) => ({
-          name: `${r.product.name} (${r.sku})`.slice(0, 127),
-          sku: r.sku,
-          quantity: String(r.sqft),
+          // 예: "Crocodile — Regular 1 150 × 100 cm"
+          name: `${r.product.name} — ${r.sizeInfo.label.en} ${sizeDims(r.sizeInfo)}`.slice(0, 127),
+          sku: `${r.sku}-${r.size}`,
+          quantity: String(r.qty),
           unit_amount: money(r.unitPriceUSD),
           category: "PHYSICAL_GOODS",
         })),

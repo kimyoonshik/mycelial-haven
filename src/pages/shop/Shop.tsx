@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { PriceMatrix } from "@/components/shop/PriceMatrix";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { Container, Display, Eyebrow } from "@/components/site/primitives";
 import { categories, products, type CategoryId } from "@/content/shop";
@@ -11,7 +12,9 @@ const copy = {
     eyebrow: "Mycerra™ shop",
     title: "From the pure mat to finished leather.",
     intro:
-      "Order swatches and full sheets in four ranges. Prices are confirmed with a quote for each order — online payment is coming soon.",
+      "Four processing conditions, each in a 30 × 30 cm sample and three regular sheet sizes. Pay online with PayPal, or send a purchase order request for volume and business terms.",
+    pricingTitle: "Sizes & prices",
+    pricingNote: "Price per piece = area × price per sqft of the processing condition.",
     all: "All",
     summary: (available: number, target: number) => `${available} available now · ${target} planned`,
     hideSoon: "Show available only",
@@ -19,7 +22,10 @@ const copy = {
   ko: {
     eyebrow: "Mycerra™ 쇼핑몰",
     title: "순수원단부터 최종 피니시 원단까지.",
-    intro: "4개 라인의 스와치와 풀시트를 주문할 수 있습니다. 가격은 주문별 견적으로 확정되며, 온라인 결제는 곧 지원됩니다.",
+    intro:
+      "4가지 가공 조건을 30 × 30 cm 샘플과 3가지 정규원단 크기로 판매합니다. PayPal로 바로 결제하거나, 대량·기업 거래는 발주희망서를 보내 주세요.",
+    pricingTitle: "원단 크기와 가격",
+    pricingNote: "장당 가격 = 면적 × 가공 조건별 sqft 단가.",
     all: "전체",
     summary: (available: number, target: number) => `주문 가능 ${available}종 · 총 ${target}종 구성`,
     hideSoon: "주문 가능 품목만 보기",
@@ -65,6 +71,15 @@ const Shop = () => {
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-mc-mute">{c.intro}</p>
         </Container>
       </section>
+
+      {/* 원단 크기 × 가공 조건 가격표 */}
+      <Container className="pb-14">
+        <h2 className="font-mc-serif text-2xl font-light">{c.pricingTitle}</h2>
+        <div className="mt-5">
+          <PriceMatrix />
+        </div>
+        <p className="mt-3 text-xs text-mc-mute">{c.pricingNote}</p>
+      </Container>
 
       {/* 카테고리 탭 */}
       <div className="sticky top-16 z-30 border-y border-mc-line bg-mc-paper/95 backdrop-blur">

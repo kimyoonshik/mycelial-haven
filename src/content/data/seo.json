@@ -1,0 +1,82 @@
+{
+  "siteName": "Mycerra™ | SAVE EARTH Inc.",
+  "siteUrl": "https://www.saveearth.kr",
+  "defaultImage": "/og-image.jpg",
+  "routes": {
+    "/": {
+      "title": {
+        "en": "Mycerra™ — Pure Mycelium Leather Alternative | SAVE EARTH Inc.",
+        "ko": "Mycerra™ — 순수 균사 가죽 대체 소재 | 세이브어스"
+      },
+      "description": {
+        "en": "Mycerra™ is a 100% pure mycelium mat — no backing, no plastic — finished like premium leather. Swatches, sheets and custom development.",
+        "ko": "Mycerra™는 배접·플라스틱 없는 100% 순수 균사 매트로, 프리미엄 가죽처럼 마감됩니다. 스와치·원단·맞춤 개발."
+      }
+    },
+    "/mycerra": {
+      "title": {
+        "en": "Material library — Mycerra™",
+        "ko": "소재 라이브러리 — Mycerra™"
+      },
+      "description": {
+        "en": "One cultivated mat, many expressions: aniline grain, crocodile and caviar embossing, natural and three-times-dyed colours.",
+        "ko": "하나의 배양 매트, 여러 표현: 아닐린 그레인, 크로커다일·캐비어 엠보, 내추럴과 3회 염색 컬러."
+      }
+    },
+    "/technology": {
+      "title": {
+        "en": "Technology & test reports — Mycerra™",
+        "ko": "기술과 시험 성적서 — Mycerra™"
+      },
+      "description": {
+        "en": "How Mycerra™ is cultivated, stabilized and finished, with performance test reports.",
+        "ko": "Mycerra™의 배양·안정화·마감 공정과 성능 시험 성적서."
+      }
+    },
+    "/impact": {
+      "title": {
+        "en": "Impact & evidence — Mycerra™",
+        "ko": "임팩트와 근거 — Mycerra™"
+      },
+      "description": {
+        "en": "−92% carbon, up to 99% less water, 0% plastic, compostable — with the documents behind each claim. EUDR traceability.",
+        "ko": "탄소 −92%, 물 최대 99% 절감, 플라스틱 0%, 퇴비화 — 각 주장의 근거 문서와 EUDR 추적성."
+      }
+    },
+    "/shop": {
+      "title": {
+        "en": "Shop — Mycerra™ pure mycelium material",
+        "ko": "쇼핑몰 — Mycerra™ 순수 균사 원단"
+      },
+      "description": {
+        "en": "Order Mycerra™ samples (30 × 30 cm) and regular sheets: pure, embossed, reactive-dyed and fully finished.",
+        "ko": "Mycerra™ 샘플(30 × 30 cm)과 정규원단 주문: 순수, 엠보, 반응성염료, 최종 피니시."
+      }
+    },
+    "/shop/po": {
+      "title": {
+        "en": "Purchase order request — Mycerra™",
+        "ko": "발주희망서 — Mycerra™"
+      },
+      "description": {
+        "en": "Volume and business orders: send a purchase order request and receive an approved invoice.",
+        "ko": "대량·기업 주문: 발주희망서를 보내면 승인 인보이스로 회신합니다."
+      }
+    },
+    "/work-with-us": {
+      "title": {
+        "en": "Work with us — Mycerra™",
+        "ko": "협업 안내 — Mycerra™"
+      },
+      "description": {
+        "en": "Swatch kits, full sheets and custom development for brands, tanneries and manufacturers.",
+        "ko": "브랜드·제혁·제조사를 위한 스와치 키트, 풀시트, 맞춤 개발."
+      }
+    }
+  },
+  "noindex": [
+    "/shop/cart",
+    "/shop/checkout",
+    "/admin"
+  ]
+}

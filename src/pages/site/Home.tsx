@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/mycerra/color-burgundy-05.webp";
 import processMycelium from "@/assets/mycerra/process-mycelium.webp";
 import processSurface from "@/assets/mycerra/process-surface.webp";
 import finishedCurl from "@/assets/mycerra/impact-curl.webp";
@@ -8,6 +7,7 @@ import { Container, Display, Eyebrow, PillButton, TextLink } from "@/components/
 import { claims, collections, expressions, familyLabel, futurePlatform, news, processSteps } from "@/content/mycerra";
 import { categories } from "@/content/shop";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
+const heroImage = "/media/materials/color-burgundy-05.webp";
 
 const processImages = [processMycelium, processSurface, finishedCurl];
 
