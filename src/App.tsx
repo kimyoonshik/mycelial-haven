@@ -1,5 +1,5 @@
 import { lazy, Suspense, type ReactNode } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
 import { SiteLayout } from "./components/site/SiteLayout";
 import Home from "./pages/site/Home";
 import { LanguageProvider } from "./i18n/LanguageProvider";
@@ -24,6 +24,9 @@ const ContentManager = ADMIN ? lazy(() => import("./pages/admin/ContentManager")
 // 이전 단일 페이지 버전 — 개발 서버에서만 비교용으로 제공
 const Legacy = import.meta.env.DEV ? lazy(() => import("./pages/Index")) : null;
 
+// 주소 경로를 쓸 수 없는 미리보기(예: 공유용 임시 페이지)에서는 VITE_ROUTER=memory 로 빌드한다
+const Router = import.meta.env.VITE_ROUTER === "memory" ? MemoryRouter : BrowserRouter;
+
 const Page = ({ children }: { children: ReactNode }) => (
   <Suspense fallback={<div className="min-h-screen" />}>{children}</Suspense>
 );
@@ -31,7 +34,7 @@ const Page = ({ children }: { children: ReactNode }) => (
 const App = () => (
   <LanguageProvider>
     <CartProvider>
-      <BrowserRouter>
+      <Router>
         <Routes>
           <Route element={<SiteLayout />}>
             <Route path="/" element={<Home />} />
@@ -50,7 +53,7 @@ const App = () => (
           {ContentManager && <Route path="/admin/content" element={<Page><ContentManager /></Page>} />}
           {Legacy && <Route path="/legacy" element={<Page><Legacy /></Page>} />}
         </Routes>
-      </BrowserRouter>
+      </Router>
     </CartProvider>
   </LanguageProvider>
 );

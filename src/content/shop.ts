@@ -6,6 +6,7 @@ import type { L } from "@/i18n/LanguageProvider";
 import type { ConditionId, ProductData, Size } from "./schema";
 import productsData from "./data/products.json";
 import { conditions, piecePrice, retail, sizes } from "./commerce";
+import { media } from "@/lib/media";
 
 export type CategoryId = ConditionId;
 // 쇼핑몰 카테고리 = 가공 조건 (commerce.json conditions)
@@ -21,6 +22,7 @@ export interface Product extends Omit<ProductData, "condition" | "sizes"> {
 
 export const products: Product[] = (productsData as ProductData[]).map(({ condition, sizes: only, ...p }) => ({
   ...p,
+  image: media(p.image),
   category: condition,
   sizes: only ? sizes.filter((s) => only.includes(s.id)) : sizes,
 }));

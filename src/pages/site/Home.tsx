@@ -2,12 +2,13 @@ import { Link } from "react-router-dom";
 import processMycelium from "@/assets/mycerra/process-mycelium.webp";
 import processSurface from "@/assets/mycerra/process-surface.webp";
 import finishedCurl from "@/assets/mycerra/impact-curl.webp";
+import { media } from "@/lib/media";
 import { Reveal } from "@/components/site/Reveal";
 import { Container, Display, Eyebrow, PillButton, TextLink } from "@/components/site/primitives";
 import { claims, collections, expressions, familyLabel, futurePlatform, news, processSteps } from "@/content/mycerra";
 import { categories } from "@/content/shop";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
-const heroImage = "/media/materials/color-burgundy-05.webp";
+const heroImage = media("/media/materials/color-burgundy-05.webp");
 
 const processImages = [processMycelium, processSurface, finishedCurl];
 

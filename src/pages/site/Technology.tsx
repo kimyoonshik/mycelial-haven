@@ -3,12 +3,13 @@ import processMycelium from "@/assets/mycerra/process-mycelium.webp";
 import finishedCurl from "@/assets/mycerra/impact-curl.webp";
 import processSurface from "@/assets/mycerra/process-surface.webp";
 import { cn } from "@/lib/utils";
+import { media } from "@/lib/media";
 import { Reveal } from "@/components/site/Reveal";
 import { TestReports } from "@/components/site/TestReports";
 import { Container, Display, Eyebrow, PillButton } from "@/components/site/primitives";
 import { features, futurePlatform, processSteps } from "@/content/mycerra";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
-const finishPure = "/media/materials/finish-pure.webp";
+const finishPure = media("/media/materials/finish-pure.webp");
 
 const chapterIds = ["structure", "cultivate", "stabilize", "finish", "performance", "test-reports", "platform"] as const;
 

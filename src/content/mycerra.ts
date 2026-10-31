@@ -5,24 +5,25 @@
 
 import type { L } from "@/i18n/LanguageProvider";
 import newsData from "./data/news.json";
+import { media } from "@/lib/media";
 import productSatchel from "@/assets/mycerra/product-flap-satchel.webp";
 import productMessenger from "@/assets/mycerra/product-urban-messenger.webp";
 import productWallet from "@/assets/mycerra/product-truffle-wallet.webp";
 import productTote from "@/assets/mycerra/product-ivory-marble-tote.webp";
 
 // 소재 사진은 운영 도구(CMS)로 교체할 수 있도록 public/media 에 둔다
-const finishMocha = "/media/materials/finish-mocha-grain-02.webp";
-const finishMarble06 = "/media/materials/finish-marble-caviar-06.webp";
-const finishCroc = "/media/materials/finish-crocodile-03.webp";
-const finishMarble08 = "/media/materials/finish-marble-caviar-08.webp";
-const finishPebble = "/media/materials/finish-hypha-pebble-03.webp";
-const finishPure = "/media/materials/finish-pure.webp";
-const colorNavy = "/media/materials/color-midnight-navy-02.webp";
-const colorBurgundy = "/media/materials/color-burgundy-05.webp";
-const colorScarlet = "/media/materials/color-scarlet-red-07.webp";
-const colorBone = "/media/materials/color-bone-white-01.webp";
-const colorIce = "/media/materials/color-ice-blue-06.webp";
-const colorMarigold = "/media/materials/color-marigold-08.webp";
+const finishMocha = media("/media/materials/finish-mocha-grain-02.webp");
+const finishMarble06 = media("/media/materials/finish-marble-caviar-06.webp");
+const finishCroc = media("/media/materials/finish-crocodile-03.webp");
+const finishMarble08 = media("/media/materials/finish-marble-caviar-08.webp");
+const finishPebble = media("/media/materials/finish-hypha-pebble-03.webp");
+const finishPure = media("/media/materials/finish-pure.webp");
+const colorNavy = media("/media/materials/color-midnight-navy-02.webp");
+const colorBurgundy = media("/media/materials/color-burgundy-05.webp");
+const colorScarlet = media("/media/materials/color-scarlet-red-07.webp");
+const colorBone = media("/media/materials/color-bone-white-01.webp");
+const colorIce = media("/media/materials/color-ice-blue-06.webp");
+const colorMarigold = media("/media/materials/color-marigold-08.webp");
 
 export const company = {
   name: "SAVE EARTH Inc.",
