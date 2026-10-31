@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/site/Reveal";
@@ -12,42 +12,14 @@ import {
   type FinishFamily,
 } from "@/content/mycerra";
 import { products } from "@/content/shop";
-import { useCopy, useLang } from "@/i18n/LanguageProvider";
+import { usePageCopy } from "@/content/site";
+import { Sections } from "@/components/site/Sections";
+import { useLang } from "@/i18n/LanguageProvider";
 
 const families: ("All" | FinishFamily)[] = ["All", "Grain", "Embossed", "Natural", "Dyed"];
 
-const copy = {
-  en: {
-    eyebrow: "Mycerra™ material library",
-    title: "One cultivated mat. Many expressions.",
-    intro:
-      "Mycerra™ is a 100% pure mycelium mat — no non-woven backing, scaffold or foreign substrate. It can be finished to the same standard as animal leather, supports aniline dyeing and takes crocodile-grain embossing with excellent definition.",
-    request: "Request this swatch",
-    buy: "Order in the shop",
-    filter: "Filter by finish family",
-    finishingEyebrow: "Finishing",
-    finishingTitle: "Finished like premium hides.",
-    custom: "Finishing and colour customization available upon request.",
-    performanceEyebrow: "Performance",
-    tdsBefore: "Full physical properties and test reports are listed on the",
-    tdsLink: "Technology page",
-  },
-  ko: {
-    eyebrow: "Mycerra™ 소재 라이브러리",
-    title: "하나의 배양 매트, 여러 표현.",
-    intro:
-      "Mycerra™는 부직포 배접, 지지체, 이물 기재가 없는 100% 순수 균사 매트입니다. 동물 가죽과 같은 기준으로 마감할 수 있고, 아닐린 염색이 가능하며, 크로커다일 엠보가 선명하게 표현됩니다.",
-    request: "이 스와치 요청",
-    buy: "쇼핑몰에서 주문",
-    filter: "마감 계열로 보기",
-    finishingEyebrow: "마감",
-    finishingTitle: "프리미엄 원피처럼 마감합니다.",
-    custom: "마감과 컬러는 요청에 따라 맞춤 제작할 수 있습니다.",
-    performanceEyebrow: "성능",
-    tdsBefore: "전체 물성과 시험 성적서는 다음 페이지에서 확인할 수 있습니다:",
-    tdsLink: "기술 페이지",
-  },
-};
+
+// 문구·섹션 순서: src/content/data/site.json › pages.mycerra (운영 도구 "페이지" 탭)
 
 // 배경이 어두운 대표색이면 밝은 글자를 쓴다
 const isDark = (hex: string) => {
@@ -57,7 +29,7 @@ const isDark = (hex: string) => {
 };
 
 const Feature = ({ e }: { e: Expression }) => {
-  const c = useCopy(copy);
+  const c = usePageCopy("mycerra");
   const { t } = useLang();
   const dark = isDark(e.accent);
   const sku = products.find((p) => p.libraryCode === e.code)?.sku;
@@ -103,7 +75,7 @@ const Feature = ({ e }: { e: Expression }) => {
 };
 
 const Materials = () => {
-  const c = useCopy(copy);
+  const c = usePageCopy("mycerra");
   const { t } = useLang();
   const [family, setFamily] = useState<(typeof families)[number]>("All");
   const [params] = useSearchParams();
@@ -116,8 +88,8 @@ const Materials = () => {
     [family],
   );
 
-  return (
-    <>
+  const sections: Record<string, ReactNode> = {
+    intro: (
       <section className="pb-16 pt-36 md:pt-44">
         <Container>
           <Eyebrow>{c.eyebrow}</Eyebrow>
@@ -127,9 +99,11 @@ const Materials = () => {
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-mc-mute">{c.intro}</p>
         </Container>
       </section>
+    ),
 
-      <Feature e={selected} />
+    feature: <Feature e={selected} />,
 
+    grid: (
       <section className="py-20 md:py-28">
         <Container>
           <div className="flex flex-wrap gap-2" role="tablist" aria-label={c.filter}>
@@ -161,7 +135,8 @@ const Materials = () => {
                 type="button"
                 onClick={() => {
                   setSelected(e);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  // 선택한 소재를 크게 보여 주는 섹션으로 이동 (섹션 순서는 운영 도구에서 바뀔 수 있음)
+                  document.getElementById("sec-feature")?.scrollIntoView({ behavior: "smooth" });
                 }}
                 className="group scroll-mt-24 self-start text-left"
               >
@@ -188,7 +163,9 @@ const Materials = () => {
           </div>
         </Container>
       </section>
+    ),
 
+    finishing: (
       <section className="border-t border-mc-line bg-mc-cream py-20 md:py-28">
         <Container className="grid gap-16 md:grid-cols-12">
           <Reveal className="md:col-span-4">
@@ -224,6 +201,12 @@ const Materials = () => {
           </Reveal>
         </Container>
       </section>
+    ),
+  };
+
+  return (
+    <>
+      <Sections page="mycerra" sections={sections} />
     </>
   );
 };

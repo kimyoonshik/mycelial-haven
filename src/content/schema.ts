@@ -85,6 +85,110 @@ export const TestItemSchema = z.object({
   reportUrl: z.string().regex(/^(\/media\/reports\/[\w\-.]+\.pdf|https:\/\/.+)$/i).nullable(),
 });
 
+// ---------- 페이지 문구·사진·섹션 순서 (site.json) ----------
+// 페이지별 섹션 구성은 화면 코드와 짝을 이루므로 고정: 운영 도구에서는 순서 변경·숨기기만 가능하다.
+export const SITE_SECTIONS = {
+  home: ["hero", "statement", "pillars", "library", "process", "impact", "shop", "collections", "audiences", "company"],
+  mycerra: ["intro", "feature", "grid", "finishing"],
+  technology: ["intro", "structure", "process", "performance", "test-reports", "platform"],
+  impact: ["intro", "claims", "traceability", "principles", "docs"],
+  "work-with-us": ["intro", "steps", "supply", "inquiry"],
+  shop: ["intro", "pricing", "catalog"],
+} as const;
+
+const SHARED_KEYS = [
+  "footer",
+  "expressions",
+  "processSteps",
+  "claims",
+  "traceability",
+  "features",
+  "finishingOptions",
+  "futurePlatform",
+  "collections",
+  "workSpecs",
+  "downloads",
+] as const;
+
+export const SiteSchema = z.object({
+  shared: z.object(Object.fromEntries(SHARED_KEYS.map((k) => [k, z.unknown()]))).passthrough(),
+  pages: z.object(
+    Object.fromEntries(
+      Object.keys(SITE_SECTIONS).map((page) => [
+        page,
+        z.object({
+          order: z.array(z.object({ id: z.string(), visible: z.boolean() })),
+          content: z.record(z.string(), z.unknown()),
+        }),
+      ]),
+    ),
+  ),
+});
+
+/** site.json 세부 검사 (번역 누락, 사진 파일, 섹션 구성, 공통 콘텐츠 규칙) */
+const checkSite = (site: z.infer<typeof SiteSchema>, mediaExists: (p: string) => boolean, push: (m: string) => void) => {
+  Object.entries(SITE_SECTIONS).forEach(([page, ids]) => {
+    const pg = (site.pages as Record<string, { order: { id: string }[]; content: Record<string, unknown> }>)[page];
+    const order = pg.order.map((o) => o.id);
+    const missing = ids.filter((id) => !order.includes(id));
+    const extra = order.filter((id) => !(ids as readonly string[]).includes(id));
+    const dup = order.filter((id, i) => order.indexOf(id) !== i);
+    if (missing.length) push(`site.json › ${page}: 섹션 누락 ${missing.join(", ")}`);
+    if (extra.length) push(`site.json › ${page}: 알 수 없는 섹션 ${extra.join(", ")}`);
+    if (dup.length) push(`site.json › ${page}: 섹션 중복 ${dup.join(", ")}`);
+    Object.keys(pg.content).forEach((k) => {
+      if (!(ids as readonly string[]).includes(k)) push(`site.json › ${page}.content: 알 수 없는 섹션 "${k}"`);
+    });
+  });
+
+  // 모든 {en, ko} 는 두 언어 모두 채워야 하고, /media 경로는 실제 파일이어야 한다
+  const walk = (v: unknown, path: string) => {
+    if (typeof v === "string") {
+      if (v.startsWith("/media/")) {
+        if (!/\.(webp|jpe?g|png|pdf)$/i.test(v)) push(`site.json › ${path}: 지원하지 않는 파일 형식 ${v}`);
+        else if (!mediaExists(v)) push(`site.json › ${path}: 파일 없음 ${v}`);
+      }
+      return;
+    }
+    if (Array.isArray(v)) return v.forEach((x, i) => walk(x, `${path}.${i}`));
+    if (v && typeof v === "object") {
+      const keys = Object.keys(v);
+      if (keys.length === 2 && keys.includes("en") && keys.includes("ko")) {
+        const l = v as { en: unknown; ko: unknown };
+        if (typeof l.en !== "string" || !l.en.trim()) push(`site.json › ${path}: 영문이 비어 있습니다`);
+        if (typeof l.ko !== "string" || !l.ko.trim()) push(`site.json › ${path}: 한글이 비어 있습니다`);
+        return;
+      }
+      keys.forEach((k) => walk((v as Record<string, unknown>)[k], path ? `${path}.${k}` : k));
+    }
+  };
+  walk(site, "");
+
+  const sh = site.shared as Record<string, unknown>;
+  const list = (k: string) => (Array.isArray(sh[k]) ? (sh[k] as Record<string, unknown>[]) : []);
+  SHARED_KEYS.forEach((k) => {
+    if (sh[k] === undefined) push(`site.json › shared.${k}: 항목이 없습니다`);
+  });
+  ["expressions", "processSteps", "claims", "collections"].forEach((k) => {
+    if (!list(k).length) push(`site.json › shared.${k}: 최소 1개가 필요합니다`);
+  });
+  const codes = list("expressions").map((e) => String(e.code ?? ""));
+  codes.forEach((c, i) => {
+    if (!/^[A-Z]{2}-\d{2}$/.test(c)) push(`site.json › shared.expressions.${i}: 코드 형식 오류 "${c}" (예: MG-02)`);
+    if (codes.indexOf(c) !== i) push(`site.json › shared.expressions: 코드 중복 "${c}"`);
+  });
+  list("expressions").forEach((e, i) => {
+    if (!["Grain", "Embossed", "Natural", "Dyed"].includes(String(e.family)))
+      push(`site.json › shared.expressions.${i}: 계열은 Grain·Embossed·Natural·Dyed 중 하나`);
+    if (!/^#[0-9a-f]{6}$/i.test(String(e.accent))) push(`site.json › shared.expressions.${i}: 대표색은 #RRGGBB 형식`);
+    if (typeof e.image !== "string" || !e.image) push(`site.json › shared.expressions.${i}: 사진이 필요합니다`);
+  });
+  const stepIds = list("processSteps").map((s) => s.id);
+  if (stepIds.join(",") !== "cultivate,stabilize,finish")
+    push("site.json › shared.processSteps: 배양·안정화·마감 3단계(cultivate, stabilize, finish) 순서를 유지해야 합니다");
+  return codes;
+};
+
 export const SeoSchema = z.object({
   siteName: text,
   siteUrl: z.string().url().refine((u) => !u.endsWith("/"), "siteUrl 끝에 / 를 붙이지 마세요"),
@@ -181,6 +285,7 @@ export const collections = {
   news: z.array(NewsSchema),
   "test-reports": z.array(TestItemSchema),
   seo: SeoSchema,
+  site: SiteSchema,
 } as const;
 export type CollectionName = keyof typeof collections;
 
@@ -190,6 +295,7 @@ export interface ContentSet {
   news: unknown;
   "test-reports": unknown;
   seo: unknown;
+  site: unknown;
 }
 
 /**
@@ -230,6 +336,9 @@ export const validateContent = (data: ContentSet, mediaExists: (path: string) =>
   const tests = parsed["test-reports"] as TestItemData[] | undefined;
 
   const dupes = (ids: string[]) => ids.filter((id, i) => ids.indexOf(id) !== i);
+  const libraryCodes = parsed.site
+    ? checkSite(parsed.site as z.infer<typeof SiteSchema>, mediaExists, (m) => errors.push(m))
+    : null;
   if (commerce) {
     const ids = commerce.conditions.map((c) => c.id);
     if (new Set(ids).size !== 4) errors.push("commerce.json › conditions: 순수·엠보·반응성·피니시 4개 조건이 한 번씩 있어야 합니다");
@@ -248,6 +357,8 @@ export const validateContent = (data: ContentSet, mediaExists: (path: string) =>
     products.forEach((p) => {
       if (p.image && !mediaExists(p.image)) errors.push(`products.json › ${p.sku}: 이미지 파일 없음 ${p.image}`);
       if (p.status === "available" && !p.image) errors.push(`products.json › ${p.sku}: 판매 중 상품에는 이미지가 필요합니다`);
+      if (p.libraryCode && libraryCodes && !libraryCodes.includes(p.libraryCode))
+        errors.push(`products.json › ${p.sku}: 소재 라이브러리에 없는 코드 "${p.libraryCode}"`);
       p.sizes?.forEach((s) => {
         if (commerce && !commerce.sizes.some((x) => x.id === s)) errors.push(`products.json › ${p.sku}: 없는 크기 "${s}"`);
       });

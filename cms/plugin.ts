@@ -14,7 +14,12 @@ import type { Plugin } from "vite";
 import { collections, validateContent, type CollectionName, type ContentSet } from "../src/content/schema";
 
 const NAMES = Object.keys(collections) as CollectionName[];
-const MEDIA_FOLDERS = { materials: /\.(webp|jpe?g|png)$/i, products: /\.(webp|jpe?g|png)$/i, reports: /\.pdf$/i } as const;
+const MEDIA_FOLDERS = {
+  materials: /\.(webp|jpe?g|png)$/i,
+  products: /\.(webp|jpe?g|png)$/i,
+  site: /\.(webp|jpe?g|png)$/i,
+  reports: /\.pdf$/i,
+} as const;
 type MediaFolder = keyof typeof MEDIA_FOLDERS;
 const MAX_UPLOAD = 8 * 1024 * 1024;
 

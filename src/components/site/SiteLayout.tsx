@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { company } from "@/content/mycerra";
+import { company, footerCopy } from "@/content/mycerra";
+import { pageSections } from "@/content/site";
 import { useLang, type L } from "@/i18n/LanguageProvider";
 import { useCart } from "@/shop/CartProvider";
 import { useRouteSeo } from "@/lib/seo";
@@ -74,7 +75,8 @@ const SiteHeader = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   // 홈 첫 화면(전면 사진) 위에서만 투명 헤더
-  const overHero = pathname === "/" && !scrolled && !open;
+  // 홈 첫 섹션이 전면 사진(hero)일 때만 투명 헤더 (운영 도구에서 순서를 바꾸면 일반 헤더)
+  const overHero = pathname === "/" && pageSections("home")[0] === "hero" && !scrolled && !open;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -159,11 +161,9 @@ const SiteFooter = () => {
       <Container className="grid gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-5">
           <p className="font-mc-serif text-3xl font-light leading-tight">
-            {t({ en: "Grown, not manufactured.", ko: "제조하지 않고, 키웁니다." })}
+            {t(footerCopy.line1)}
             <br />
-            <span className="text-mc-paper/50">
-              {t({ en: "Pure mycelium — no compromise.", ko: "순수 균사 — 타협 없이." })}
-            </span>
+            <span className="text-mc-paper/50">{t(footerCopy.line2)}</span>
           </p>
         </div>
         <div className="text-sm md:col-span-3">

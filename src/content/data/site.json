@@ -1,0 +1,1218 @@
+{
+  "shared": {
+    "footer": {
+      "line1": {
+        "en": "Grown, not manufactured.",
+        "ko": "제조하지 않고, 키웁니다."
+      },
+      "line2": {
+        "en": "Pure mycelium — no compromise.",
+        "ko": "순수 균사 — 타협 없이."
+      },
+      "origin": {
+        "en": "Cultivated in controlled facilities in Korea",
+        "ko": "국내 통제 시설에서 배양"
+      }
+    },
+    "expressions": [
+      {
+        "code": "MG-02",
+        "name": "Mocha Grain",
+        "family": "Grain",
+        "description": {
+          "en": "Aniline-finished pure mycelium mat.",
+          "ko": "아닐린 마감 순수 균사 매트."
+        },
+        "image": "/media/materials/finish-mocha-grain-02.webp",
+        "accent": "#4a2a1c"
+      },
+      {
+        "code": "CR-03",
+        "name": "Crocodile",
+        "family": "Embossed",
+        "description": {
+          "en": "Pure mycelium mat — crocodile embossed, undyed.",
+          "ko": "순수 균사 매트 — 크로커다일 엠보, 무염색."
+        },
+        "image": "/media/materials/finish-crocodile-03.webp",
+        "accent": "#c9bfa6"
+      },
+      {
+        "code": "MC-06",
+        "name": "Marble Caviar",
+        "family": "Embossed",
+        "description": {
+          "en": "Pure mycelium mat — Marble Caviar embossed, undyed.",
+          "ko": "순수 균사 매트 — 마블 캐비어 엠보, 무염색."
+        },
+        "image": "/media/materials/finish-marble-caviar-06.webp",
+        "accent": "#cfc6b4"
+      },
+      {
+        "code": "MC-08",
+        "name": "Marble Caviar",
+        "family": "Embossed",
+        "description": {
+          "en": "Pure mycelium mat — Marble Caviar embossed, undyed.",
+          "ko": "순수 균사 매트 — 마블 캐비어 엠보, 무염색."
+        },
+        "image": "/media/materials/finish-marble-caviar-08.webp",
+        "accent": "#c7b48c"
+      },
+      {
+        "code": "HP-03",
+        "name": "Hypha Pebble",
+        "family": "Embossed",
+        "description": {
+          "en": "Pure mycelium mat — Hypha Pebble embossed, undyed.",
+          "ko": "순수 균사 매트 — 하이파 페블 엠보, 무염색."
+        },
+        "image": "/media/materials/finish-hypha-pebble-03.webp",
+        "accent": "#d8d4c8"
+      },
+      {
+        "code": "PM-00",
+        "name": "Pure Mycerra",
+        "family": "Natural",
+        "description": {
+          "en": "Pure mycelium mat — unembossed, undyed.",
+          "ko": "순수 균사 매트 — 무엠보, 무염색."
+        },
+        "image": "/media/materials/finish-pure.webp",
+        "accent": "#dcd6c8"
+      },
+      {
+        "code": "MN-02",
+        "name": "Midnight Navy",
+        "family": "Dyed",
+        "description": {
+          "en": "Pure mycelium mat, dyed three times.",
+          "ko": "순수 균사 매트, 3회 염색."
+        },
+        "image": "/media/materials/color-midnight-navy-02.webp",
+        "accent": "#1b2233"
+      },
+      {
+        "code": "BG-05",
+        "name": "Burgundy",
+        "family": "Dyed",
+        "description": {
+          "en": "Pure mycelium mat, dyed three times.",
+          "ko": "순수 균사 매트, 3회 염색."
+        },
+        "image": "/media/materials/color-burgundy-05.webp",
+        "accent": "#4b1420"
+      },
+      {
+        "code": "SR-07",
+        "name": "Scarlet Red",
+        "family": "Dyed",
+        "description": {
+          "en": "Pure mycelium mat, dyed three times.",
+          "ko": "순수 균사 매트, 3회 염색."
+        },
+        "image": "/media/materials/color-scarlet-red-07.webp",
+        "accent": "#b3121c"
+      },
+      {
+        "code": "BW-01",
+        "name": "Bone White",
+        "family": "Dyed",
+        "description": {
+          "en": "Pure mycelium mat, dyed three times.",
+          "ko": "순수 균사 매트, 3회 염색."
+        },
+        "image": "/media/materials/color-bone-white-01.webp",
+        "accent": "#e6e2d8"
+      },
+      {
+        "code": "IB-06",
+        "name": "Ice Blue",
+        "family": "Dyed",
+        "description": {
+          "en": "Pure mycelium mat, dyed three times.",
+          "ko": "순수 균사 매트, 3회 염색."
+        },
+        "image": "/media/materials/color-ice-blue-06.webp",
+        "accent": "#7fb3c2"
+      },
+      {
+        "code": "MR-08",
+        "name": "Marigold",
+        "family": "Dyed",
+        "description": {
+          "en": "Pure mycelium mat, dyed three times.",
+          "ko": "순수 균사 매트, 3회 염색."
+        },
+        "image": "/media/materials/color-marigold-08.webp",
+        "accent": "#d9741f"
+      }
+    ],
+    "processSteps": [
+      {
+        "no": "01",
+        "id": "cultivate",
+        "title": {
+          "en": "Cultivate",
+          "ko": "배양"
+        },
+        "body": {
+          "en": "Mycelium is grown into a continuous, self-supporting mat in controlled facilities in Korea — no backing fabric, no scaffold, no foreign substrate in the final material.",
+          "ko": "국내 통제 시설에서 균사를 연속된 자립형 매트로 키웁니다. 최종 소재에는 배접 원단도, 지지체도, 이물 기재도 없습니다."
+        },
+        "image": "/media/site/process-mycelium.webp"
+      },
+      {
+        "no": "02",
+        "id": "stabilize",
+        "title": {
+          "en": "Stabilize",
+          "ko": "안정화"
+        },
+        "body": {
+          "en": "Where hides are tanned, Mycerra™ is stabilized. A proprietary process turns the cultivated mat into a durable material, defining its strength, flexibility and handfeel.",
+          "ko": "원피를 무두질하듯, Mycerra™는 안정화합니다. 독자 공정으로 배양 매트를 내구성 있는 소재로 바꾸며 강도·유연성·핸드필을 결정합니다."
+        },
+        "image": "/media/site/process-surface.webp"
+      },
+      {
+        "no": "03",
+        "id": "finish",
+        "title": {
+          "en": "Finish",
+          "ko": "마감"
+        },
+        "body": {
+          "en": "Like premium hides, Mycerra™ takes aniline dyeing, embossing and protective finishing — from a raw natural surface to deep, three-times-dyed colour.",
+          "ko": "프리미엄 원피처럼 아닐린 염색, 엠보, 보호 마감을 할 수 있습니다. 무가공 내추럴 표면부터 3회 염색한 깊은 색까지 구현합니다."
+        },
+        "image": "/media/site/impact-curl.webp"
+      }
+    ],
+    "claims": [
+      {
+        "value": "−92%",
+        "label": {
+          "en": "Carbon",
+          "ko": "탄소"
+        },
+        "detail": {
+          "en": "Greenhouse-gas emissions compared with conventional animal leather manufacturing.",
+          "ko": "기존 동물 가죽 제조 대비 온실가스 배출량."
+        },
+        "proof": {
+          "title": {
+            "en": "Life Cycle Assessment",
+            "ko": "전과정평가(LCA)"
+          },
+          "status": "in-preparation"
+        }
+      },
+      {
+        "value": "99%",
+        "label": {
+          "en": "Less water",
+          "ko": "물 절감"
+        },
+        "detail": {
+          "en": "Up to 99% less water than conventional methods, with no animal inputs.",
+          "ko": "기존 공정 대비 최대 99% 적은 물 사용, 동물성 원료 무투입."
+        },
+        "proof": {
+          "title": {
+            "en": "Water footprint report",
+            "ko": "물 발자국 보고서"
+          },
+          "status": "in-preparation"
+        }
+      },
+      {
+        "value": "0%",
+        "label": {
+          "en": "Plastic",
+          "ko": "플라스틱"
+        },
+        "detail": {
+          "en": "No synthetic polymers, non-woven backings, scaffolds or composite layers.",
+          "ko": "합성 고분자, 부직포 배접, 지지체, 복합 레이어를 쓰지 않습니다."
+        },
+        "proof": {
+          "title": {
+            "en": "Material composition statement",
+            "ko": "소재 구성 확인서"
+          },
+          "status": "in-preparation"
+        }
+      },
+      {
+        "value": "100%",
+        "label": {
+          "en": "Compostable",
+          "ko": "퇴비화"
+        },
+        "detail": {
+          "en": "Fully biodegradable at end of life.",
+          "ko": "사용 후 완전 생분해."
+        },
+        "proof": {
+          "title": {
+            "en": "Biodegradation test report",
+            "ko": "생분해도 시험 성적서"
+          },
+          "status": "in-preparation"
+        }
+      }
+    ],
+    "traceability": {
+      "title": {
+        "en": "Traceability and EUDR",
+        "ko": "원산지 추적과 EUDR"
+      },
+      "body": {
+        "en": "Mycerra is cultivated in controlled facilities in Korea, independent from livestock, grazing land, or feed crops. This eliminates deforestation risk and aligns with the EU Deforestation Regulation (EUDR) for due diligence and traceability. Every batch is digitally documented and origin-tracked.",
+        "ko": "Mycerra는 가축·방목지·사료작물과 무관하게 국내 통제 시설에서 배양됩니다. 산림파괴 위험이 없으며, 실사와 추적성 측면에서 EU 산림파괴방지규정(EUDR)에 부합합니다. 모든 배치는 디지털로 기록되고 원산지가 추적됩니다."
+      },
+      "proof": {
+        "title": {
+          "en": "EUDR due-diligence statement",
+          "ko": "EUDR 실사 확인서"
+        },
+        "status": "in-preparation"
+      }
+    },
+    "features": [
+      {
+        "title": {
+          "en": "Pure mycelium structure",
+          "ko": "순수 균사 구조"
+        },
+        "body": {
+          "en": "No textile or polymeric backing — a self-supporting mat cultivated entirely from mycelium.",
+          "ko": "섬유·고분자 배접 없이, 오직 균사로만 배양한 자립형 매트입니다."
+        }
+      },
+      {
+        "title": {
+          "en": "Leather-grade performance",
+          "ko": "가죽 수준의 성능"
+        },
+        "body": {
+          "en": "Naturally strong, flexible, and shavable — comparable to premium hides.",
+          "ko": "본래 강하고 유연하며 쉐이빙이 가능해 프리미엄 원피에 견줄 만합니다."
+        }
+      },
+      {
+        "title": {
+          "en": "Process stability",
+          "ko": "공정 안정성"
+        },
+        "body": {
+          "en": "Uniform growth under ambient conditions ensures scalability and industrial consistency.",
+          "ko": "상온 조건에서의 균일한 생장으로 확장성과 산업적 일관성을 확보합니다."
+        }
+      },
+      {
+        "title": {
+          "en": "Finishing versatility",
+          "ko": "다양한 마감 대응"
+        },
+        "body": {
+          "en": "Supports aniline-style, embossed, or undyed natural surface options.",
+          "ko": "아닐린 스타일, 엠보, 무염색 내추럴 표면을 모두 지원합니다."
+        }
+      }
+    ],
+    "finishingOptions": [
+      {
+        "en": "Aniline-style finishing",
+        "ko": "아닐린 스타일 마감"
+      },
+      {
+        "en": "Embossed surface grains (Crocodile, Micro-Pebble, Marble Caviar)",
+        "ko": "표면 엠보 그레인 (크로커다일, 마이크로 페블, 마블 캐비어)"
+      },
+      {
+        "en": "Undyed pure mycelium surface",
+        "ko": "무염색 순수 균사 표면"
+      },
+      {
+        "en": "Tint and tone-on-tone colour finishing — in development",
+        "ko": "틴트 및 톤온톤 컬러 마감 — 개발 중"
+      }
+    ],
+    "futurePlatform": [
+      {
+        "title": {
+          "en": "Mycelium foams",
+          "ko": "균사 폼"
+        },
+        "body": {
+          "en": "Biodegradable replacements for Styrofoam and packaging.",
+          "ko": "스티로폼과 포장재를 대체하는 생분해 소재."
+        }
+      },
+      {
+        "title": {
+          "en": "Mycelium protein",
+          "ko": "균사 단백질"
+        },
+        "body": {
+          "en": "A sustainable resource for food and biomaterials.",
+          "ko": "식품과 바이오소재를 위한 지속가능한 자원."
+        }
+      },
+      {
+        "title": {
+          "en": "Architectural composites",
+          "ko": "건축용 복합재"
+        },
+        "body": {
+          "en": "Lightweight panels for interiors and construction.",
+          "ko": "인테리어·건축용 경량 패널."
+        }
+      }
+    ],
+    "collections": [
+      {
+        "title": "Mycerra Flap Satchel",
+        "body": {
+          "en": "Handcrafted from pure mycelium mat, marble-finished to accentuate natural veining and organic texture.",
+          "ko": "순수 균사 매트로 수작업 제작. 마블 마감으로 자연스러운 결과 유기적 질감을 살렸습니다."
+        },
+        "image": "/media/site/product-flap-satchel.webp"
+      },
+      {
+        "title": "Mycerra Urban Messenger",
+        "body": {
+          "en": "Handcrafted from aniline-finished pure Mycerra mat, emphasizing tonal richness and smooth surface texture.",
+          "ko": "아닐린 마감 순수 Mycerra 매트로 수작업 제작. 풍부한 톤과 매끄러운 표면이 특징입니다."
+        },
+        "image": "/media/site/product-urban-messenger.webp"
+      },
+      {
+        "title": "Mycerra Truffle Long Wallet",
+        "body": {
+          "en": "Handcrafted from aniline-finished pure Mycerra mat, featuring refined surface sheen and tactile softness.",
+          "ko": "아닐린 마감 순수 Mycerra 매트로 수작업 제작. 은은한 광택과 부드러운 촉감이 특징입니다."
+        },
+        "image": "/media/site/product-truffle-wallet.webp"
+      },
+      {
+        "title": "Mycerra Ivory Marble Tote",
+        "body": {
+          "en": "Handcrafted from pure mycelium mat, marble-finished to accentuate natural veining and organic texture.",
+          "ko": "순수 균사 매트로 수작업 제작. 마블 마감으로 자연스러운 결과 유기적 질감을 살렸습니다."
+        },
+        "image": "/media/site/product-ivory-marble-tote.webp"
+      }
+    ],
+    "workSpecs": [
+      {
+        "label": {
+          "en": "Formats",
+          "ko": "공급 형태"
+        },
+        "value": {
+          "en": "Swatch kit · Full sheets · Custom development",
+          "ko": "스와치 키트 · 풀시트 · 맞춤 개발"
+        }
+      },
+      {
+        "label": {
+          "en": "Sheet size",
+          "ko": "시트 규격"
+        },
+        "value": null
+      },
+      {
+        "label": {
+          "en": "Thickness range",
+          "ko": "두께 범위"
+        },
+        "value": null
+      },
+      {
+        "label": {
+          "en": "Minimum order — prototyping",
+          "ko": "최소 주문량 — 시제품"
+        },
+        "value": null
+      },
+      {
+        "label": {
+          "en": "Minimum order — custom colour/finish",
+          "ko": "최소 주문량 — 맞춤 컬러·마감"
+        },
+        "value": null
+      },
+      {
+        "label": {
+          "en": "Lead time",
+          "ko": "리드타임"
+        },
+        "value": null
+      },
+      {
+        "label": {
+          "en": "Shipping",
+          "ko": "배송"
+        },
+        "value": {
+          "en": "Worldwide from Korea",
+          "ko": "한국에서 전 세계 배송"
+        }
+      }
+    ],
+    "downloads": [
+      {
+        "title": {
+          "en": "Technical Data Sheet",
+          "ko": "기술자료(TDS)"
+        },
+        "status": "in-preparation"
+      },
+      {
+        "title": {
+          "en": "Life Cycle Assessment",
+          "ko": "전과정평가(LCA)"
+        },
+        "status": "in-preparation"
+      },
+      {
+        "title": {
+          "en": "Material Swatch Card",
+          "ko": "소재 스와치 카드"
+        },
+        "status": "in-preparation"
+      }
+    ]
+  },
+  "pages": {
+    "home": {
+      "order": [
+        {
+          "id": "hero",
+          "visible": true
+        },
+        {
+          "id": "statement",
+          "visible": true
+        },
+        {
+          "id": "pillars",
+          "visible": true
+        },
+        {
+          "id": "library",
+          "visible": true
+        },
+        {
+          "id": "process",
+          "visible": true
+        },
+        {
+          "id": "impact",
+          "visible": true
+        },
+        {
+          "id": "shop",
+          "visible": true
+        },
+        {
+          "id": "collections",
+          "visible": true
+        },
+        {
+          "id": "audiences",
+          "visible": true
+        },
+        {
+          "id": "company",
+          "visible": true
+        }
+      ],
+      "content": {
+        "hero": {
+          "heroTitle": [
+            {
+              "en": "Grown,",
+              "ko": "제조하지 않고,"
+            },
+            {
+              "en": "not manufactured.",
+              "ko": "키웁니다."
+            }
+          ],
+          "heroBody": {
+            "en": "Mycerra™ is the leather alternative made exclusively from pure mycelium — no backing, no scaffold, no plastic.",
+            "ko": "Mycerra™는 오직 순수 균사로만 만든 가죽 대체 소재입니다. 배접도, 지지체도, 플라스틱도 없습니다."
+          },
+          "heroCta": {
+            "en": "Explore the material",
+            "ko": "소재 살펴보기"
+          },
+          "heroAlt": {
+            "en": "Burgundy Mycerra pure mycelium mat, dyed three times, curling to show its grain",
+            "ko": "3회 염색한 버건디 Mycerra 순수 균사 매트가 말려 올라가 결이 드러난 모습"
+          },
+          "image": "/media/materials/color-burgundy-05.webp"
+        },
+        "statement": {
+          "statement": {
+            "en": "A 100% pure mycelium mat that is finished to the same standard as premium leather — and returns to the earth at the end of its life.",
+            "ko": "프리미엄 가죽과 같은 기준으로 마감되고, 수명이 다하면 흙으로 돌아가는 100% 순수 균사 매트."
+          }
+        },
+        "pillars": {
+          "pillars": [
+            {
+              "k": {
+                "en": "What we make",
+                "ko": "무엇을 만드는가"
+              },
+              "t": {
+                "en": "A material, not a laminate.",
+                "ko": "적층물이 아닌, 하나의 소재."
+              },
+              "b": {
+                "en": "Mycerra™ uses no non-woven backings, scaffolds or foreign substrates. The mat is the material — cultivated, stabilized and finished.",
+                "ko": "Mycerra™는 부직포 배접, 지지체, 이물 기재를 쓰지 않습니다. 매트 자체가 소재이며, 배양·안정화·마감을 거칩니다."
+              },
+              "to": "/mycerra",
+              "cta": {
+                "en": "Material library",
+                "ko": "소재 라이브러리"
+              }
+            },
+            {
+              "k": {
+                "en": "Why it matters",
+                "ko": "왜 중요한가"
+              },
+              "t": {
+                "en": "Sustainability with proof, not promise.",
+                "ko": "약속이 아닌 증거로 말하는 지속가능성."
+              },
+              "b": {
+                "en": "−92% greenhouse-gas emissions versus animal leather, no animal inputs, and every batch origin-tracked for EUDR compliance.",
+                "ko": "동물 가죽 대비 온실가스 −92%, 동물성 원료 무투입, 모든 배치의 원산지를 추적해 EUDR에 대응합니다."
+              },
+              "to": "/impact",
+              "cta": {
+                "en": "Impact & evidence",
+                "ko": "임팩트와 근거"
+              }
+            },
+            {
+              "k": {
+                "en": "How we do it",
+                "ko": "어떻게 만드는가"
+              },
+              "t": {
+                "en": "Biotechnology and design.",
+                "ko": "바이오테크놀로지와 디자인."
+              },
+              "b": {
+                "en": "Uniform growth under ambient conditions, then a proprietary stabilization step that gives the mat leather-grade strength and handfeel.",
+                "ko": "상온에서 균일하게 생장시킨 뒤, 독자적인 안정화 공정으로 가죽 수준의 강도와 핸드필을 부여합니다."
+              },
+              "to": "/technology",
+              "cta": {
+                "en": "Technology",
+                "ko": "기술"
+              }
+            }
+          ]
+        },
+        "library": {
+          "libraryEyebrow": {
+            "en": "Material library",
+            "ko": "소재 라이브러리"
+          },
+          "libraryTitle": {
+            "en": "One mat, many expressions.",
+            "ko": "하나의 매트, 여러 표현."
+          },
+          "libraryBody": {
+            "en": "The same cultivated mat takes aniline dyeing, crocodile and caviar embossing, or stays as a raw natural surface.",
+            "ko": "같은 배양 매트가 아닐린 염색, 크로커다일·캐비어 엠보를 입거나, 무가공 내추럴 표면 그대로 쓰입니다."
+          },
+          "libraryCta": {
+            "en": "See all expressions",
+            "ko": "전체 표현 보기"
+          }
+        },
+        "process": {
+          "processEyebrow": {
+            "en": "From cultivation to finish",
+            "ko": "배양에서 마감까지"
+          },
+          "processTitle": {
+            "en": "Three steps. One material.",
+            "ko": "세 단계, 하나의 소재."
+          }
+        },
+        "impact": {
+          "impactEyebrow": {
+            "en": "Impact",
+            "ko": "임팩트"
+          },
+          "impactTitle": {
+            "en": "Less water. Less waste. More balance.",
+            "ko": "물은 적게, 폐기물은 적게, 균형은 더."
+          },
+          "impactCta": {
+            "en": "How we measure it",
+            "ko": "측정 방식 보기"
+          }
+        },
+        "shop": {
+          "shopEyebrow": {
+            "en": "Mycerra™ shop",
+            "ko": "Mycerra™ 쇼핑몰"
+          },
+          "shopTitle": {
+            "en": "Order the material.",
+            "ko": "원단을 주문하세요."
+          },
+          "shopBody": {
+            "en": "From the pure mat to fully finished leather — order swatches or full sheets online.",
+            "ko": "순수원단부터 최종 피니시 원단까지, 스와치와 풀시트를 온라인으로 주문할 수 있습니다."
+          },
+          "shopCta": {
+            "en": "Visit the shop",
+            "ko": "쇼핑몰 가기"
+          }
+        },
+        "collections": {
+          "collectionsEyebrow": {
+            "en": "Made with Mycerra™",
+            "ko": "Made with Mycerra™"
+          },
+          "collectionsTitle": {
+            "en": "Collections",
+            "ko": "컬렉션"
+          },
+          "collectionsBody": {
+            "en": "Handbags and small leather goods handcrafted from pure mycelium mat.",
+            "ko": "순수 균사 매트로 수작업 제작한 핸드백과 소형 가죽 제품."
+          }
+        },
+        "audiences": {
+          "audiences": [
+            {
+              "k": {
+                "en": "For brands",
+                "ko": "브랜드"
+              },
+              "t": {
+                "en": "Design with a material that grows.",
+                "ko": "자라나는 소재로 디자인하세요."
+              },
+              "b": {
+                "en": "Swatch kits, full sheets and custom colour or finish development for fashion, accessories and interiors.",
+                "ko": "패션, 액세서리, 인테리어를 위한 스와치 키트, 풀시트, 맞춤 컬러·마감 개발을 제공합니다."
+              },
+              "to": "/work-with-us?type=brand#inquiry",
+              "cta": {
+                "en": "Request swatches",
+                "ko": "스와치 요청"
+              },
+              "dark": false
+            },
+            {
+              "k": {
+                "en": "For tanneries & manufacturers",
+                "ko": "제혁·제조사"
+              },
+              "t": {
+                "en": "Process it like premium hides.",
+                "ko": "프리미엄 원피처럼 가공하세요."
+              },
+              "b": {
+                "en": "Mycerra™ is shavable and takes aniline dyeing and embossing on existing finishing lines. Let’s run trials together.",
+                "ko": "Mycerra™는 쉐이빙이 가능하고 기존 마감 라인에서 아닐린 염색과 엠보를 할 수 있습니다. 함께 테스트해 보시죠."
+              },
+              "to": "/work-with-us?type=manufacturer#inquiry",
+              "cta": {
+                "en": "Start a processing trial",
+                "ko": "가공 테스트 신청"
+              },
+              "dark": true
+            }
+          ]
+        },
+        "company": {
+          "companyTitle": {
+            "en": "Materials that are cultivated, not extracted.",
+            "ko": "채굴하지 않고, 배양하는 소재."
+          },
+          "companyBody": {
+            "en": "Mycerra™ is the first expression of a material platform. Our research extends into new mycelium materials:",
+            "ko": "Mycerra™는 소재 플랫폼의 첫 번째 결과물입니다. 연구는 새로운 균사 소재로 확장되고 있습니다."
+          },
+          "newsEyebrow": {
+            "en": "News & media",
+            "ko": "소식·미디어"
+          }
+        }
+      }
+    },
+    "mycerra": {
+      "order": [
+        {
+          "id": "intro",
+          "visible": true
+        },
+        {
+          "id": "feature",
+          "visible": true
+        },
+        {
+          "id": "grid",
+          "visible": true
+        },
+        {
+          "id": "finishing",
+          "visible": true
+        }
+      ],
+      "content": {
+        "intro": {
+          "eyebrow": {
+            "en": "Mycerra™ material library",
+            "ko": "Mycerra™ 소재 라이브러리"
+          },
+          "title": {
+            "en": "One cultivated mat. Many expressions.",
+            "ko": "하나의 배양 매트, 여러 표현."
+          },
+          "intro": {
+            "en": "Mycerra™ is a 100% pure mycelium mat — no non-woven backing, scaffold or foreign substrate. It can be finished to the same standard as animal leather, supports aniline dyeing and takes crocodile-grain embossing with excellent definition.",
+            "ko": "Mycerra™는 부직포 배접, 지지체, 이물 기재가 없는 100% 순수 균사 매트입니다. 동물 가죽과 같은 기준으로 마감할 수 있고, 아닐린 염색이 가능하며, 크로커다일 엠보가 선명하게 표현됩니다."
+          }
+        },
+        "feature": {
+          "request": {
+            "en": "Request this swatch",
+            "ko": "이 스와치 요청"
+          },
+          "buy": {
+            "en": "Order in the shop",
+            "ko": "쇼핑몰에서 주문"
+          }
+        },
+        "grid": {
+          "filter": {
+            "en": "Filter by finish family",
+            "ko": "마감 계열로 보기"
+          }
+        },
+        "finishing": {
+          "finishingEyebrow": {
+            "en": "Finishing",
+            "ko": "마감"
+          },
+          "finishingTitle": {
+            "en": "Finished like premium hides.",
+            "ko": "프리미엄 원피처럼 마감합니다."
+          },
+          "custom": {
+            "en": "Finishing and colour customization available upon request.",
+            "ko": "마감과 컬러는 요청에 따라 맞춤 제작할 수 있습니다."
+          },
+          "performanceEyebrow": {
+            "en": "Performance",
+            "ko": "성능"
+          },
+          "tdsBefore": {
+            "en": "Full physical properties and test reports are listed on the",
+            "ko": "전체 물성과 시험 성적서는 다음 페이지에서 확인할 수 있습니다:"
+          },
+          "tdsLink": {
+            "en": "Technology page",
+            "ko": "기술 페이지"
+          }
+        }
+      }
+    },
+    "technology": {
+      "order": [
+        {
+          "id": "intro",
+          "visible": true
+        },
+        {
+          "id": "structure",
+          "visible": true
+        },
+        {
+          "id": "process",
+          "visible": true
+        },
+        {
+          "id": "performance",
+          "visible": true
+        },
+        {
+          "id": "test-reports",
+          "visible": true
+        },
+        {
+          "id": "platform",
+          "visible": true
+        }
+      ],
+      "content": {
+        "intro": {
+          "eyebrow": {
+            "en": "Technology",
+            "ko": "기술"
+          },
+          "title": {
+            "en": "Biotechnology, guided by design.",
+            "ko": "디자인이 이끄는 바이오테크놀로지."
+          },
+          "intro": {
+            "en": "A pure mycelium mat grown through biotechnology and design — engineered for structural independence, process stability and eco-integrity.",
+            "ko": "바이오테크놀로지와 디자인으로 키운 순수 균사 매트. 구조적 자립성, 공정 안정성, 친환경 무결성을 목표로 설계했습니다."
+          }
+        },
+        "structure": {
+          "navLabel": {
+            "en": "Structure",
+            "ko": "구조"
+          },
+          "structureTitle": {
+            "en": "The mat is the material.",
+            "ko": "매트 자체가 소재입니다."
+          },
+          "structureBody": {
+            "en": "Most leather alternatives laminate a coating onto a textile or polymer backing. Mycerra™ uses no non-woven backings, scaffolds or foreign substrates: it is a self-supporting mat cultivated entirely from mycelium. That is what lets it be shaved, dyed and embossed like a hide — and composted at the end of its life.",
+            "ko": "대부분의 가죽 대체재는 섬유나 고분자 배접 위에 코팅을 적층합니다. Mycerra™는 부직포 배접, 지지체, 이물 기재 없이 오직 균사로만 배양한 자립형 매트입니다. 그래서 원피처럼 쉐이빙·염색·엠보가 가능하고, 수명이 다하면 퇴비화됩니다."
+          },
+          "structureAlt": {
+            "en": "Pure Mycerra — unembossed, undyed mycelium mat",
+            "ko": "순수 Mycerra — 무엠보, 무염색 균사 매트"
+          },
+          "structureImage": "/media/materials/finish-pure.webp"
+        },
+        "performance": {
+          "navLabel": {
+            "en": "Performance",
+            "ko": "성능"
+          },
+          "performanceTitle": {
+            "en": "Redefining how performance materials are made.",
+            "ko": "고성능 소재를 만드는 방식을 다시 씁니다."
+          }
+        },
+        "test-reports": {
+          "navLabel": {
+            "en": "Test reports",
+            "ko": "시험 성적서"
+          },
+          "reportsTitle": {
+            "en": "Performance test reports.",
+            "ko": "성능 시험 성적서."
+          },
+          "reportsBody": {
+            "en": "Twelve indicators covering physical strength, colour fastness and comfort, each linked to its original report.",
+            "ko": "물리적 강도, 염색 견뢰도, 쾌적성을 아우르는 12개 지표를 원본 성적서와 함께 공개합니다."
+          }
+        },
+        "platform": {
+          "navLabel": {
+            "en": "Platform",
+            "ko": "플랫폼"
+          },
+          "platformEyebrow": {
+            "en": "The future we’re growing",
+            "ko": "우리가 키우는 미래"
+          },
+          "platformTitle": {
+            "en": "Mycerra™ is only the beginning.",
+            "ko": "Mycerra™는 시작일 뿐입니다."
+          },
+          "platformBody": {
+            "en": "Our research expands into foams, textiles, coatings and bio-composites — a material platform for the next generation of industries.",
+            "ko": "연구는 폼, 텍스타일, 코팅, 바이오 복합재로 확장되고 있습니다. 다음 세대 산업을 위한 소재 플랫폼입니다."
+          },
+          "platformCta": {
+            "en": "Discuss a development project",
+            "ko": "개발 프로젝트 문의"
+          }
+        }
+      }
+    },
+    "impact": {
+      "order": [
+        {
+          "id": "intro",
+          "visible": true
+        },
+        {
+          "id": "claims",
+          "visible": true
+        },
+        {
+          "id": "traceability",
+          "visible": true
+        },
+        {
+          "id": "principles",
+          "visible": true
+        },
+        {
+          "id": "docs",
+          "visible": true
+        }
+      ],
+      "content": {
+        "intro": {
+          "eyebrow": {
+            "en": "Impact",
+            "ko": "임팩트"
+          },
+          "title": {
+            "en": "Sustainability with proof, not promise.",
+            "ko": "약속이 아닌 증거로 말하는 지속가능성."
+          },
+          "intro": {
+            "en": "We develop materials that restore balance — minimizing environmental impact while maximizing circular value. Every claim on this page is linked to the document that supports it.",
+            "ko": "환경 영향은 최소화하고 순환 가치는 극대화해 균형을 되찾는 소재를 개발합니다. 이 페이지의 모든 주장은 이를 뒷받침하는 문서와 연결됩니다."
+          }
+        },
+        "traceability": {
+          "traceEyebrow": {
+            "en": "Traceability",
+            "ko": "원산지 추적"
+          },
+          "facilityAlt": {
+            "en": "Controlled mycelium cultivation facility in Korea",
+            "ko": "국내 균사 배양 통제 시설"
+          },
+          "facilityImage": "/media/site/process-facility.webp"
+        },
+        "principles": {
+          "principlesEyebrow": {
+            "en": "Our principles",
+            "ko": "우리의 원칙"
+          },
+          "principlesTitle": {
+            "en": "Less water. Less waste. More balance.",
+            "ko": "물은 적게, 폐기물은 적게, 균형은 더."
+          },
+          "principles": [
+            {
+              "t": {
+                "en": "No animal inputs",
+                "ko": "동물성 원료 무투입"
+              },
+              "b": {
+                "en": "Cultivated independently from livestock, grazing land and feed crops — advancing animal welfare and removing deforestation risk.",
+                "ko": "가축·방목지·사료작물과 무관하게 배양해 동물 복지를 높이고 산림파괴 위험을 없앱니다."
+              }
+            },
+            {
+              "t": {
+                "en": "Designed for circularity",
+                "ko": "순환을 전제로 한 설계"
+              },
+              "b": {
+                "en": "No petrochemical binders and no composite layers, so the material can return to the earth at the end of its life.",
+                "ko": "석유화학 바인더와 복합 레이어가 없어 수명이 다하면 흙으로 돌아갈 수 있습니다."
+              }
+            },
+            {
+              "t": {
+                "en": "Low-energy growth",
+                "ko": "저에너지 생장"
+              },
+              "b": {
+                "en": "Uniform growth under ambient conditions keeps energy demand low while ensuring industrial consistency.",
+                "ko": "상온에서의 균일한 생장으로 에너지 수요를 낮추면서 산업적 일관성을 확보합니다."
+              }
+            }
+          ]
+        },
+        "docs": {
+          "docsQuestion": {
+            "en": "Need our LCA or test reports for supplier due diligence?",
+            "ko": "공급망 실사를 위해 LCA나 시험 성적서가 필요하신가요?"
+          },
+          "docsCta": {
+            "en": "Request documentation",
+            "ko": "문서 요청"
+          }
+        }
+      }
+    },
+    "work-with-us": {
+      "order": [
+        {
+          "id": "intro",
+          "visible": true
+        },
+        {
+          "id": "steps",
+          "visible": true
+        },
+        {
+          "id": "supply",
+          "visible": true
+        },
+        {
+          "id": "inquiry",
+          "visible": true
+        }
+      ],
+      "content": {
+        "intro": {
+          "eyebrow": {
+            "en": "Work with us",
+            "ko": "협업 안내"
+          },
+          "titleBefore": {
+            "en": "How to work with Mycerra",
+            "ko": "Mycerra와 함께 일하는 방법"
+          },
+          "intro": {
+            "en": "Mycerra™ is available as swatch kits, full sheets or custom developments. Every collaboration begins with a short conversation.",
+            "ko": "Mycerra™는 스와치 키트, 풀시트, 맞춤 개발 형태로 공급됩니다. 모든 협업은 짧은 대화에서 시작합니다."
+          }
+        },
+        "steps": {
+          "steps": [
+            {
+              "t": {
+                "en": "Start a conversation",
+                "ko": "상담 시작"
+              },
+              "b": {
+                "en": "Tell us about your product, quantities and timeline. We help you identify the most suitable Mycerra™ expression.",
+                "ko": "제품, 수량, 일정을 알려 주시면 가장 적합한 Mycerra™ 표현을 함께 찾습니다."
+              }
+            },
+            {
+              "t": {
+                "en": "Evaluate swatches",
+                "ko": "스와치 평가"
+              },
+              "b": {
+                "en": "Receive a swatch kit, review the Technical Data Sheet and test the material on your own lines.",
+                "ko": "스와치 키트를 받아 기술자료를 검토하고, 귀사의 라인에서 직접 테스트합니다."
+              }
+            },
+            {
+              "t": {
+                "en": "Prototype & develop",
+                "ko": "시제품·개발"
+              },
+              "b": {
+                "en": "Order full sheets for prototyping, or develop a custom colour and finish together with our team.",
+                "ko": "시제품용 풀시트를 주문하거나, 저희 팀과 맞춤 컬러·마감을 개발합니다."
+              }
+            },
+            {
+              "t": {
+                "en": "Scale",
+                "ko": "양산"
+              },
+              "b": {
+                "en": "Each batch is cultivated, stabilized, finished and origin-documented in Korea, then shipped worldwide.",
+                "ko": "모든 배치는 국내에서 배양·안정화·마감되고 원산지가 기록된 뒤 전 세계로 배송됩니다."
+              }
+            }
+          ]
+        },
+        "supply": {
+          "supplyEyebrow": {
+            "en": "Supply",
+            "ko": "공급"
+          },
+          "supplyTitle": {
+            "en": "Formats & ordering",
+            "ko": "공급 형태와 주문"
+          },
+          "onRequest": {
+            "en": "On request",
+            "ko": "문의"
+          },
+          "shopCta": {
+            "en": "Order swatches and sheets in the shop",
+            "ko": "쇼핑몰에서 스와치·시트 주문하기"
+          },
+          "docsEyebrow": {
+            "en": "Documents",
+            "ko": "문서"
+          },
+          "docsTitle": {
+            "en": "Downloads",
+            "ko": "자료 내려받기"
+          },
+          "request": {
+            "en": "Request",
+            "ko": "요청"
+          }
+        },
+        "inquiry": {
+          "inquiryEyebrow": {
+            "en": "Inquiry",
+            "ko": "문의"
+          },
+          "inquiryTitle": {
+            "en": "Let’s grow something together.",
+            "ko": "함께 키워 갈 것을 이야기해 주세요."
+          },
+          "inquiryBody": {
+            "en": "Brands, tanneries, investors and press — choose who you are so we can route your message to the right person.",
+            "ko": "브랜드, 제혁사, 투자자, 언론 중 해당하는 구분을 선택해 주시면 담당자에게 바로 전달됩니다."
+          }
+        }
+      }
+    },
+    "shop": {
+      "order": [
+        {
+          "id": "intro",
+          "visible": true
+        },
+        {
+          "id": "pricing",
+          "visible": true
+        },
+        {
+          "id": "catalog",
+          "visible": true
+        }
+      ],
+      "content": {
+        "intro": {
+          "eyebrow": {
+            "en": "Mycerra™ shop",
+            "ko": "Mycerra™ 쇼핑몰"
+          },
+          "title": {
+            "en": "From the pure mat to finished leather.",
+            "ko": "순수원단부터 최종 피니시 원단까지."
+          },
+          "intro": {
+            "en": "Four processing conditions, each in a 30 × 30 cm sample and three regular sheet sizes. Pay online with PayPal, or send a purchase order request for volume and business terms.",
+            "ko": "4가지 가공 조건을 30 × 30 cm 샘플과 3가지 정규원단 크기로 판매합니다. PayPal로 바로 결제하거나, 대량·기업 거래는 발주희망서를 보내 주세요."
+          }
+        },
+        "pricing": {
+          "pricingTitle": {
+            "en": "Sizes & prices",
+            "ko": "원단 크기와 가격"
+          },
+          "pricingNote": {
+            "en": "Price per piece = area × price per sqft of the processing condition.",
+            "ko": "장당 가격 = 면적 × 가공 조건별 sqft 단가."
+          }
+        }
+      }
+    }
+  }
+}

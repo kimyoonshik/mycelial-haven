@@ -32,10 +32,10 @@ npm run build      # 공개 사이트 빌드 → dist/ (콘텐츠 검사 + 페�
 
 | 경로 | 내용 |
 |------|------|
-| `src/content/data/*.json` | **운영 도구로 편집하는 데이터** (상품, 크기·가격, 성적서, 소식, SEO) |
+| `src/content/data/*.json` | **운영 도구로 편집하는 데이터** — 페이지 문구·사진·섹션 순서(`site.json`), 상품, 크기·가격, 성적서, 소식, SEO |
 | `src/content/schema.ts` | 데이터 규칙 (저장·빌드 시 자동 검사) |
-| `src/content/mycerra.ts` | 페이지 고정 문구 (영/한) |
-| `public/media/` | 상품 사진·성적서 PDF (운영 도구 업로드) |
+| `src/content/site.ts`, `src/components/site/Sections.tsx` | `site.json`을 읽어 섹션 순서·표시대로 페이지를 그림 |
+| `public/media/` | 페이지 사진(`site/`), 소재 사진(`materials/`), 상품 사진, 성적서 PDF (운영 도구 업로드) |
 | `src/pages/site`, `src/pages/shop` | 공개 페이지 |
 | `src/pages/admin` | 내부 도구 (공개 빌드에는 포함되지 않음) |
 | `cms/plugin.ts` | 빌드 시 콘텐츠 검사 + 운영 도구 로컬 API |

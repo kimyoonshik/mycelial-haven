@@ -1,70 +1,20 @@
-import facility from "@/assets/mycerra/process-facility.webp";
+import type { ReactNode } from "react";
 import { Reveal } from "@/components/site/Reveal";
 import { Container, Display, Eyebrow, PillButton, ProofBadge } from "@/components/site/primitives";
 import { claims, company, traceability } from "@/content/mycerra";
-import { useCopy, useLang } from "@/i18n/LanguageProvider";
+import { usePageCopy } from "@/content/site";
+import { Sections } from "@/components/site/Sections";
+import { useLang } from "@/i18n/LanguageProvider";
 
-const copy = {
-  en: {
-    eyebrow: "Impact",
-    title: "Sustainability with proof, not promise.",
-    intro:
-      "We develop materials that restore balance — minimizing environmental impact while maximizing circular value. Every claim on this page is linked to the document that supports it.",
-    traceEyebrow: "Traceability",
-    facilityAlt: "Controlled mycelium cultivation facility in Korea",
-    principlesEyebrow: "Our principles",
-    principlesTitle: "Less water. Less waste. More balance.",
-    principles: [
-      {
-        t: "No animal inputs",
-        b: "Cultivated independently from livestock, grazing land and feed crops — advancing animal welfare and removing deforestation risk.",
-      },
-      {
-        t: "Designed for circularity",
-        b: "No petrochemical binders and no composite layers, so the material can return to the earth at the end of its life.",
-      },
-      {
-        t: "Low-energy growth",
-        b: "Uniform growth under ambient conditions keeps energy demand low while ensuring industrial consistency.",
-      },
-    ],
-    docsQuestion: "Need our LCA or test reports for supplier due diligence?",
-    docsCta: "Request documentation",
-  },
-  ko: {
-    eyebrow: "임팩트",
-    title: "약속이 아닌 증거로 말하는 지속가능성.",
-    intro:
-      "환경 영향은 최소화하고 순환 가치는 극대화해 균형을 되찾는 소재를 개발합니다. 이 페이지의 모든 주장은 이를 뒷받침하는 문서와 연결됩니다.",
-    traceEyebrow: "원산지 추적",
-    facilityAlt: "국내 균사 배양 통제 시설",
-    principlesEyebrow: "우리의 원칙",
-    principlesTitle: "물은 적게, 폐기물은 적게, 균형은 더.",
-    principles: [
-      {
-        t: "동물성 원료 무투입",
-        b: "가축·방목지·사료작물과 무관하게 배양해 동물 복지를 높이고 산림파괴 위험을 없앱니다.",
-      },
-      {
-        t: "순환을 전제로 한 설계",
-        b: "석유화학 바인더와 복합 레이어가 없어 수명이 다하면 흙으로 돌아갈 수 있습니다.",
-      },
-      {
-        t: "저에너지 생장",
-        b: "상온에서의 균일한 생장으로 에너지 수요를 낮추면서 산업적 일관성을 확보합니다.",
-      },
-    ],
-    docsQuestion: "공급망 실사를 위해 LCA나 시험 성적서가 필요하신가요?",
-    docsCta: "문서 요청",
-  },
-};
+// 문구·사진·섹션 순서: src/content/data/site.json › pages.impact (운영 도구 "페이지" 탭)
+
 
 const Impact = () => {
-  const c = useCopy(copy);
+  const c = usePageCopy("impact");
   const { t } = useLang();
 
-  return (
-    <>
+  const sections: Record<string, ReactNode> = {
+    intro: (
       <section className="pb-20 pt-36 md:pt-44">
         <Container>
           <Eyebrow>{c.eyebrow}</Eyebrow>
@@ -74,13 +24,15 @@ const Impact = () => {
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-mc-mute">{c.intro}</p>
         </Container>
       </section>
+    ),
 
-      {/* 수치 + 근거 문서 상태 */}
+    // 수치 + 근거 문서 상태
+    claims: (
       <section className="border-t border-mc-line">
         <Container>
           <ul className="divide-y divide-mc-line">
             {claims.map((cl, i) => (
-              <Reveal as="li" key={cl.value} delay={i * 80} className="grid gap-6 py-12 md:grid-cols-12 md:items-center">
+              <Reveal as="li" key={i} delay={i * 80} className="grid gap-6 py-12 md:grid-cols-12 md:items-center">
                 <p className="font-mc-serif text-7xl font-light md:col-span-3 md:text-8xl">{cl.value}</p>
                 <div className="md:col-span-5">
                   <p className="text-sm uppercase tracking-[0.18em]">{t(cl.label)}</p>
@@ -95,12 +47,14 @@ const Impact = () => {
           </ul>
         </Container>
       </section>
+    ),
 
-      {/* 원산지 추적 · EUDR */}
+    // 원산지 추적 · EUDR
+    traceability: (
       <section className="bg-mc-ink text-mc-paper">
         <div className="grid md:grid-cols-2">
           <div className="relative min-h-[320px]">
-            <img src={facility} alt={c.facilityAlt} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+            <img src={c.facilityImage} alt={c.facilityAlt} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
           </div>
           <div className="px-5 py-20 md:px-14 md:py-28">
             <Reveal>
@@ -115,8 +69,10 @@ const Impact = () => {
           </div>
         </div>
       </section>
+    ),
 
-      {/* 원칙 3축 */}
+    // 원칙 3축
+    principles: (
       <section className="py-24 md:py-32">
         <Container>
           <Reveal>
@@ -125,13 +81,21 @@ const Impact = () => {
           </Reveal>
           <div className="mt-14 grid gap-10 md:grid-cols-3">
             {c.principles.map((p, i) => (
-              <Reveal key={p.t} delay={i * 120} className="border-t border-mc-ink pt-6">
+              <Reveal key={i} delay={i * 120} className="border-t border-mc-ink pt-6">
                 <h3 className="font-mc-serif text-2xl">{p.t}</h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-mc-mute">{p.b}</p>
               </Reveal>
             ))}
           </div>
-          <div className="mt-16 rounded-sm bg-mc-cream p-8 md:flex md:items-center md:justify-between md:p-12">
+        </Container>
+      </section>
+    ),
+
+    // 근거 문서 요청
+    docs: (
+      <section className="pb-24 md:pb-32">
+        <Container>
+          <div className="rounded-sm bg-mc-cream p-8 md:flex md:items-center md:justify-between md:p-12">
             <p className="max-w-xl font-mc-serif text-2xl leading-snug">{c.docsQuestion}</p>
             <PillButton
               href={`mailto:${company.email}?subject=${encodeURIComponent("[Mycerra] Impact documentation request")}`}
@@ -142,6 +106,12 @@ const Impact = () => {
           </div>
         </Container>
       </section>
+    ),
+  };
+
+  return (
+    <>
+      <Sections page="impact" sections={sections} />
     </>
   );
 };

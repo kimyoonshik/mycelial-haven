@@ -2,7 +2,9 @@
 // 데이터: src/content/data/*.json · 이미지·성적서: public/media/ (cms/plugin.ts 의 /__cms API 사용)
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
-import { ArrowDown, ArrowUp, Copy, ExternalLink, Plus, RefreshCw, Save, Trash2, Upload } from "lucide-react";
+import { api, ApiError, Btn, Field, inputCls, LInput, MediaPicker, Num, TOKEN } from "./cms-ui";
+import { PagesTab, type SiteData } from "./PagesTab";
+import { ArrowDown, ArrowUp, Copy, ExternalLink, Plus, RefreshCw, Save, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type {
   Commerce,
@@ -16,8 +18,9 @@ import type {
 } from "@/content/schema";
 
 type Lx = { en: string; ko: string };
-type Tab = "products" | "commerce" | "test-reports" | "news" | "seo" | "publish";
+type Tab = "site" | "products" | "commerce" | "test-reports" | "news" | "seo" | "publish";
 interface Content {
+  site: SiteData;
   products: ProductData[];
   commerce: Commerce;
   news: NewsItem[];
@@ -25,169 +28,9 @@ interface Content {
   seo: Seo;
 }
 
-const TOKEN = typeof __CMS_TOKEN__ === "string" ? __CMS_TOKEN__ : "";
 const SKU_PREFIX: Record<ConditionId, string> = { pure: "PU", embossed: "EM", reactive: "RD", finished: "FN" };
 const SQFT_PER_M2 = 10.7639104;
 const round2 = (n: number) => Math.round(n * 100) / 100;
-
-class ApiError extends Error {
-  errors?: string[];
-}
-const api = async <T,>(path: string, init: RequestInit = {}): Promise<T> => {
-  const r = await fetch(`/__cms${path}`, { ...init, headers: { "x-cms-token": TOKEN, ...(init.headers ?? {}) } });
-  const j = await r.json().catch(() => ({}));
-  if (!r.ok) {
-    const e = new ApiError(j.error ?? (j.errors ? `검사 오류 ${j.errors.length}건` : r.statusText));
-    e.errors = j.errors;
-    throw e;
-  }
-  return j as T;
-};
-
-// ---------- 작은 입력 컴포넌트 ----------
-
-const inputCls = "w-full border border-mc-line bg-white px-2.5 py-1.5 text-sm outline-none focus:border-mc-ink disabled:bg-mc-cream";
-
-const Field = ({ label, children, className, hint }: { label: string; children: ReactNode; className?: string; hint?: string }) => (
-  <label className={cn("block", className)}>
-    <span className="text-[11px] font-medium text-mc-mute">{label}</span>
-    <div className="mt-1">{children}</div>
-    {hint && <span className="mt-0.5 block text-[11px] text-mc-mute">{hint}</span>}
-  </label>
-);
-
-const LInput = ({ label, value, onChange, multiline = false }: { label: string; value: Lx; onChange: (v: Lx) => void; multiline?: boolean }) => (
-  <div className="grid gap-2 sm:grid-cols-2">
-    {(["en", "ko"] as const).map((k) => (
-      <Field key={k} label={`${label} (${k === "en" ? "영문" : "한글"})`}>
-        {multiline ? (
-          <textarea rows={2} value={value[k]} onChange={(e) => onChange({ ...value, [k]: e.target.value })} className={inputCls} />
-        ) : (
-          <input value={value[k]} onChange={(e) => onChange({ ...value, [k]: e.target.value })} className={inputCls} />
-        )}
-      </Field>
-    ))}
-  </div>
-);
-
-const Num = ({ value, onChange, step = "any" }: { value: number; onChange: (n: number) => void; step?: string }) => (
-  <input
-    type="number"
-    step={step}
-    value={Number.isFinite(value) ? value : ""}
-    onChange={(e) => onChange(e.target.value === "" ? NaN : Number(e.target.value))}
-    className={inputCls}
-  />
-);
-
-const Btn = ({
-  children,
-  onClick,
-  variant = "outline",
-  disabled,
-  title,
-}: {
-  children: ReactNode;
-  onClick: () => void;
-  variant?: "dark" | "outline" | "danger";
-  disabled?: boolean;
-  title?: string;
-}) => (
-  <button
-    type="button"
-    onClick={onClick}
-    disabled={disabled}
-    title={title}
-    className={cn(
-      "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm transition-colors disabled:opacity-40",
-      variant === "dark" && "bg-mc-ink text-mc-paper hover:bg-mc-burgundy",
-      variant === "outline" && "border border-mc-ink/25 hover:border-mc-ink",
-      variant === "danger" && "border border-red-700/40 text-red-800 hover:bg-red-50",
-    )}
-  >
-    {children}
-  </button>
-);
-
-// ---------- 미디어 선택·업로드 ----------
-
-const uploadFile = async (folder: "materials" | "products" | "reports", file: File, overwrite = false) =>
-  api<{ path: string }>(`/media/${folder}${overwrite ? "?overwrite=1" : ""}`, {
-    method: "POST",
-    headers: { "x-filename": encodeURIComponent(file.name), "Content-Type": "application/octet-stream" },
-    body: file,
-  });
-
-const MediaPicker = ({
-  folder,
-  value,
-  onChange,
-  accept,
-}: {
-  folder: "materials" | "products" | "reports";
-  value?: string | null;
-  onChange: (path: string | undefined) => void;
-  accept: string;
-}) => {
-  const [files, setFiles] = useState<{ path: string; size: number }[]>([]);
-  const [err, setErr] = useState("");
-  const load = useCallback(async () => {
-    const lists = await Promise.all(
-      (folder === "reports" ? ["reports"] : ["materials", "products"]).map((f) =>
-        api<{ files: { path: string; size: number }[] }>(`/media/${f}`),
-      ),
-    );
-    setFiles(lists.flatMap((l) => l.files));
-  }, [folder]);
-  useEffect(() => {
-    load().catch((e) => setErr(e.message));
-  }, [load]);
-
-  const onUpload = async (file: File | undefined) => {
-    if (!file) return;
-    setErr("");
-    try {
-      let r: { path: string };
-      try {
-        r = await uploadFile(folder, file);
-      } catch (e) {
-        if (e instanceof ApiError && /같은 이름/.test(e.message) && window.confirm(`${e.message}\n덮어쓸까요?`))
-          r = await uploadFile(folder, file, true);
-        else throw e;
-      }
-      await load();
-      onChange(r.path);
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : String(e));
-    }
-  };
-
-  return (
-    <div className="space-y-2">
-      <div className="flex flex-wrap items-center gap-2">
-        <select value={value ?? ""} onChange={(e) => onChange(e.target.value || undefined)} className={cn(inputCls, "max-w-xs")}>
-          <option value="">(없음)</option>
-          {files.map((f) => (
-            <option key={f.path} value={f.path}>
-              {f.path.replace("/media/", "")} · {Math.round(f.size / 1024)}KB
-            </option>
-          ))}
-        </select>
-        <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-mc-ink/25 px-3.5 py-1.5 text-sm hover:border-mc-ink">
-          <Upload className="h-3.5 w-3.5" /> 업로드
-          <input type="file" accept={accept} className="sr-only" onChange={(e) => onUpload(e.target.files?.[0])} />
-        </label>
-        {value && (
-          <a href={value} target="_blank" rel="noreferrer" className="text-xs underline">
-            열기
-          </a>
-        )}
-      </div>
-      {value && folder !== "reports" && <img src={value} alt="" className="h-28 w-28 border border-mc-line object-cover" />}
-      {err && <p className="text-xs text-red-700">{err}</p>}
-    </div>
-  );
-};
 
 // ---------- 탭: 상품 ----------
 
@@ -745,6 +588,7 @@ const PublishTab = () => {
 // ---------- 화면 ----------
 
 const TABS: { id: Tab; label: string }[] = [
+  { id: "site", label: "페이지" },
   { id: "products", label: "상품" },
   { id: "commerce", label: "크기·가격" },
   { id: "test-reports", label: "성적서" },
@@ -754,7 +598,8 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 const ContentManager = () => {
-  const [tab, setTab] = useState<Tab>("products");
+  const [tab, setTab] = useState<Tab>("site");
+  const [previewTick, setPreviewTick] = useState(0);
   const [saved, setSaved] = useState<Content | null>(null);
   const [draft, setDraft] = useState<Content | null>(null);
   const [status, setStatus] = useState<{ kind: "ok" | "error"; text: string; errors?: string[] } | null>(null);
@@ -807,7 +652,11 @@ const ContentManager = () => {
     try {
       await api(`/content/${k}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(draft[k]) });
       setSaved({ ...saved!, [k]: structuredClone(draft[k]) });
-      setStatus({ kind: "ok", text: "저장했습니다. 사이트 미리보기 탭은 새로고침하면 반영됩니다." });
+      setPreviewTick((n) => n + 1);
+      setStatus({
+        kind: "ok",
+        text: k === "site" ? "저장했습니다. 미리보기가 저장한 내용으로 갱신됩니다." : "저장했습니다. 사이트 미리보기 탭은 새로고침하면 반영됩니다.",
+      });
     } catch (e) {
       setStatus({ kind: "error", text: e instanceof Error ? e.message : String(e), errors: e instanceof ApiError ? e.errors : undefined });
     }
@@ -816,7 +665,7 @@ const ContentManager = () => {
   return (
     <div className="min-h-screen bg-mc-paper font-mc-sans text-mc-ink">
       <header className="sticky top-0 z-10 border-b border-mc-line bg-mc-paper/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-6 py-3">
+        <div className="mx-auto flex max-w-[1800px] flex-wrap items-center justify-between gap-3 px-6 py-3">
           <div>
             <p className="text-[10px] uppercase tracking-[0.2em] text-mc-mute">Internal · 운영 도구</p>
             <h1 className="font-mc-serif text-2xl">Mycerra 콘텐츠 관리</h1>
@@ -847,7 +696,7 @@ const ContentManager = () => {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1400px] px-6 py-8">
+      <main className="mx-auto max-w-[1800px] px-6 py-8">
         {tab !== "publish" && (
           <div className="mb-6 flex flex-wrap items-center gap-3">
             <Btn variant="dark" onClick={() => save(tab)} disabled={!dirty[tab]}>
@@ -871,6 +720,14 @@ const ContentManager = () => {
           </ul>
         )}
 
+        {tab === "site" && (
+          <>
+            <p className="mb-4 text-xs text-mc-mute">
+              수정 → 저장하면 오른쪽 미리보기에 반영됩니다. 섹션 구성(추가·삭제)은 디자인과 짝을 이루므로 순서 변경·숨기기만 할 수 있습니다.
+            </p>
+            <PagesTab data={draft.site} setData={set("site")} tick={previewTick} />
+          </>
+        )}
         {tab === "products" && <ProductsTab data={draft.products} setData={set("products")} commerce={draft.commerce} />}
         {tab === "commerce" && <CommerceTab data={draft.commerce} setData={set("commerce")} />}
         {tab === "test-reports" && <TestsTab data={draft["test-reports"]} setData={set("test-reports")} />}
