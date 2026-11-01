@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Analytics } from "@/components/site/Analytics";
+import { seller } from "@/content/commerce";
 import { SocialLinks } from "@/components/site/Social";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { Menu, ShoppingBag, X } from "lucide-react";
@@ -188,6 +190,8 @@ const SiteFooter = () => {
           <a href={`mailto:${company.email}`} className="opacity-80 hover:opacity-100">
             {company.email}
           </a>
+          <p className="mt-2 text-mc-paper/60">{seller.phone}</p>
+          <p className="mt-2 text-mc-paper/60">{t({ en: seller.address, ko: seller.addressKo })}</p>
           <p className="mt-4 text-mc-paper/60">{t(company.origin)}.</p>
           <SocialLinks className="mt-6 text-mc-paper" />
         </div>
@@ -236,6 +240,7 @@ export const SiteLayout = () => {
   return (
     <div className="min-h-screen bg-mc-paper font-mc-sans text-mc-ink antialiased print:bg-white">
       <ScrollManager />
+      <Analytics />
       <SiteHeader />
       <main>
         <Outlet />

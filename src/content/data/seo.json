@@ -92,5 +92,9 @@
     "naver": "",
     "bing": ""
   },
-  "indexNowKey": "b9da5ba59184c314fa6639d76ee5262d"
+  "indexNowKey": "b9da5ba59184c314fa6639d76ee5262d",
+  "analytics": {
+    "ga4": "",
+    "naver": ""
+  }
 }

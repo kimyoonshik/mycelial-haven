@@ -527,6 +527,17 @@ const SeoTab = ({ data, setData }: { data: Seo; setData: (d: Seo) => void }) => 
       </div>
     </section>
     <section className="space-y-3 border border-mc-line bg-white p-4">
+      <p className="font-medium">방문자 분석 (입력하면 분석 시작 + 쿠키 동의 배너 표시, 비우면 꺼짐 — docs/seo.md 5장)</p>
+      <div className="grid gap-3 md:grid-cols-2">
+        <Field label="Google Analytics 4 측정 ID" hint="예: G-AB12CD34EF">
+          <input value={data.analytics.ga4} placeholder="G-XXXXXXXXXX" onChange={(e) => setData({ ...data, analytics: { ...data.analytics, ga4: e.target.value.trim() } })} className={inputCls} />
+        </Field>
+        <Field label="네이버 애널리틱스 사이트 ID" hint="analytics.naver.com 에서 발급">
+          <input value={data.analytics.naver} onChange={(e) => setData({ ...data, analytics: { ...data.analytics, naver: e.target.value.trim() } })} className={inputCls} />
+        </Field>
+      </div>
+    </section>
+    <section className="space-y-3 border border-mc-line bg-white p-4">
       <p className="font-medium">검색엔진 소유 확인 코드 (docs/seo.md 2장 참고)</p>
       <div className="grid gap-3 md:grid-cols-3">
         {VERIFY_FIELDS.map((f) => (

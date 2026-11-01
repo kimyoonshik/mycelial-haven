@@ -13,6 +13,7 @@ import { useCopy, useLang } from "@/i18n/LanguageProvider";
 import { useSeo } from "@/lib/seo";
 import NotFound from "@/pages/site/NotFound";
 import { ShareButtons } from "@/components/site/Social";
+import { trackEvent } from "@/lib/analytics";
 import seoData from "@/content/data/seo.json";
 
 const copy = {
@@ -211,6 +212,11 @@ const ProductDetail = () => {
                   type="button"
                   onClick={() => {
                     add(product.sku, size.id, qty);
+                    trackEvent("add_to_cart", {
+                      currency: "USD",
+                      value: round2(unit * qty),
+                      items: [{ item_id: product.sku, item_name: product.name, item_variant: size.id, item_category: product.category, price: unit, quantity: qty }],
+                    });
                     setAdded(true);
                   }}
                   className="w-full rounded-full bg-mc-ink px-8 py-3.5 text-sm text-mc-paper transition-colors hover:bg-mc-burgundy"

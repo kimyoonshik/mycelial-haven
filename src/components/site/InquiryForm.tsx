@@ -2,6 +2,7 @@ import { useState, type FormEvent, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { company, expressions, inquiryTypes, type InquiryTypeId } from "@/content/mycerra";
 import { useCopy, useLang, type L } from "@/i18n/LanguageProvider";
+import { trackEvent } from "@/lib/analytics";
 
 const stages: L[] = [
   { en: "Swatch kit", ko: "스와치 키트" },
@@ -115,6 +116,7 @@ export const InquiryForm = ({ initialType = "brand", initialRef }: Props) => {
     }
     lines.push("", form.message);
     const subject = `[Mycerra] ${typeLabel} — ${form.company || form.name}`;
+    trackEvent("generate_lead", { lead_type: "inquiry" });
     window.location.href = `mailto:${company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
     setSent(true);
   };

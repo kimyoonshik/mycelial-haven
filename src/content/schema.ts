@@ -51,6 +51,7 @@ export const CommerceSchema = z.object({
     brand: text,
     email: z.string().email(),
     address: text,
+    addressKo: text,
     businessRegNo: text,
     phone: text,
     countryOfOrigin: text,
@@ -215,6 +216,11 @@ export const SeoSchema = z.object({
   verification: z.object({ google: code, naver: code, bing: code }),
   // IndexNow(Bing·Naver·Yandex 즉시 색인) 공개 키 — 사이트 루트에 같은 이름의 .txt 파일로 게시된다
   indexNowKey: z.string().regex(/^[a-f0-9]{32}$/),
+  // 방문자 분석 — 비어 있으면 분석 코드와 동의 배너를 넣지 않는다
+  analytics: z.object({
+    ga4: z.string().regex(/^(G-[A-Z0-9]{4,16})?$/, "GA4 측정 ID는 G- 로 시작합니다 (예: G-AB12CD34EF)"),
+    naver: z.string().regex(/^([a-z0-9]{6,24})?$/i, "네이버 애널리틱스 사이트 ID (영문·숫자)"),
+  }),
 });
 
 // 사이트 코드용 타입. 프로젝트가 strict 모드가 아니라 z.infer 가 모든 필드를 선택 항목으로 만들기 때문에
@@ -247,6 +253,7 @@ export interface Commerce {
     brand: string;
     email: string;
     address: string;
+    addressKo: string;
     businessRegNo: string;
     phone: string;
     countryOfOrigin: string;
@@ -291,6 +298,7 @@ export interface Seo {
   xHandle: string;
   verification: { google: string; naver: string; bing: string };
   indexNowKey: string;
+  analytics: { ga4: string; naver: string };
 }
 
 // 스키마 ↔ 타입 대조 (필드 이름이 어긋나면 컴파일 오류)

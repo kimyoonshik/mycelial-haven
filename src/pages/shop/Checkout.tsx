@@ -8,6 +8,7 @@ import { useCart, type CartRow } from "@/shop/CartProvider";
 import { buildOrder, loadPayPal, type Buyer, type PayPalCapture } from "@/shop/paypal";
 import { loadBuyer, saveBuyer } from "@/shop/buyerStore";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
+import { trackEvent } from "@/lib/analytics";
 
 const copy = {
   en: {
@@ -227,6 +228,11 @@ const Checkout = () => {
   const onPaid = useCallback(
     (capture: PayPalCapture) => {
       setPaid({ ref: orderRef, capture });
+      trackEvent("purchase", {
+        transaction_id: orderRef,
+        currency: "USD",
+        value: Number(capture.purchase_units?.[0]?.payments?.captures?.[0]?.amount?.value ?? 0),
+      });
       clear();
     },
     [orderRef, clear],

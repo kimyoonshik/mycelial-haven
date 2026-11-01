@@ -23,6 +23,7 @@ import {
 import { toRows, useCart, volumeOf, type CartLine } from "@/shop/CartProvider";
 import { loadBuyer } from "@/shop/buyerStore";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
+import { trackEvent } from "@/lib/analytics";
 
 const copy = {
   en: {
@@ -207,6 +208,7 @@ const PurchaseOrder = () => {
       `Notes: ${form.notes || "-"}`,
     ].join("\n");
     const subject = `[Mycerra PO Request] ${ref} — ${form.company} (${regularSqft.toFixed(0)} sqft)`;
+    trackEvent("generate_lead", { lead_type: "purchase_order_request", currency: "USD", value: subtotal, country: form.country });
     window.location.href = `mailto:${seller.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSent(true);
   };
