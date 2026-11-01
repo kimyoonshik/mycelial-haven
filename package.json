@@ -15,6 +15,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
+    "site": "npm run build && vite preview --host 127.0.0.1 --port 8080 --strictPort --open /",
     "clone": "node tools/site-cloner/clone.mjs"
   },
   "dependencies": {
