@@ -29,7 +29,9 @@ const setMeta = (attr: "name" | "property", key: string, content: string) => {
 };
 
 const apply = (m: Meta, path: string) => {
-  const url = `${seo.siteUrl}${path === "/" ? "/" : path}`;
+  // 실제 주소(/ko/… 포함)를 쓴다 — useLocation 의 경로에는 언어 접두어가 빠져 있다
+  const real = typeof window !== "undefined" ? window.location.pathname : path;
+  const url = `${seo.siteUrl}${real === "/" ? "/" : real}`;
   const image = `${seo.siteUrl}${m.image ?? seo.defaultImage}`;
   document.title = m.title;
   setMeta("name", "description", m.description);

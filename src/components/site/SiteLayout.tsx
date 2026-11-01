@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { pathFor } from "@/i18n/paths";
 import { Analytics } from "@/components/site/Analytics";
 import { seller } from "@/content/commerce";
 import { SocialLinks } from "@/components/site/Social";
@@ -24,7 +25,9 @@ const requestLabel: L = { en: "Request swatches", ko: "스와치 요청" };
 
 // 기본 영문, 우측 상단 한/영 전환
 const LangToggle = ({ overHero }: { overHero: boolean }) => {
-  const { lang, setLang } = useLang();
+  const { lang, setLang, urlMode } = useLang();
+  const { pathname, search, hash } = useLocation();
+  // 주소 방식: 같은 페이지의 다른 언어 주소로 가는 링크 (pathname 은 /ko 를 뺀 값)
   return (
     <div
       role="group"
@@ -34,24 +37,37 @@ const LangToggle = ({ overHero }: { overHero: boolean }) => {
         overHero ? "border-white/40" : "border-mc-ink/20",
       )}
     >
-      {(["en", "ko"] as const).map((l) => (
-        <button
-          key={l}
-          type="button"
-          onClick={() => setLang(l)}
-          aria-pressed={lang === l}
-          className={cn(
-            "rounded-full px-2.5 py-1 transition-colors",
-            lang === l
-              ? overHero
-                ? "bg-white text-mc-ink"
-                : "bg-mc-ink text-mc-paper"
-              : "opacity-70 hover:opacity-100",
-          )}
-        >
-          {l === "en" ? "EN" : "한글"}
-        </button>
-      ))}
+      {(["en", "ko"] as const).map((l) => {
+        const cls = cn(
+          "rounded-full px-2.5 py-1 transition-colors",
+          lang === l
+            ? overHero
+              ? "bg-white text-mc-ink"
+              : "bg-mc-ink text-mc-paper"
+            : "opacity-70 hover:opacity-100",
+        );
+        const label = l === "en" ? "EN" : "한글";
+        return urlMode ? (
+          <a
+            key={l}
+            href={pathFor(l, pathname) + search + hash}
+            hrefLang={l}
+            lang={l}
+            aria-current={lang === l ? "true" : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              setLang(l);
+            }}
+            className={cls}
+          >
+            {label}
+          </a>
+        ) : (
+          <button key={l} type="button" onClick={() => setLang(l)} aria-pressed={lang === l} className={cls}>
+            {label}
+          </button>
+        );
+      })}
     </div>
   );
 };

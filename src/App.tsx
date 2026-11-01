@@ -3,6 +3,7 @@ import { BrowserRouter, MemoryRouter, Route } from "react-router-dom";
 import { LanguageProvider } from "./i18n/LanguageProvider";
 import { CartProvider } from "./shop/CartProvider";
 import { AppRoutes, Page, type PublicPages } from "./AppRoutes";
+import { KO_BASE, isKoPath } from "./i18n/paths";
 
 // 첫 화면(홈)만 즉시 불러오고, 나머지 페이지는 이동할 때 내려받는다
 const pages: PublicPages = {
@@ -26,12 +27,15 @@ const ContentManager = ADMIN ? lazy(() => import("./pages/admin/ContentManager")
 const Legacy = import.meta.env.DEV ? lazy(() => import("./pages/Index")) : null;
 
 // 주소 경로를 쓸 수 없는 미리보기(예: 공유용 임시 페이지)에서는 VITE_ROUTER=memory 로 빌드한다
-const Router = import.meta.env.VITE_ROUTER === "memory" ? MemoryRouter : BrowserRouter;
+const memory = import.meta.env.VITE_ROUTER === "memory";
+const Router = memory ? MemoryRouter : BrowserRouter;
+// 한국어 주소(/ko/…)로 들어오면 한국어, 그 밖은 영문. 사이트 안의 링크는 /ko 가 자동으로 붙는다(basename)
+const ko = !memory && typeof window !== "undefined" && isKoPath(window.location.pathname);
 
 const App = () => (
-  <LanguageProvider>
+  <LanguageProvider lang={memory ? undefined : ko ? "ko" : "en"}>
     <CartProvider>
-      <Router>
+      <Router basename={ko ? KO_BASE : undefined}>
         <AppRoutes
           pages={pages}
           extra={

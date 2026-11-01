@@ -17,7 +17,7 @@ export const Analytics = () => {
 
   useEffect(() => {
     // 제목이 바뀐 뒤 기록되도록 다음 틱에
-    const id = window.setTimeout(() => trackPageView(pathname + search, lang), 0);
+    const id = window.setTimeout(() => trackPageView(window.location.pathname + search, lang), 0);
     return () => window.clearTimeout(id);
     // 언어 전환만으로는 새 페이지로 기록하지 않는다
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -48,7 +48,12 @@ const renderBody = (path) => {
 const NO_BODY = ["/shop/po", "/shop/cart", "/shop/checkout"];
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-const isNoindex = (path) => staging || seo.noindex.some((p) => path.startsWith(p));
+// 언어별 주소: 영문 /technology · 한국어 /ko/technology (네이버 등 한국어 검색용)
+const LANGS = ["en", "ko"];
+const koPath = (p) => (p === "/" ? "/ko" : `/ko${p}`);
+const langPath = (lang, p) => (lang === "ko" ? koPath(p) : p);
+const basePath = (p) => (p === "/ko" ? "/" : p.startsWith("/ko/") ? p.slice(3) : p);
+const isNoindex = (path) => staging || seo.noindex.some((p) => basePath(path).startsWith(p));
 
 // ---------- 구조화 데이터 (Google 검색 결과의 회사 정보·상품 정보) ----------
 const seller = commerce.seller;
@@ -85,14 +90,16 @@ const verifyTags = [
   .filter(Boolean)
   .join("\n    ");
 
-const render = (path, { title, description, image, ld = [] }, { noindex = isNoindex(path), body = "" } = {}) => {
+const render = (path, { title, description, image, ld = [], lang = "en" }, { noindex = isNoindex(path), body = "" } = {}) => {
   const url = `${siteUrl}${path}`;
+  const base = basePath(path);
   const img = `${siteUrl}${image ?? seo.defaultImage}`;
   const set = (html, re, value) => {
     if (!re.test(html)) throw new Error(`prerender: index.html 에서 ${re} 를 찾지 못했습니다`);
     return html.replace(re, value);
   };
   let html = template;
+  html = set(html, /<html lang="en">/, `<html lang="${lang}">`);
   html = set(html, /<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`);
   html = set(html, /(<meta name="description" content=")[^"]*(")/, `$1${esc(description)}$2`);
   html = set(html, /(<meta name="robots" content=")[^"]*(")/, `$1${noindex ? "noindex, nofollow" : "index, follow"}$2`);
@@ -103,8 +110,16 @@ const render = (path, { title, description, image, ld = [] }, { noindex = isNoin
   html = set(html, /(<meta property="og:image" content=")[^"]*(")/, `$1${img}$2`);
   html = set(html, /(<meta name="twitter:image" content=")[^"]*(")/, `$1${img}$2`);
   const extra = [
-    `<meta property="og:locale" content="en_US" />`,
-    `<meta property="og:locale:alternate" content="ko_KR" />`,
+    `<meta property="og:locale" content="${lang === "ko" ? "ko_KR" : "en_US"}" />`,
+    `<meta property="og:locale:alternate" content="${lang === "ko" ? "en_US" : "ko_KR"}" />`,
+    // 같은 페이지의 영문·한국어 주소를 서로 알린다 (구글·네이버가 언어별로 맞는 주소를 보여 줌)
+    ...(noindex
+      ? []
+      : [
+          `<link rel="alternate" hreflang="en" href="${siteUrl}${base}" />`,
+          `<link rel="alternate" hreflang="ko" href="${siteUrl}${koPath(base)}" />`,
+          `<link rel="alternate" hreflang="x-default" href="${siteUrl}${base}" />`,
+        ]),
     `<meta name="twitter:title" content="${esc(title)}" />`,
     `<meta name="twitter:description" content="${esc(description)}" />`,
     seo.xHandle && `<meta name="twitter:site" content="${esc(seo.xHandle)}" />`,
@@ -128,13 +143,16 @@ const write = (path, html) => {
 const pages = [];
 
 // 1) seo.json 에 등록된 페이지
-for (const [path, meta] of Object.entries(seo.routes)) {
-  write(path, render(path, { title: meta.title.en, description: meta.description.en }, { body: NO_BODY.includes(path) ? "" : renderBody(path) }));
-  pages.push(path);
+for (const lang of LANGS) {
+  for (const [p, meta] of Object.entries(seo.routes)) {
+    const path = langPath(lang, p);
+    write(path, render(path, { title: meta.title[lang], description: meta.description[lang], lang }, { body: NO_BODY.includes(p) ? "" : renderBody(path) }));
+    pages.push(path);
+  }
 }
 
 // 2) 상품 상세
-const conditionTitle = Object.fromEntries(commerce.conditions.map((c) => [c.id, c.title.en]));
+const conditionTitleOf = (lang) => Object.fromEntries(commerce.conditions.map((c) => [c.id, c.title[lang]]));
 const sqft = (s) => Math.round(((s.widthCm * s.heightCm) / 10000) * 10.7639104 * 100) / 100;
 const unitPrice = (p, s) => {
   const o = commerce.priceOverrides[`${p.condition}:${s.id}`];
@@ -143,15 +161,21 @@ const unitPrice = (p, s) => {
   return Math.round(sqft(s) * (s.kind === "brochure" ? s.pieces ?? 1 : 1) * cond.priceUSDPerSqft * 100) / 100;
 };
 const sizesOf = (p) => (p.sizes ? commerce.sizes.filter((s) => p.sizes.includes(s.id)) : commerce.sizes.filter((s) => s.kind === "regular"));
+for (const lang of LANGS) {
+const conditionTitle = conditionTitleOf(lang);
+const ko = lang === "ko";
 for (const p of products) {
-  const path = `/shop/p/${p.sku}`;
+  const path = langPath(lang, `/shop/p/${p.sku}`);
   const brochure = sizesOf(p).every((s) => s.kind === "brochure");
   const prices = sizesOf(p).map((s) => unitPrice(p, s));
   const product = {
     "@type": "Product",
-    name: `${p.name} — Mycerra™ ${brochure ? "swatch brochure" : "pure mycelium leather alternative"}`,
+    name: ko
+      ? `${p.name} — Mycerra™ ${brochure ? "스와치 브로셔" : "순수 균사 가죽 대체 소재"}`
+      : `${p.name} — Mycerra™ ${brochure ? "swatch brochure" : "pure mycelium leather alternative"}`,
     sku: p.sku,
-    description: p.description.en,
+    description: p.description[lang],
+    inLanguage: lang,
     ...(p.image && { image: `${siteUrl}${p.image}` }),
     brand: { "@type": "Brand", name: "Mycerra" },
     manufacturer: { "@id": orgId },
@@ -174,28 +198,37 @@ for (const p of products) {
   const breadcrumb = {
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Shop", item: `${siteUrl}/shop` },
-      { "@type": "ListItem", position: 2, name: conditionTitle[p.condition], item: `${siteUrl}/shop?cat=${p.condition}` },
+      { "@type": "ListItem", position: 1, name: ko ? "쇼핑몰" : "Shop", item: `${siteUrl}${langPath(lang, "/shop")}` },
+      { "@type": "ListItem", position: 2, name: conditionTitle[p.condition], item: `${siteUrl}${langPath(lang, "/shop")}?cat=${p.condition}` },
       { "@type": "ListItem", position: 3, name: `${p.name} (${p.sku})`, item: `${siteUrl}${path}` },
     ],
   };
   write(
     path,
     render(path, {
-      title: `${p.name} (${p.sku}) — ${conditionTitle[p.condition]} | Mycerra™ Shop`,
-      description: brochure
-        ? `${p.description.en} Swatch brochure of ten 30 × 30 cm swatches from SAVE EARTH Inc.`
-        : `${p.description.en} Regular sheets and swatch brochures from SAVE EARTH Inc.`,
+      title: `${p.name} (${p.sku}) — ${conditionTitle[p.condition]} | Mycerra™ ${ko ? "쇼핑몰" : "Shop"}`,
+      description: ko
+        ? brochure
+          ? `${p.description.ko} 세이브어스(주)의 30 × 30 cm 스와치 10장 브로셔.`
+          : `${p.description.ko} 세이브어스(주)의 순수 균사 원단 — 정규원단과 스와치 브로셔.`
+        : brochure
+          ? `${p.description.en} Swatch brochure of ten 30 × 30 cm swatches from SAVE EARTH Inc.`
+          : `${p.description.en} Regular sheets and swatch brochures from SAVE EARTH Inc.`,
       image: p.image,
       ld: [product, breadcrumb],
+      lang,
     }, { body: renderBody(path) }),
   );
   pages.push(path);
 }
+}
 
 // 3) 검색 제외 페이지 (장바구니·결제) — 직접 접속 대비 파일만 생성
-for (const path of ["/shop/cart", "/shop/checkout"]) {
-  write(path, render(path, { title: "Mycerra™ Shop", description: "Mycerra™ shop" }, { noindex: true }));
+for (const lang of LANGS) {
+  for (const p of ["/shop/cart", "/shop/checkout"]) {
+    const path = langPath(lang, p);
+    write(path, render(path, { title: "Mycerra™ Shop", description: "Mycerra™ shop", lang }, { noindex: true }));
+  }
 }
 
 // 4) 404 — 호스팅이 없는 주소에 404.html 을 응답하면 앱이 404 화면을 그린다
@@ -226,7 +259,7 @@ const AI_BOTS = [
   "PerplexityBot", "Perplexity-User",
   "Google-Extended", "Applebot-Extended", "Amazonbot", "Meta-ExternalAgent", "CCBot",
 ];
-const rules = ["Allow: /", ...seo.noindex.map((p) => `Disallow: ${p}`)];
+const rules = ["Allow: /", ...seo.noindex.flatMap((p) => [p, koPath(p)]).map((p) => `Disallow: ${p}`)];
 writeFileSync(
   join(dist, "robots.txt"),
   staging ? "User-agent: *\nDisallow: /\n" : [
@@ -285,13 +318,20 @@ if (!staging) {
     ...claims,
     ...reported.map((t) => `- Test result — ${en(t.name)}: ${t.result} ${t.unit} (${t.method}, ${t.lab}, ${t.reportDate})${t.reportUrl ? ` ${siteUrl}${t.reportUrl}` : ""}`),
     "",
-    "## Pages",
+    "## Pages (English · 한국어 /ko)",
     pageLine("/", "Home"),
     pageLine("/mycerra", "Material library"),
     pageLine("/technology", "Technology and test reports"),
     pageLine("/impact", "Impact and evidence"),
     pageLine("/shop", "Shop"),
     pageLine("/work-with-us", "Work with us"),
+    `- [한국어 사이트](${siteUrl}/ko): Mycerra™ 순수 균사 가죽 대체 소재 — 소재·기술·임팩트·쇼핑몰 한국어 페이지`,
+    "",
+    "## 한국어 요약",
+    "- Mycerra™(마이세라)는 세이브어스(주)가 경기도 안성에서 배양·안정화·마감하는 100% 순수 균사 매트 기반 가죽 대체 소재입니다.",
+    "- 섬유·고분자 배접, 지지체, 플라스틱 층이 없습니다.",
+    "- 바이오 기반 탄소 99% (ASTM D6866-24, Beta Analytic, 2026년 1월 시험 성적서).",
+    `- 주소: ${seller.addressKo} · 대표 전화 ${seller.phone} · ${seller.email}`,
     "",
     "## Products available now",
     ...available.map((p) => `- [${p.name} (${p.sku})](${siteUrl}/shop/p/${p.sku}): ${p.description.en}`),
@@ -311,4 +351,4 @@ if (staging) {
   writeFileSync(ht, `# 시험용 사이트: 검색엔진 차단\n<IfModule mod_headers.c>\n  Header always set X-Robots-Tag "noindex, nofollow"\n</IfModule>\n\n` + readFileSync(ht, "utf8"));
 }
 
-console.log(`prerender${staging ? " [STAGING · noindex]" : ""}: ${pages.length + 2} pages (${ssrCount} with full content), sitemap ${staging ? 0 : indexable.length} URLs, site ${siteUrl}`);
+console.log(`prerender${staging ? " [STAGING · noindex]" : ""}: ${pages.length + 4} pages (${ssrCount} with full content), sitemap ${staging ? 0 : indexable.length} URLs, site ${siteUrl}`);

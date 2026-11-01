@@ -14,6 +14,7 @@ import { useSeo } from "@/lib/seo";
 import NotFound from "@/pages/site/NotFound";
 import { ShareButtons } from "@/components/site/Social";
 import { trackEvent } from "@/lib/analytics";
+import { pathFor } from "@/i18n/paths";
 import seoData from "@/content/data/seo.json";
 
 const copy = {
@@ -76,7 +77,7 @@ const ProductDetail = () => {
   const { sku = "" } = useParams();
   const product = productBySku(sku);
   const c = useCopy(copy);
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { add } = useCart();
   const firstRegular = product?.sizes.find((s) => s.kind === "regular") ?? product?.sizes[0];
   const [sizeId, setSizeId] = useState(firstRegular?.id ?? "");
@@ -255,7 +256,7 @@ const ProductDetail = () => {
                 ))}
               </dl>
               <div className="mt-6">
-                <ShareButtons url={`${seoData.siteUrl}/shop/p/${product.sku}`} title={`${product.name} (${product.sku}) — Mycerra™`} />
+                <ShareButtons url={`${seoData.siteUrl}${pathFor(lang, `/shop/p/${product.sku}`)}`} title={`${product.name} (${product.sku}) — Mycerra™`} />
               </div>
               <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
                 <TextLink to="/technology#test-reports">{c.reports}</TextLink>

@@ -9,7 +9,8 @@
 
 | 구분 | 내용 | 효과 |
 |------|------|------|
-| 페이지별 HTML | 66개 주소마다 제목·설명·대표 이미지가 들어간 HTML 파일 생성 | JS를 실행하지 않는 검색엔진·카카오톡·페이스북도 내용을 읽음 |
+| 페이지별 HTML | 영문 66개 + **한국어 66개(/ko/…)** 주소마다 제목·설명·대표 이미지가 들어간 HTML 파일 생성 | JS를 실행하지 않는 검색엔진·카카오톡·페이스북도 내용을 읽음 |
+| **한국어 주소** | `www.saveearth.kr/ko` · `/ko/technology` · `/ko/shop/p/EM-01` … 한국어 제목·설명·본문, `<html lang="ko">`. 영문·한국어 페이지를 서로 연결(hreflang)하고 사이트맵에 모두 등록 | **네이버·구글 한국어 검색**에 한국어 페이지가 노출. 영문 검색엔 영문 페이지 |
 | 검색 결과 회사 정보 | 모든 페이지에 Organization·WebSite 구조화 데이터(JSON-LD) — 회사명, 주소, 전화, 이메일, 브랜드, SNS 계정 | Google 지식 패널·브랜드 검색 정확도 |
 | 상품 정보 | 상품 페이지마다 Product(가격 범위·재고·원산지·소재)와 경로(BreadcrumbList) | Google 쇼핑·상품 리치 결과 후보 |
 | sitemap.xml | 공개 페이지 64개 + 상품 사진 (이미지 검색) | 검색엔진이 새 페이지를 빨리 발견 |
@@ -29,10 +30,11 @@
 | 순서 | 검색엔진 | 할 일 |
 |:---:|---------|------|
 | 1 | **Google Search Console** (search.google.com/search-console) | 속성 추가 → URL 접두어 `https://www.saveearth.kr` → **HTML 태그** 방식 선택 → `content="…"` 값만 복사 → 운영 도구 SEO 탭 "Google" 칸에 붙여넣기 → 저장·게시 → 확인 버튼 → **Sitemaps** 메뉴에 `sitemap.xml` 제출 |
-| 2 | **네이버 서치어드바이저** (searchadvisor.naver.com) | 사이트 등록 → HTML 태그 방식 → 값 복사 → "네이버" 칸 → 게시 → 소유 확인 → **요청 › 사이트맵 제출** `https://www.saveearth.kr/sitemap.xml` |
+| 2 | **네이버 서치어드바이저** (searchadvisor.naver.com) | 사이트 등록 → HTML 태그 방식 → 값 복사 → "네이버" 칸 → 게시 → 소유 확인 → **요청 › 사이트맵 제출** `https://www.saveearth.kr/sitemap.xml` → **요청 › 웹 페이지 수집**에 `https://www.saveearth.kr/ko` 를 먼저 요청 |
 | 3 | **Bing 웹마스터 도구** (bing.com/webmasters) | Google Search Console 계정으로 가져오기(가장 빠름) 또는 HTML 태그 → "Bing" 칸 |
 | 4 | **다음(Daum) 검색 등록** (register.search.daum.net) | 사이트 등록 신청 (태그 불필요) |
 
+- 네이버 노출을 더 키우려면: **네이버 스마트플레이스**(smartplace.naver.com)에 회사 정보(주소·전화·홈페이지 `https://www.saveearth.kr/ko`) 등록 — 네이버 지도·업체 검색에 표시됩니다. 네이버 블로그를 운영하면 블로그 글에서 `/ko` 페이지로 연결하세요.
 - 등록 후 노출까지 보통 **며칠~몇 주**. Search Console의 "URL 검사 → 색인 생성 요청"으로 주요 페이지(/, /mycerra, /shop)를 먼저 요청하면 빨라집니다.
 - 매달 Search Console에서 **검색어·클릭수·오류**를 확인합니다.
 - **게시할 때마다** (상품·소식 추가 후): 사무실 PC에서 `npm run indexnow` 실행 → Bing·네이버에 즉시 알림 (정식 주소에 게시된 뒤에만)
@@ -88,5 +90,4 @@
 
 | 항목 | 내용 | 비고 |
 |------|------|------|
-| 한국어 전용 주소 | 지금 한글은 같은 주소에서 버튼으로 바꾸는 방식이라 **검색엔진에는 영문만** 보입니다. 네이버·국내 검색 노출을 원하면 `/ko/…` 한국어 페이지를 따로 생성 | 개발 1~2일 |
 | SNS 자동 게시 | 소식 게시 시 SNS에 자동 업로드 | 계정 개설 후 검토 |
