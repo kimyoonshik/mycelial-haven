@@ -28,19 +28,13 @@ if ! command -v git >/dev/null 2>&1; then
   pause_exit 1
 fi
 
-echo "  [1/3] 최신 내용을 받는 중입니다 (git pull)..."
-if ! git pull --ff-only; then
-  echo
-  echo "  [주의] 최신 내용을 받지 못했습니다."
-  echo "         인터넷 연결, GitHub 로그인, 게시하지 않은 변경이 있는지 확인하세요."
-  echo "         지금 Mac에 있는 내용으로 계속 진행합니다."
-  echo
-fi
+echo "  [1/3] 최신 내용을 받는 중입니다..."
+node scripts/update.cjs
 
 echo "  [2/3] 필요한 프로그램을 확인하는 중입니다..."
 if ! node scripts/needs-install.cjs; then
   echo "         처음 실행이거나 구성이 바뀌어 설치합니다. 몇 분 걸릴 수 있습니다."
-  if ! npm install --no-audit --no-fund; then
+  if ! npm ci --no-audit --no-fund; then
     echo
     echo "  [오류] 프로그램 설치에 실패했습니다. 인터넷 연결을 확인하고 다시 실행하세요."
     pause_exit 1

@@ -35,16 +35,15 @@ where git >nul 2>nul
 if errorlevel 1 (
   echo  [주의] Git 이 없어 최신 내용을 받지 못합니다. 지금 PC의 내용으로 엽니다.
 ) else (
-  echo  [1/3] 최신 내용을 받는 중입니다 ^(git pull^)...
-  git pull --ff-only
-  if errorlevel 1 echo  [주의] 최신 내용을 받지 못했습니다. 지금 PC의 내용으로 엽니다.
+  echo  [1/3] 최신 내용을 받는 중입니다...
+  node scripts\update.cjs
 )
 
 echo  [2/3] 필요한 프로그램을 확인하는 중입니다...
 node scripts\needs-install.cjs
 if errorlevel 1 (
   echo         처음 실행이거나 구성이 바뀌어 설치합니다. 몇 분 걸릴 수 있습니다.
-  call npm install --no-audit --no-fund
+  call npm ci --no-audit --no-fund
   if errorlevel 1 (
     echo.
     echo  [오류] 프로그램 설치에 실패했습니다. 인터넷 연결을 확인하고 다시 실행하세요.
