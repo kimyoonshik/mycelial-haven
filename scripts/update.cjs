@@ -9,7 +9,9 @@ const AUTO = ["package-lock.json", "bun.lockb"]; // 설치 과정에서 바뀌�
 let ok = true;
 let reason = "";
 try {
-  const dirty = git("status", "--porcelain").split("\n").filter(Boolean).map((l) => l.slice(3).replace(/"/g, ""));
+  // 상태 줄 앞의 공백이 의미를 가지므로 trim 하지 않는다 (" M 파일" → "파일")
+  const status = execFileSync("git", ["status", "--porcelain"], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+  const dirty = status.split("\n").filter((l) => l.length > 3).map((l) => l.slice(3).replace(/"/g, ""));
   const lockOnly = dirty.filter((f) => AUTO.includes(f));
   if (lockOnly.length) git("checkout", "--", ...lockOnly);
   const others = dirty.filter((f) => !AUTO.includes(f) && !f.startsWith("dist") && !f.startsWith("node_modules"));
