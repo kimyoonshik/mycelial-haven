@@ -53,6 +53,7 @@ npm run build      # 공개 사이트 빌드 → dist/ (콘텐츠 검사 + 페�
 - [주문·인보이스·결제·발송 SOP](docs/order-process.md)
 - [미결 사항 (출시 전 확정 필요)](docs/open-items.md)
 - [홈 메인 화면 콘티 제안](docs/hero-concepts.md)
+- [히어로 모핑 영상 제작 가이드·프롬프트](docs/hero-video-prompts.md)
 - [시험용 사이트 new.saveearth.kr 설정](docs/staging.md)
 - [온라인 노출(SEO)·SNS 연결 운영 안내](docs/seo.md)
 - [LinkedIn 회사 페이지 개설·연결 키트](docs/linkedin.md)
