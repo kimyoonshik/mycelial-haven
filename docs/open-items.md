@@ -40,7 +40,9 @@
 | D5 | 스와치 호버 | 히어로 위 12색 점 → 색 바꾸기·쇼핑몰 연결 넣을지 | 미정 |
 | D6 | C안 시제품 피드백 | 성장 속도·색·문구·루프 길이(18.5초) 조정 요청 | 검토 대기 |
 
-## E. 시험용 사이트 new.saveearth.kr — 안내는 `docs/staging.md`
+## E. 호스팅 — **최종 호스팅 때 처리 (2026-11-01 보류)** · 안내는 `docs/staging.md`, `docs/hosting.md`
+
+권장: GitHub 연결형 호스팅(Cloudflare Pages / Netlify / Vercel) — 저장소 지정, 빌드 `npm run build`, 출력 `dist`, 게시 시 자동 반영. 호스팅 직전 `feature/rea-site-cloner` → `main` 병합.
 
 | # | 항목 | 정할 것 | 상태 |
 |---|------|---------|------|
