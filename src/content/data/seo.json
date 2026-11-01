@@ -78,5 +78,18 @@
     "/shop/cart",
     "/shop/checkout",
     "/admin"
-  ]
+  ],
+  "social": {
+    "instagram": "",
+    "facebook": "",
+    "x": "",
+    "linkedin": "",
+    "youtube": ""
+  },
+  "xHandle": "",
+  "verification": {
+    "google": "",
+    "naver": "",
+    "bing": ""
+  }
 }

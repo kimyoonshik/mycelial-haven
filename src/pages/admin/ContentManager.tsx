@@ -490,11 +490,56 @@ const NewsTab = ({ data, setData }: { data: NewsItem[]; setData: (d: NewsItem[])
 
 // ---------- 탭: SEO ----------
 
+const SOCIAL_FIELDS: { key: keyof Seo["social"]; label: string; ph: string }[] = [
+  { key: "instagram", label: "Instagram", ph: "https://www.instagram.com/mycerra" },
+  { key: "facebook", label: "Facebook", ph: "https://www.facebook.com/mycerra" },
+  { key: "x", label: "X (트위터)", ph: "https://x.com/mycerra" },
+  { key: "linkedin", label: "LinkedIn", ph: "https://www.linkedin.com/company/saveearth" },
+  { key: "youtube", label: "YouTube", ph: "https://www.youtube.com/@mycerra" },
+];
+const VERIFY_FIELDS: { key: keyof Seo["verification"]; label: string; hint: string }[] = [
+  { key: "google", label: "Google Search Console", hint: "HTML 태그 방식의 content=\"…\" 값" },
+  { key: "naver", label: "네이버 서치어드바이저", hint: "HTML 태그 방식의 content=\"…\" 값" },
+  { key: "bing", label: "Bing 웹마스터 도구", hint: "msvalidate.01 의 content 값" },
+];
+
 const SeoTab = ({ data, setData }: { data: Seo; setData: (d: Seo) => void }) => (
   <div className="space-y-4">
     <Field label="사이트 주소 (끝에 / 없이)" hint="검색엔진 주소·SNS 미리보기에 사용">
       <input value={data.siteUrl} onChange={(e) => setData({ ...data, siteUrl: e.target.value })} className={cn(inputCls, "max-w-md")} />
     </Field>
+    <section className="space-y-3 border border-mc-line bg-white p-4">
+      <p className="font-medium">SNS 계정 (입력하면 바닥글 아이콘·검색엔진 회사 정보에 자동 연결, 비우면 숨김)</p>
+      <div className="grid gap-3 md:grid-cols-2">
+        {SOCIAL_FIELDS.map((f) => (
+          <Field key={f.key} label={f.label}>
+            <input
+              value={data.social[f.key]}
+              placeholder={f.ph}
+              onChange={(e) => setData({ ...data, social: { ...data.social, [f.key]: e.target.value.trim() } })}
+              className={inputCls}
+            />
+          </Field>
+        ))}
+        <Field label="X 계정 이름" hint="예: @mycerra — 링크 미리보기 카드에 표시">
+          <input value={data.xHandle} placeholder="@mycerra" onChange={(e) => setData({ ...data, xHandle: e.target.value.trim() })} className={inputCls} />
+        </Field>
+      </div>
+    </section>
+    <section className="space-y-3 border border-mc-line bg-white p-4">
+      <p className="font-medium">검색엔진 소유 확인 코드 (docs/seo.md 2장 참고)</p>
+      <div className="grid gap-3 md:grid-cols-3">
+        {VERIFY_FIELDS.map((f) => (
+          <Field key={f.key} label={f.label} hint={f.hint}>
+            <input
+              value={data.verification[f.key]}
+              onChange={(e) => setData({ ...data, verification: { ...data.verification, [f.key]: e.target.value.trim() } })}
+              className={inputCls}
+            />
+          </Field>
+        ))}
+      </div>
+    </section>
     {Object.entries(data.routes).map(([path, r]) => (
       <div key={path} className="space-y-2 border border-mc-line bg-white p-4">
         <p className="font-medium">{path}</p>

@@ -193,12 +193,26 @@ const checkSite = (site: z.infer<typeof SiteSchema>, mediaExists: (p: string) =>
   return codes;
 };
 
+const socialUrl = z.string().regex(/^(https:\/\/.+)?$/, "SNS 주소는 https:// 로 시작해야 합니다 (없으면 비워 두세요)");
+const code = z.string().regex(/^[\w\-.]*$/, "확인 코드는 content=\"…\" 안의 값만 넣으세요");
+
 export const SeoSchema = z.object({
   siteName: text,
   siteUrl: z.string().url().refine((u) => !u.endsWith("/"), "siteUrl 끝에 / 를 붙이지 마세요"),
   defaultImage: z.string().startsWith("/"),
   routes: z.record(z.string().startsWith("/"), z.object({ title: LSchema, description: LSchema })),
   noindex: z.array(z.string().startsWith("/")),
+  // SNS 계정 주소 — 비어 있으면 사이트에 표시하지 않는다
+  social: z.object({
+    instagram: socialUrl,
+    facebook: socialUrl,
+    x: socialUrl,
+    linkedin: socialUrl,
+    youtube: socialUrl,
+  }),
+  xHandle: z.string().regex(/^(@[A-Za-z0-9_]{1,15})?$/, "X 계정은 @이름 형식 (예: @mycerra)"),
+  // 검색엔진 소유 확인 코드 (Google Search Console · 네이버 서치어드바이저 · Bing)
+  verification: z.object({ google: code, naver: code, bing: code }),
 });
 
 // 사이트 코드용 타입. 프로젝트가 strict 모드가 아니라 z.infer 가 모든 필드를 선택 항목으로 만들기 때문에
@@ -271,6 +285,9 @@ export interface Seo {
   defaultImage: string;
   routes: Record<string, { title: Lx; description: Lx }>;
   noindex: string[];
+  social: { instagram: string; facebook: string; x: string; linkedin: string; youtube: string };
+  xHandle: string;
+  verification: { google: string; naver: string; bing: string };
 }
 
 // 스키마 ↔ 타입 대조 (필드 이름이 어긋나면 컴파일 오류)

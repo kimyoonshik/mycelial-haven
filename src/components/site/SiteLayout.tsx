@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { SocialLinks } from "@/components/site/Social";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -188,6 +189,7 @@ const SiteFooter = () => {
             {company.email}
           </a>
           <p className="mt-4 text-mc-paper/60">{t(company.origin)}.</p>
+          <SocialLinks className="mt-6 text-mc-paper" />
         </div>
       </Container>
       <Container className="flex flex-col justify-between gap-2 border-t border-mc-paper/10 py-6 text-xs text-mc-paper/50 md:flex-row">

@@ -12,6 +12,8 @@ import { MAX_LINE_QTY, useCart } from "@/shop/CartProvider";
 import { useCopy, useLang } from "@/i18n/LanguageProvider";
 import { useSeo } from "@/lib/seo";
 import NotFound from "@/pages/site/NotFound";
+import { ShareButtons } from "@/components/site/Social";
+import seoData from "@/content/data/seo.json";
 
 const copy = {
   en: {
@@ -246,6 +248,9 @@ const ProductDetail = () => {
                   </div>
                 ))}
               </dl>
+              <div className="mt-6">
+                <ShareButtons url={`${seoData.siteUrl}/shop/p/${product.sku}`} title={`${product.name} (${product.sku}) — Mycerra™`} />
+              </div>
               <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
                 <TextLink to="/technology#test-reports">{c.reports}</TextLink>
                 {product.libraryCode && <TextLink to={`/mycerra?code=${product.libraryCode}`}>{c.library}</TextLink>}
