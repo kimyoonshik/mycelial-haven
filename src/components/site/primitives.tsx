@@ -121,14 +121,19 @@ export const ProofBadge = ({ status, light = false }: { status: ProofStatus; lig
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mc-sans text-[10px] uppercase tracking-[0.14em]",
         status === "published"
-          ? "border-emerald-700/40 text-emerald-800"
+          ? light
+            ? "border-emerald-300/40 text-emerald-200"
+            : "border-emerald-700/40 text-emerald-800"
           : light
             ? "border-mc-paper/30 text-mc-paper/60"
             : "border-mc-ink/20 text-mc-mute",
       )}
     >
       <span
-        className={cn("h-1.5 w-1.5 rounded-full", status === "published" ? "bg-emerald-700" : "bg-current opacity-60")}
+        className={cn(
+          "h-1.5 w-1.5 rounded-full",
+          status === "published" ? (light ? "bg-emerald-300" : "bg-emerald-700") : "bg-current opacity-60",
+        )}
       />
       {t(proofLabel[status])}
     </span>

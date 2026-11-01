@@ -138,7 +138,7 @@ const PendingChip = ({ label }: { label: string }) => (
 
 const ReportSlot = ({ url, date, label }: { url: string | null; date: string | null; label: string }) =>
   url ? (
-    <a href={url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 underline underline-offset-4">
+    <a href={url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 whitespace-nowrap underline underline-offset-4">
       <FileText className="h-4 w-4" />
       {label}
       {date && <span className="text-mc-mute no-underline">({date})</span>}

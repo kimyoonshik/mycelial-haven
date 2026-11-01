@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import { Reveal } from "@/components/site/Reveal";
-import { Container, Display, Eyebrow, PillButton, TextLink } from "@/components/site/primitives";
+import { Container, Display, Eyebrow, PillButton, ProofBadge, TextLink } from "@/components/site/primitives";
 import { claims, collections, expressions, familyLabel, futurePlatform, news, processSteps } from "@/content/mycerra";
 import { categories } from "@/content/shop";
 import { usePageCopy } from "@/content/site";
@@ -141,12 +142,27 @@ const Home = () => {
             <Eyebrow className="text-mc-paper/50">{c.impactEyebrow}</Eyebrow>
             <Display className="mt-4 max-w-3xl text-[clamp(2.25rem,5vw,4.5rem)]">{c.impactTitle}</Display>
           </Reveal>
-          <div className="mt-16 grid gap-px overflow-hidden bg-mc-paper/10 sm:grid-cols-2 lg:grid-cols-4">
+          <div
+            className={cn(
+              "mt-16 grid gap-px overflow-hidden bg-mc-paper/10 sm:grid-cols-2",
+              claims.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4",
+            )}
+          >
             {claims.map((cl, i) => (
-              <Reveal key={i} delay={i * 100} className="bg-mc-ink p-8">
+              <Reveal
+                key={i}
+                delay={i * 100}
+                // 홀수 개일 때 첫 항목을 넓혀 빈칸이 생기지 않게
+                className={cn("bg-mc-ink p-8", claims.length % 2 === 1 && i === 0 && "sm:col-span-2 lg:col-span-1")}
+              >
                 <p className="font-mc-serif text-6xl font-light">{cl.value}</p>
                 <p className="mt-2 text-sm uppercase tracking-[0.18em] text-mc-paper/70">{t(cl.label)}</p>
                 <p className="mt-4 text-sm leading-relaxed text-mc-paper/60">{t(cl.detail)}</p>
+                {cl.proof.status === "published" && (
+                  <div className="mt-5">
+                    <ProofBadge status="published" light />
+                  </div>
+                )}
               </Reveal>
             ))}
           </div>

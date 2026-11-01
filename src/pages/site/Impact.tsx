@@ -4,13 +4,21 @@ import { Container, Display, Eyebrow, PillButton, ProofBadge } from "@/component
 import { claims, company, traceability } from "@/content/mycerra";
 import { usePageCopy } from "@/content/site";
 import { Sections } from "@/components/site/Sections";
-import { useLang } from "@/i18n/LanguageProvider";
+import { useCopy, useLang } from "@/i18n/LanguageProvider";
+import { FileText } from "lucide-react";
 
 // 문구·사진·섹션 순서: src/content/data/site.json › pages.impact (운영 도구 "페이지" 탭)
 
 
+// 근거 문서 링크 문구 (화면 조작용)
+const proofCopy = {
+  en: { view: "View report (PDF)", verify: "Verify with the lab", cert: "Certificate no." },
+  ko: { view: "성적서 보기 (PDF)", verify: "시험기관에서 진위 확인", cert: "인증 번호" },
+};
+
 const Impact = () => {
   const c = usePageCopy("impact");
+  const p = useCopy(proofCopy);
   const { t } = useLang();
 
   const sections: Record<string, ReactNode> = {
@@ -38,9 +46,33 @@ const Impact = () => {
                   <p className="text-sm uppercase tracking-[0.18em]">{t(cl.label)}</p>
                   <p className="mt-2 text-[15px] leading-relaxed text-mc-mute">{t(cl.detail)}</p>
                 </div>
-                <div className="flex flex-col items-start gap-2 md:col-span-4 md:items-end">
+                <div className="flex min-w-0 flex-col items-start gap-2 md:col-span-4 md:items-end md:text-right">
                   <p className="font-mc-serif text-lg">{t(cl.proof.title)}</p>
                   <ProofBadge status={cl.proof.status} />
+                  {cl.proof.meta && <p className="text-xs leading-relaxed text-mc-mute">{t(cl.proof.meta)}</p>}
+                  {cl.proof.href && (
+                    <a
+                      href={cl.proof.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      data-testid="claim-proof"
+                      className="inline-flex items-center gap-1.5 text-sm underline underline-offset-4"
+                    >
+                      <FileText className="h-4 w-4" /> {p.view}
+                    </a>
+                  )}
+                  {cl.proof.verifyUrl && (
+                    <p className="max-w-full text-xs text-mc-mute">
+                      <a href={cl.proof.verifyUrl} target="_blank" rel="noreferrer" className="underline underline-offset-4">
+                        {p.verify}
+                      </a>
+                      {cl.proof.certificate && (
+                        <span className="mt-1 block break-all font-mono text-[11px]">
+                          {p.cert} {cl.proof.certificate}
+                        </span>
+                      )}
+                    </p>
+                  )}
                 </div>
               </Reveal>
             ))}

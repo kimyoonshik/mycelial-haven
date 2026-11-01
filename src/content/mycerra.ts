@@ -57,10 +57,17 @@ export interface Claim {
   value: string;
   label: L;
   detail: L;
-  proof: { title: L; status: ProofStatus; href?: string };
+  proof: {
+    title: L;
+    status: ProofStatus;
+    href?: string; // 근거 문서 (예: /media/reports/…pdf)
+    meta?: L; // 시험기관·성적서 번호·날짜·정밀도 등 한 줄
+    verifyUrl?: string; // 시험기관 진위 확인 페이지
+    certificate?: string; // 진위 확인용 인증 번호
+  };
 }
 
-export const claims = shared.claims as Claim[];
+export const claims = (shared.claims as Claim[]).map((c) => ({ ...c, proof: { ...c.proof, href: media(c.proof.href) } }));
 
 export const traceability = shared.traceability as { title: L; body: L; proof: { title: L; status: ProofStatus } };
 
@@ -81,7 +88,10 @@ export const processSteps: ProcessStep[] = (shared.processSteps as ProcessStep[]
 
 export const workSpecs = shared.workSpecs as { label: L; value: L | null }[];
 
-export const downloads = shared.downloads as { title: L; status: ProofStatus }[];
+export const downloads = (shared.downloads as { title: L; status: ProofStatus; href?: string }[]).map((d) => ({
+  ...d,
+  href: media(d.href),
+}));
 
 // ---------- 컬렉션 / 소식 ----------
 

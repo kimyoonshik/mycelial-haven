@@ -191,6 +191,31 @@
     ],
     "claims": [
       {
+        "value": "99%",
+        "label": {
+          "en": "Biobased carbon",
+          "ko": "바이오 기반 탄소"
+        },
+        "detail": {
+          "en": "Radiocarbon (C-14) analysis shows that 99% of Mycerra™'s organic carbon comes from living biomass, not from petroleum or other fossil sources.",
+          "ko": "방사성탄소(C-14) 분석 결과, Mycerra™ 유기탄소의 99%가 석유 등 화석 자원이 아닌 생물 자원에서 유래했습니다."
+        },
+        "proof": {
+          "title": {
+            "en": "Biobased carbon test report · ASTM D6866-24",
+            "ko": "바이오 기반 탄소 함량 시험 성적서 · ASTM D6866-24"
+          },
+          "status": "published",
+          "href": "/media/reports/mycerra-biobased-carbon-beta-796006.pdf",
+          "meta": {
+            "en": "Beta Analytic (SGS), ISO/IEC 17025:2017 accredited · Report Beta-796006 · 9 January 2026 · Precision ±3% (absolute) · Result applies to the tested sample",
+            "ko": "Beta Analytic(SGS), ISO/IEC 17025:2017 인정 시험기관 · 성적서 Beta-796006 · 2026년 1월 9일 · 정밀도 ±3%(절대값) · 결과는 시험 시료에 한함"
+          },
+          "verifyUrl": "https://verify.betalabservices.com",
+          "certificate": "9837F8B34FB5CA9BF6B4C92C140519B7"
+        }
+      },
+      {
         "value": "−92%",
         "label": {
           "en": "Carbon",
@@ -464,6 +489,14 @@
       }
     ],
     "downloads": [
+      {
+        "title": {
+          "en": "Biobased Carbon Test Report",
+          "ko": "바이오 기반 탄소 시험 성적서"
+        },
+        "status": "published",
+        "href": "/media/reports/mycerra-biobased-carbon-beta-796006.pdf"
+      },
       {
         "title": {
           "en": "Technical Data Sheet",

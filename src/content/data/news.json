@@ -1,5 +1,20 @@
 [
   {
+    "id": "biobased-carbon-2026",
+    "tag": {
+      "en": "Verification",
+      "ko": "검증"
+    },
+    "title": {
+      "en": "Mycerra™ verified at 99% biobased carbon",
+      "ko": "Mycerra™ 바이오 기반 탄소 99% 검증"
+    },
+    "meta": {
+      "en": "Beta Analytic (SGS) · ASTM D6866-24 · January 2026",
+      "ko": "Beta Analytic(SGS) · ASTM D6866-24 · 2026년 1월"
+    }
+  },
+  {
     "id": "lineapelle-2026",
     "tag": {
       "en": "Exhibition",

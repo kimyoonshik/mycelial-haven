@@ -160,11 +160,11 @@
       "en": "Bio-based carbon content",
       "ko": "바이오 기반 탄소 함량"
     },
-    "method": "ASTM D6866",
-    "unit": "%",
-    "result": null,
-    "lab": null,
-    "reportDate": null,
-    "reportUrl": null
+    "method": "ASTM D6866-24 Method B (AMS)",
+    "unit": "% biobased carbon (of total organic carbon)",
+    "result": "99",
+    "lab": "Beta Analytic (SGS) · ISO/IEC 17025",
+    "reportDate": "2026-01-09",
+    "reportUrl": "/media/reports/mycerra-biobased-carbon-beta-796006.pdf"
   }
 ]

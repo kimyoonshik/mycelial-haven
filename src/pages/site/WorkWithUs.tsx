@@ -74,12 +74,18 @@ const WorkWithUs = () => {
                     <span className="font-mc-serif text-xl">{t(d.title)}</span>
                     <span className="flex items-center gap-3">
                       <ProofBadge status={d.status} />
-                      <a
-                        href={`mailto:${company.email}?subject=${encodeURIComponent(`[Mycerra] Request: ${d.title.en}`)}`}
-                        className="text-sm underline underline-offset-4"
-                      >
-                        {c.request}
-                      </a>
+                      {d.href ? (
+                        <a href={d.href} target="_blank" rel="noreferrer" className="text-sm underline underline-offset-4">
+                          PDF
+                        </a>
+                      ) : (
+                        <a
+                          href={`mailto:${company.email}?subject=${encodeURIComponent(`[Mycerra] Request: ${d.title.en}`)}`}
+                          className="text-sm underline underline-offset-4"
+                        >
+                          {c.request}
+                        </a>
+                      )}
                     </span>
                   </li>
                 ))}

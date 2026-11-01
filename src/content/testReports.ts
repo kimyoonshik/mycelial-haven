@@ -6,6 +6,7 @@
 import type { L } from "@/i18n/LanguageProvider";
 import type { TestItemData } from "./schema";
 import testData from "./data/test-reports.json";
+import { media } from "@/lib/media";
 
 export type TestGroup = TestItemData["group"];
 export type TestItem = TestItemData;
@@ -16,4 +17,4 @@ export const testGroupLabel: Record<TestGroup, L> = {
   comfort: { en: "Comfort & composition", ko: "쾌적성·소재 구성" },
 };
 
-export const testItems = testData as TestItem[];
+export const testItems = (testData as TestItem[]).map((i) => ({ ...i, reportUrl: media(i.reportUrl) }));
