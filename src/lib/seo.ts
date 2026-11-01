@@ -7,6 +7,9 @@ import seoData from "@/content/data/seo.json";
 import type { Seo } from "@/content/schema";
 import { useLang } from "@/i18n/LanguageProvider";
 
+// 시험용 사이트(npm run build:staging)는 모든 페이지를 검색엔진에서 제외
+const STAGING = import.meta.env.VITE_STAGING === "true";
+
 export const seo = seoData as Seo;
 
 interface Meta {
@@ -42,7 +45,7 @@ const apply = (m: Meta, path: string) => {
     document.head.appendChild(canonical);
   }
   canonical.href = url;
-  setMeta("name", "robots", seo.noindex.some((p) => path.startsWith(p)) ? "noindex, nofollow" : "index, follow");
+  setMeta("name", "robots", STAGING || seo.noindex.some((p) => path.startsWith(p)) ? "noindex, nofollow" : "index, follow");
 };
 
 /** 개별 페이지(상품 상세 등)에서 직접 메타를 지정 */
@@ -60,6 +63,6 @@ export const useRouteSeo = () => {
   useEffect(() => {
     const r = seo.routes[pathname];
     if (r) apply({ title: r.title[lang], description: r.description[lang] }, pathname);
-    else if (seo.noindex.some((p) => pathname.startsWith(p))) setMeta("name", "robots", "noindex, nofollow");
+    else if (STAGING || seo.noindex.some((p) => pathname.startsWith(p))) setMeta("name", "robots", "noindex, nofollow");
   }, [pathname, lang]);
 };

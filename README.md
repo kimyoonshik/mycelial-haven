@@ -53,6 +53,7 @@ npm run build      # 공개 사이트 빌드 → dist/ (콘텐츠 검사 + 페�
 - [주문·인보이스·결제·발송 SOP](docs/order-process.md)
 - [미결 사항 (출시 전 확정 필요)](docs/open-items.md)
 - [홈 메인 화면 콘티 제안](docs/hero-concepts.md)
+- [시험용 사이트 new.saveearth.kr 설정](docs/staging.md)
 
 ## 환경변수 (`.env`, 예시는 `.env.example`)
 

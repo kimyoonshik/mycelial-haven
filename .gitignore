@@ -31,3 +31,8 @@ dist-admin
 
 # 운영 도구(CMS) 저장 전 백업
 .cms-backups
+
+# 시험용 사이트 업로드 설정 (서버 주소·접속 키 경로 — 저장소에 올리지 않음)
+deploy.local.json
+*.key
+*.pem

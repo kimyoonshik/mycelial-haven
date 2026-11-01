@@ -1,0 +1,8 @@
+{
+  "_설명": "이 파일을 deploy.local.json 으로 복사한 뒤 값을 채우세요. deploy.local.json 은 GitHub에 올라가지 않습니다.",
+  "host": "146.56.175.219",
+  "user": "ubuntu",
+  "keyFile": "C:/Users/user/.ssh/oracle-saveearth.key",
+  "remoteDir": "/var/www/new.saveearth.kr",
+  "siteUrl": "https://new.saveearth.kr"
+}

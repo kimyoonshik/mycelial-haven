@@ -8,7 +8,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const dist = join(root, process.argv[2] ?? "dist");
+// 첫 번째 인자(옵션이 아닌 것)는 빌드 폴더 (기본 dist)
+const distArg = process.argv[2] && !process.argv[2].startsWith("--") ? process.argv[2] : "dist";
+const dist = join(root, distArg);
 const read = (p) => JSON.parse(readFileSync(join(root, "src/content/data", p), "utf8"));
 
 if (!existsSync(join(dist, "index.html"))) {
@@ -19,11 +21,15 @@ if (!existsSync(join(dist, "index.html"))) {
 const seo = read("seo.json");
 const products = read("products.json");
 const commerce = read("commerce.json");
-const siteUrl = (process.env.SITE_URL ?? seo.siteUrl).replace(/\/$/, "");
+// 시험용 빌드: node scripts/prerender.mjs --staging https://new.saveearth.kr
+//   → 모든 페이지 noindex, robots.txt 전체 차단, sitemap 없음 (검색엔진에 잡히지 않게)
+const stagingIdx = process.argv.indexOf("--staging");
+const staging = stagingIdx !== -1;
+const siteUrl = ((staging && process.argv[stagingIdx + 1]) || process.env.SITE_URL || seo.siteUrl).replace(/\/$/, "");
 const template = readFileSync(join(dist, "index.html"), "utf8");
 
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-const isNoindex = (path) => seo.noindex.some((p) => path.startsWith(p));
+const isNoindex = (path) => staging || seo.noindex.some((p) => path.startsWith(p));
 
 const render = (path, { title, description, image }, { noindex = isNoindex(path) } = {}) => {
   const url = `${siteUrl}${path}`;
@@ -97,7 +103,7 @@ writeFileSync(
 );
 writeFileSync(
   join(dist, "robots.txt"),
-  [
+  staging ? "User-agent: *\nDisallow: /\n" : [
     "User-agent: *",
     "Allow: /",
     ...seo.noindex.map((p) => `Disallow: ${p}`),
@@ -106,5 +112,10 @@ writeFileSync(
     "",
   ].join("\n"),
 );
+if (staging) {
+  // 서버 설정과 별개로 응답 헤더에서도 검색 차단 (Apache)
+  const ht = join(dist, ".htaccess");
+  writeFileSync(ht, `# 시험용 사이트: 검색엔진 차단\n<IfModule mod_headers.c>\n  Header always set X-Robots-Tag "noindex, nofollow"\n</IfModule>\n\n` + readFileSync(ht, "utf8"));
+}
 
-console.log(`prerender: ${pages.length + 2} pages, sitemap ${indexable.length} URLs, site ${siteUrl}`);
+console.log(`prerender${staging ? " [STAGING · noindex]" : ""}: ${pages.length + 2} pages, sitemap ${staging ? 0 : indexable.length} URLs, site ${siteUrl}`);
