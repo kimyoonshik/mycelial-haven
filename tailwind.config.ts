@@ -18,7 +18,7 @@ export default {
         body: ['Lora', 'serif'],
         ui: ['Inter', 'sans-serif'],
         // 영문 글꼴에 한글 글리프가 없으므로 한글은 자동으로 다음 글꼴로 대체된다
-        "mc-serif": ['Fraunces', '"Noto Serif KR"', 'Georgia', 'serif'],
+        "mc-serif": ['"Cormorant Garamond"', '"Noto Serif KR"', 'Georgia', 'serif'],
         "mc-sans": ['Inter', '"Pretendard Variable"', 'Pretendard', 'system-ui', 'sans-serif'],
       },
       colors: {
