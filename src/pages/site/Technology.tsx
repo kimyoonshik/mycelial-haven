@@ -83,9 +83,14 @@ const Technology = () => {
                   <img src={s.image} alt={t(s.title)} loading="lazy" className="h-full w-full object-cover" />
                 </div>
               </Reveal>
-              <Reveal delay={150}>
-                <p className="text-xs tracking-[0.2em] text-mc-mute">{s.no}</p>
-                <Display className="mt-3 text-4xl md:text-5xl">{t(s.title)}</Display>
+              <Reveal delay={150} className="relative">
+                <span
+                  aria-hidden
+                  className="pointer-events-none block select-none font-mc-serif text-6xl leading-none text-mc-ink/[0.14] [font-variant-numeric:lining-nums] md:text-7xl"
+                >
+                  {s.no}
+                </span>
+                <Display className="mt-4 text-4xl md:text-5xl">{t(s.title)}</Display>
                 <p className="mt-6 text-[15px] leading-relaxed text-mc-mute">{t(s.body)}</p>
               </Reveal>
             </div>
@@ -152,7 +157,7 @@ const Technology = () => {
         <section id="sec-intro" data-section="intro" className="pb-20 pt-36 md:pt-44">
           <Container>
             <Eyebrow>{c.eyebrow}</Eyebrow>
-            <Display as="h1" className="mt-5 max-w-5xl text-[clamp(2.75rem,7vw,6.5rem)]">
+            <Display as="h1" className="mt-5 max-w-5xl text-[clamp(3rem,7.8vw,7.25rem)]">
               {c.title}
             </Display>
             <p className="mt-8 max-w-2xl text-lg leading-relaxed text-mc-mute">{c.intro}</p>

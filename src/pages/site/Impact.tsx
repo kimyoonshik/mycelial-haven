@@ -26,7 +26,7 @@ const Impact = () => {
       <section className="pb-20 pt-36 md:pt-44">
         <Container>
           <Eyebrow>{c.eyebrow}</Eyebrow>
-          <Display as="h1" className="mt-5 max-w-5xl text-[clamp(2.75rem,7vw,6.5rem)]">
+          <Display as="h1" className="mt-5 max-w-5xl text-[clamp(3rem,7.8vw,7.25rem)]">
             {c.title}
           </Display>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-mc-mute">{c.intro}</p>
@@ -41,7 +41,7 @@ const Impact = () => {
           <ul className="divide-y divide-mc-line">
             {claims.map((cl, i) => (
               <Reveal as="li" key={i} delay={i * 80} className="grid gap-6 py-12 md:grid-cols-12 md:items-center">
-                <p className="font-mc-serif text-7xl font-light md:col-span-3 md:text-8xl">{cl.value}</p>
+                <p className="font-mc-serif text-7xl md:col-span-3 md:text-8xl">{cl.value}</p>
                 <div className="md:col-span-5">
                   <p className="text-sm uppercase tracking-[0.18em]">{t(cl.label)}</p>
                   <p className="mt-2 text-[15px] leading-relaxed text-mc-mute">{t(cl.detail)}</p>
@@ -114,7 +114,10 @@ const Impact = () => {
           <div className="mt-14 grid gap-10 md:grid-cols-3">
             {c.principles.map((p, i) => (
               <Reveal key={i} delay={i * 120} className="border-t border-mc-ink pt-6">
-                <h3 className="font-mc-serif text-2xl">{p.t}</h3>
+                <span aria-hidden className="block select-none font-mc-serif text-6xl leading-none text-mc-ink/[0.14] [font-variant-numeric:lining-nums]">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-3 font-mc-serif text-2xl">{p.t}</h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-mc-mute">{p.b}</p>
               </Reveal>
             ))}

@@ -130,10 +130,10 @@ const Home = () => {
           </Reveal>
           <div className="mt-16 grid gap-10 md:grid-cols-3">
             {processSteps.map((s, i) => (
-              <Reveal key={s.id} delay={i * 120} className="relative pt-12">
+              <Reveal key={s.id} delay={i * 120}>
                 <span
                   aria-hidden
-                  className="pointer-events-none absolute -top-2 left-0 select-none font-mc-serif text-[6.5rem] leading-none text-mc-ink/[0.08]"
+                  className="mb-4 block select-none font-mc-serif text-6xl leading-none text-mc-ink/[0.14] [font-variant-numeric:lining-nums]"
                 >
                   {s.no}
                 </span>
