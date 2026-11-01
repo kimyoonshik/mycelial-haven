@@ -5,7 +5,7 @@
 
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 // 첫 번째 인자(옵션이 아닌 것)는 빌드 폴더 (기본 dist)
@@ -28,6 +28,25 @@ const staging = stagingIdx !== -1;
 const siteUrl = ((staging && process.argv[stagingIdx + 1]) || process.env.SITE_URL || seo.siteUrl).replace(/\/$/, "");
 const template = readFileSync(join(dist, "index.html"), "utf8");
 
+// 서버 렌더링 결과(dist-ssr) — 페이지 본문을 HTML에 미리 담는다. 없으면 본문 없이(기존 방식) 진행
+const ssrEntry = join(root, "dist-ssr", "entry-server.js");
+const ssr = existsSync(ssrEntry) ? await import(pathToFileURL(ssrEntry).href) : null;
+if (!ssr) console.warn("prerender: dist-ssr 가 없어 페이지 본문 없이 생성합니다 (npm run build 로 실행하세요)");
+let ssrCount = 0;
+const renderBody = (path) => {
+  if (!ssr) return "";
+  try {
+    const html = ssr.render(path);
+    ssrCount++;
+    return html;
+  } catch (e) {
+    console.warn(`prerender: ${path} 본문 렌더링 실패 — 본문 없이 생성 (${e.message})`);
+    return "";
+  }
+};
+// 입력 양식·주문 화면은 방문자마다 내용이 달라 미리 그리지 않는다
+const NO_BODY = ["/shop/po", "/shop/cart", "/shop/checkout"];
+
 const esc = (s) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 const isNoindex = (path) => staging || seo.noindex.some((p) => path.startsWith(p));
 
@@ -45,6 +64,11 @@ const organization = {
   telephone: seller.phone,
   address: { "@type": "PostalAddress", streetAddress: seller.address, addressCountry: "KR" },
   brand: { "@type": "Brand", name: "Mycerra" },
+  description:
+    "SAVE EARTH Inc. develops and manufactures Mycerra™, a 100% pure mycelium mat leather alternative with no textile or polymer backing, cultivated, stabilized and finished in Korea.",
+  slogan: "Grown, not manufactured.",
+  knowsAbout: ["mycelium leather", "mycelium mat", "leather alternative", "biobased materials", "vegan leather", "biofabrication"],
+  foundingLocation: { "@type": "Place", name: "Anseong, Gyeonggi-do, Republic of Korea" },
   ...(sameAs.length && { sameAs }),
 };
 const website = { "@type": "WebSite", "@id": `${siteUrl}/#website`, url: siteUrl, name: seo.siteName, publisher: { "@id": orgId }, inLanguage: ["en", "ko"] };
@@ -61,7 +85,7 @@ const verifyTags = [
   .filter(Boolean)
   .join("\n    ");
 
-const render = (path, { title, description, image, ld = [] }, { noindex = isNoindex(path) } = {}) => {
+const render = (path, { title, description, image, ld = [] }, { noindex = isNoindex(path), body = "" } = {}) => {
   const url = `${siteUrl}${path}`;
   const img = `${siteUrl}${image ?? seo.defaultImage}`;
   const set = (html, re, value) => {
@@ -90,6 +114,7 @@ const render = (path, { title, description, image, ld = [] }, { noindex = isNoin
     .filter(Boolean)
     .join("\n    ");
   html = set(html, /<\/head>/, `    ${extra}\n  </head>`);
+  if (body) html = set(html, /<div id="root"><\/div>/, `<div id="root" data-ssr>${body}</div>`);
   return html;
 };
 
@@ -104,7 +129,7 @@ const pages = [];
 
 // 1) seo.json 에 등록된 페이지
 for (const [path, meta] of Object.entries(seo.routes)) {
-  write(path, render(path, { title: meta.title.en, description: meta.description.en }));
+  write(path, render(path, { title: meta.title.en, description: meta.description.en }, { body: NO_BODY.includes(path) ? "" : renderBody(path) }));
   pages.push(path);
 }
 
@@ -163,7 +188,7 @@ for (const p of products) {
         : `${p.description.en} Regular sheets and swatch brochures from SAVE EARTH Inc.`,
       image: p.image,
       ld: [product, breadcrumb],
-    }),
+    }, { body: renderBody(path) }),
   );
   pages.push(path);
 }
@@ -193,21 +218,96 @@ writeFileSync(
     })
     .join("\n")}\n</urlset>\n`,
 );
+// 검색엔진과 AI 검색·답변 서비스 수집기를 명시적으로 허용한다 (각 묶음은 *의 규칙을 물려받지 않으므로 제외 경로를 반복)
+const AI_BOTS = [
+  "Googlebot", "Bingbot", "Yeti", "DuckDuckBot", "Applebot",
+  "OAI-SearchBot", "ChatGPT-User", "GPTBot",
+  "Claude-SearchBot", "Claude-User", "ClaudeBot",
+  "PerplexityBot", "Perplexity-User",
+  "Google-Extended", "Applebot-Extended", "Amazonbot", "Meta-ExternalAgent", "CCBot",
+];
+const rules = ["Allow: /", ...seo.noindex.map((p) => `Disallow: ${p}`)];
 writeFileSync(
   join(dist, "robots.txt"),
   staging ? "User-agent: *\nDisallow: /\n" : [
+    "# Mycerra™ — search engines and AI assistants are welcome. Summary for AI: /llms.txt",
     "User-agent: *",
-    "Allow: /",
-    ...seo.noindex.map((p) => `Disallow: ${p}`),
+    ...rules,
+    "",
+    ...AI_BOTS.map((b) => `User-agent: ${b}`),
+    ...rules,
     "",
     `Sitemap: ${siteUrl}/sitemap.xml`,
     "",
   ].join("\n"),
 );
+
+// ---------- llms.txt — AI 답변 서비스용 요약 (llmstxt.org 형식) ----------
+if (!staging) {
+  const site = read("site.json");
+  const news = read("news.json");
+  const tests = read("test-reports.json");
+  const en = (l) => (l && typeof l === "object" ? l.en : l);
+  const routes = seo.routes;
+  const pageLine = (p, label) => `- [${label}](${siteUrl}${p}): ${en(routes[p]?.description) ?? ""}`;
+  const claims = site.shared.claims.map((c) => {
+    const proof =
+      c.proof.status === "published"
+        ? `verified — ${en(c.proof.title)}${c.proof.href ? ` (${siteUrl}${c.proof.href})` : ""}${c.proof.meta ? `; ${en(c.proof.meta)}` : ""}`
+        : `company figure; supporting document (${en(c.proof.title)}) in preparation`;
+    return `- ${c.value} ${en(c.label)}: ${en(c.detail)} [${proof}]`;
+  });
+  const reported = tests.filter((t) => t.result);
+  const sizes = commerce.sizes.map((s) =>
+    s.kind === "brochure"
+      ? `swatch brochure (${s.pieces} × ${s.widthCm} × ${s.heightCm} cm)`
+      : `${en(s.label)} ${s.widthCm} × ${s.heightCm} cm`,
+  );
+  const conds = commerce.conditions.map((c) => `${en(c.title)} (USD ${c.priceUSDPerSqft}/sqft)`);
+  const available = products.filter((p) => p.status === "available");
+  const lines = [
+    "# Mycerra™ by SAVE EARTH Inc.",
+    "",
+    "> Mycerra™ is a leather alternative made from 100% pure mycelium — a self-supporting mycelium mat with no textile or polymer backing, no scaffold and no plastic layer. It is cultivated, stabilized and finished in Korea by SAVE EARTH Inc. and supplied as sheets and swatch brochures for fashion, accessories, footwear and interiors.",
+    "",
+    "## Key facts",
+    "- Material: pure mycelium mat (no non-woven backing, no scaffold, no foreign substrate)",
+    "- Process: Cultivate → Stabilize (proprietary) → Finish (aniline-style dyeing, embossing, protective finishing)",
+    `- Maker: ${seller.company} (${seller.address}); business registration no. ${seller.businessRegNo}`,
+    `- Contact: ${seller.email}`,
+    `- Processing conditions: ${conds.join("; ")}`,
+    `- Sizes: ${sizes.join("; ")}`,
+    `- Ordering: individual orders ${commerce.retail.minSqft}–${commerce.retail.maxSqft} sqft paid online; larger or business orders via purchase order request and approved invoice`,
+    `- Range online: ${available.length} items available to order, ${products.length - available.length} more in preparation`,
+    "",
+    "## Claims and evidence",
+    ...claims,
+    ...reported.map((t) => `- Test result — ${en(t.name)}: ${t.result} ${t.unit} (${t.method}, ${t.lab}, ${t.reportDate})${t.reportUrl ? ` ${siteUrl}${t.reportUrl}` : ""}`),
+    "",
+    "## Pages",
+    pageLine("/", "Home"),
+    pageLine("/mycerra", "Material library"),
+    pageLine("/technology", "Technology and test reports"),
+    pageLine("/impact", "Impact and evidence"),
+    pageLine("/shop", "Shop"),
+    pageLine("/work-with-us", "Work with us"),
+    "",
+    "## Products available now",
+    ...available.map((p) => `- [${p.name} (${p.sku})](${siteUrl}/shop/p/${p.sku}): ${p.description.en}`),
+    "",
+    "## News",
+    ...news.map((n) => `- ${en(n.title)} — ${en(n.meta)}`),
+    ...(sameAs.length ? ["", "## Official channels", ...sameAs.map((u) => `- ${u}`)] : []),
+    "",
+  ];
+  writeFileSync(join(dist, "llms.txt"), lines.join("\n"));
+  // IndexNow 공개 키 파일
+  if (seo.indexNowKey) writeFileSync(join(dist, `${seo.indexNowKey}.txt`), seo.indexNowKey);
+}
 if (staging) {
   // 서버 설정과 별개로 응답 헤더에서도 검색 차단 (Apache)
   const ht = join(dist, ".htaccess");
   writeFileSync(ht, `# 시험용 사이트: 검색엔진 차단\n<IfModule mod_headers.c>\n  Header always set X-Robots-Tag "noindex, nofollow"\n</IfModule>\n\n` + readFileSync(ht, "utf8"));
 }
 
-console.log(`prerender${staging ? " [STAGING · noindex]" : ""}: ${pages.length + 2} pages, sitemap ${staging ? 0 : indexable.length} URLs, site ${siteUrl}`);
+console.log(`prerender${staging ? " [STAGING · noindex]" : ""}: ${pages.length + 2} pages (${ssrCount} with full content), sitemap ${staging ? 0 : indexable.length} URLs, site ${siteUrl}`);

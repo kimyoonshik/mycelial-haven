@@ -34,6 +34,7 @@ const run = (cmd, args) => execFileSync(cmd, args, { stdio: "inherit", cwd: root
 
 console.log("\n  [1/3] 시험용 사이트 빌드 (검색엔진 차단)...");
 run(process.execPath, [join(root, "node_modules/vite/bin/vite.js"), "build", "--mode", "staging"]);
+run(process.execPath, [join(root, "node_modules/vite/bin/vite.js"), "build", "--mode", "staging", "--ssr", "src/entry-server.tsx", "--outDir", "dist-ssr"]);
 run(process.execPath, [join(root, "scripts/prerender.mjs"), "--staging", cfg.siteUrl]);
 
 console.log(`\n  [2/3] 서버로 복사 (${target}:${dir}.new)...`);

@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { startedFromServerHtml } from "@/lib/hydration";
 
 export type Lang = "en" | "ko";
 // 모든 다국어 문구의 기본 단위
@@ -25,7 +26,12 @@ const LanguageContext = createContext<LanguageValue | null>(null);
 
 // 기본 영문. 사용자가 고른 언어는 브라우저에 기억한다.
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [lang, setLangState] = useState<Lang>(readStored);
+  const [lang, setLangState] = useState<Lang>(() => (startedFromServerHtml ? "en" : readStored()));
+
+  // 미리 그린 HTML(영문)을 이어받은 뒤, 사용자가 고른 언어로 바꾼다
+  useEffect(() => {
+    if (startedFromServerHtml) setLangState(readStored());
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = lang;

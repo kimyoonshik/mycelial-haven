@@ -17,6 +17,10 @@
 | SNS 미리보기 | Open Graph·X(트위터) 카드 — 제목·설명·이미지, 영문/한글 지역 표시 | 링크 공유 시 큰 이미지 카드 |
 | SNS 아이콘 | 바닥글에 Instagram·Facebook·X·LinkedIn·YouTube (주소 입력한 것만 표시) | 사이트 → SNS 유입 |
 | 공유 버튼 | 상품 상세: X·Facebook·LinkedIn·링크 복사(인스타그램·메신저용)·휴대폰 기본 공유 | 방문자 → SNS 확산 |
+| **본문 미리 그리기** | 63개 페이지의 글·이미지·링크를 HTML 파일에 미리 담음 (주문 양식 3개 제외) | 자바스크립트를 실행하지 않는 **ChatGPT·Claude·Perplexity 등 AI 수집기**와 네이버도 전체 내용을 읽음 |
+| **llms.txt** | `/llms.txt` — 회사·소재·가격·크기·주장과 근거·상품 목록 요약 (빌드마다 자동 갱신). 근거 문서가 준비 중인 수치는 "company figure"로 구분 표기 | AI 답변에 정확한 사실을 인용하도록 유도, 근거 없는 수치의 과장 인용 방지 |
+| **AI 수집기 허용** | robots.txt 에 Google·Bing·네이버(Yeti)·OpenAI·Anthropic·Perplexity·Apple·Amazon·Meta 수집기를 명시적으로 허용 | AI 검색·답변 서비스에 노출 |
+| **IndexNow** | 키 파일 자동 게시 + `npm run indexnow` 로 전체 주소 전송 | Bing(ChatGPT 검색이 활용)·네이버에 새 내용을 즉시 알림 |
 
 ## 2. 출시 직후 1회 등록 (검색엔진)
 
@@ -31,6 +35,11 @@
 
 - 등록 후 노출까지 보통 **며칠~몇 주**. Search Console의 "URL 검사 → 색인 생성 요청"으로 주요 페이지(/, /mycerra, /shop)를 먼저 요청하면 빨라집니다.
 - 매달 Search Console에서 **검색어·클릭수·오류**를 확인합니다.
+- **게시할 때마다** (상품·소식 추가 후): 사무실 PC에서 `npm run indexnow` 실행 → Bing·네이버에 즉시 알림 (정식 주소에 게시된 뒤에만)
+
+**AI 노출 확인 방법 (월 1회)**: ChatGPT·Perplexity·Gemini·Claude 에 "mycelium leather made in Korea", "pure mycelium leather without backing", "Mycerra" 를 물어보고 사이트가 인용되는지 기록합니다. 정식 호스팅 후 보통 수 주가 걸립니다.
+
+> AI 학습용 수집기(GPTBot·Google-Extended·CCBot 등)도 허용해 두었습니다 (브랜드가 AI 모델 지식에 포함되도록). 원치 않으면 `scripts/prerender.mjs` 의 AI_BOTS 목록에서 빼면 됩니다.
 
 ## 3. SNS 계정 개설·연결
 
@@ -41,7 +50,8 @@
 | 프로필 이미지 | BI 확정 전에는 정사각형 워드마크 (BI 확정 후 교체) |
 | 소개문 | EN: `Mycerra™ — 100% pure mycelium leather alternative. No backing, no plastic. Grown in Korea by SAVE EARTH Inc.` / KO: `Mycerra™ — 100% 순수 균사 가죽 대체 소재. 배접·플라스틱 없음. 세이브어스(주)` |
 | 프로필 링크 | `https://www.saveearth.kr` (상품 홍보 시 해당 상품 주소) |
-| 사이트 연결 | 운영 도구 → SEO 탭 → 각 SNS 주소 입력 → 저장 → 게시 → 바닥글 아이콘과 검색엔진 회사 정보에 자동 반영 |
+| 사이트 연결 | 운영 도구 → SEO 탭 → 각 SNS 주소 입력 → 저장 → 게시 → 바닥글 아이콘·검색엔진 회사 정보·llms.txt 에 자동 반영 |
+| LinkedIn | 개설용 문구·커버·로고·첫 게시물 3개: [linkedin.md](./linkedin.md) |
 
 ## 4. 꾸준한 노출을 위한 운영 루틴
 

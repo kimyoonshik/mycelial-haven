@@ -213,6 +213,8 @@ export const SeoSchema = z.object({
   xHandle: z.string().regex(/^(@[A-Za-z0-9_]{1,15})?$/, "X 계정은 @이름 형식 (예: @mycerra)"),
   // 검색엔진 소유 확인 코드 (Google Search Console · 네이버 서치어드바이저 · Bing)
   verification: z.object({ google: code, naver: code, bing: code }),
+  // IndexNow(Bing·Naver·Yandex 즉시 색인) 공개 키 — 사이트 루트에 같은 이름의 .txt 파일로 게시된다
+  indexNowKey: z.string().regex(/^[a-f0-9]{32}$/),
 });
 
 // 사이트 코드용 타입. 프로젝트가 strict 모드가 아니라 z.infer 가 모든 필드를 선택 항목으로 만들기 때문에
@@ -288,6 +290,7 @@ export interface Seo {
   social: { instagram: string; facebook: string; x: string; linkedin: string; youtube: string };
   xHandle: string;
   verification: { google: string; naver: string; bing: string };
+  indexNowKey: string;
 }
 
 // 스키마 ↔ 타입 대조 (필드 이름이 어긋나면 컴파일 오류)

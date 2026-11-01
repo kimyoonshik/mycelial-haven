@@ -55,7 +55,7 @@
 
 | # | 항목 | 정할 것 | 상태 |
 |---|------|---------|------|
-| F1 | SNS 계정 | Instagram·Facebook·X·LinkedIn·YouTube 계정 주소 (없으면 개설 여부·계정 이름) | 미정 |
+| F1 | SNS 계정 | Instagram·Facebook·X·LinkedIn·YouTube 계정 주소 (없으면 개설 여부·계정 이름). LinkedIn 은 개설 키트 준비됨 (`docs/linkedin.md`) | 미정 |
 | F2 | 검색엔진 등록 | 정식 호스팅 후 Google·네이버·Bing 소유 확인 코드 입력 | 호스팅 후 |
 | F3 | 한국어 전용 주소 | 네이버 노출용 `/ko/` 페이지 생성 여부 | 미정 |
 | F4 | 방문자 분석 | GA4 도입 여부 (EU 대상 시 쿠키 동의 배너 포함) | 미정 |

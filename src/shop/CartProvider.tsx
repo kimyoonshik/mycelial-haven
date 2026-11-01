@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { startedFromServerHtml } from "@/lib/hydration";
 import { priceOf, productBySku, type Product } from "@/content/shop";
 import { round2, sizeById, unitAreaSqft, type OrderVolume } from "@/content/commerce";
 import type { Size } from "@/content/schema";
@@ -85,15 +86,24 @@ export const volumeOf = (rows: CartRow[]): OrderVolume => ({
 const CartContext = createContext<CartValue | null>(null);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [lines, setLines] = useState<CartLine[]>(readStored);
+  const [lines, setLines] = useState<CartLine[]>(() => (startedFromServerHtml ? [] : readStored()));
+  // 미리 그린 HTML을 이어받은 경우: 저장된 장바구니를 불러온 뒤에만 저장한다 (빈 목록으로 덮어쓰기 방지)
+  const [ready, setReady] = useState(!startedFromServerHtml);
 
   useEffect(() => {
+    if (ready) return;
+    setLines(readStored());
+    setReady(true);
+  }, [ready]);
+
+  useEffect(() => {
+    if (!ready) return;
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(lines));
     } catch {
       // 저장소를 쓸 수 없으면 세션 동안만 유지
     }
-  }, [lines]);
+  }, [lines, ready]);
 
   const add = useCallback((sku: string, size: string, qty: number) => {
     if (!orderable(sku, size)) return;
