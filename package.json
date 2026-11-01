@@ -15,7 +15,7 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "site": "npm run build && vite preview --host 127.0.0.1 --port 8080 --strictPort --open /",
+    "site": "npm run build && node scripts/lan-info.cjs 8080 && vite preview --host 0.0.0.0 --port 8080 --strictPort --open /",
     "clone": "node tools/site-cloner/clone.mjs"
   },
   "dependencies": {
@@ -83,6 +83,7 @@
     "globals": "^15.15.0",
     "lovable-tagger": "^1.1.11",
     "postcss": "^8.5.6",
+    "qrcode-terminal": "^0.12.0",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
