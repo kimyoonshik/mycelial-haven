@@ -19,9 +19,10 @@ const Home = () => {
     hero: (
       <section className="relative h-[100svh] min-h-[560px] overflow-hidden bg-mc-burgundy text-white">
         <img src={c.image} alt={c.heroAlt} className="absolute inset-0 h-full w-full scale-105 object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/55" />
         <Container className="relative flex h-full flex-col justify-end pb-14 md:pb-20">
-          <Display as="h1" className="max-w-4xl text-[clamp(3rem,8vw,7.5rem)]">
+          <Eyebrow className="mb-5 text-white/70">{c.heroEyebrow}</Eyebrow>
+          <Display as="h1" className="max-w-5xl text-[clamp(3.1rem,8.6vw,8.25rem)]">
             {c.heroTitle.map((line, i) => (
               <span key={i} className="block">
                 {line}
@@ -30,9 +31,14 @@ const Home = () => {
           </Display>
           <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             <p className="max-w-md text-base text-white/85 md:text-lg">{c.heroBody}</p>
-            <PillButton to="/mycerra" variant="light" className="self-start md:self-auto">
-              {c.heroCta}
-            </PillButton>
+            <div className="flex flex-wrap gap-3">
+              <PillButton to="/mycerra" variant="light">
+                {c.heroCta}
+              </PillButton>
+              <PillButton to="/shop" variant="outline" className="border-white/40 text-white hover:border-white hover:bg-white/10">
+                {c.heroCta2}
+              </PillButton>
+            </div>
           </div>
         </Container>
       </section>
@@ -43,7 +49,7 @@ const Home = () => {
       <section className="py-28 md:py-44">
         <Container>
           <Reveal>
-            <Display className="mx-auto max-w-5xl text-center text-[clamp(2rem,4.4vw,4rem)]">{c.statement}</Display>
+            <Display className="mx-auto max-w-6xl text-center text-[clamp(2.2rem,5vw,4.75rem)]">{c.statement}</Display>
           </Reveal>
         </Container>
       </section>
@@ -56,7 +62,7 @@ const Home = () => {
           {c.pillars.map((col, i) => (
             <Reveal key={i} delay={i * 120}>
               <Eyebrow>{col.k}</Eyebrow>
-              <h3 className="mt-5 font-mc-serif text-3xl font-light leading-tight">{col.t}</h3>
+              <h3 className="mt-5 font-mc-serif text-3xl leading-tight">{col.t}</h3>
               <p className="mt-4 text-[15px] leading-relaxed text-mc-mute">{col.b}</p>
               <TextLink to={col.to} className="mt-6">
                 {col.cta}
@@ -78,6 +84,10 @@ const Home = () => {
             </Reveal>
             <Reveal delay={150}>
               <p className="max-w-sm text-[15px] leading-relaxed text-mc-mute">{c.libraryBody}</p>
+              <p className="mt-5 font-mc-sans text-[11px] uppercase tracking-[0.18em] text-mc-mute/80">
+                {expressions.length} {t({ en: "expressions", ko: "가지 표현" })} · 4 {t({ en: "conditions", ko: "가공 조건" })} · 3{" "}
+                {t({ en: "sheet sizes", ko: "원단 크기" })}
+              </p>
             </Reveal>
           </div>
         </Container>
@@ -120,12 +130,17 @@ const Home = () => {
           </Reveal>
           <div className="mt-16 grid gap-10 md:grid-cols-3">
             {processSteps.map((s, i) => (
-              <Reveal key={s.id} delay={i * 120}>
+              <Reveal key={s.id} delay={i * 120} className="relative pt-12">
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -top-2 left-0 select-none font-mc-serif text-[6.5rem] leading-none text-mc-ink/[0.08]"
+                >
+                  {s.no}
+                </span>
                 <div className="aspect-[4/3] overflow-hidden bg-mc-line">
                   <img src={s.image} alt={t(s.title)} loading="lazy" className="h-full w-full object-cover" />
                 </div>
-                <p className="mt-6 text-xs tracking-[0.2em] text-mc-mute">{s.no}</p>
-                <h3 className="mt-2 font-mc-serif text-3xl font-light">{t(s.title)}</h3>
+                <h3 className="mt-5 font-mc-serif text-3xl">{t(s.title)}</h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-mc-mute">{t(s.body)}</p>
               </Reveal>
             ))}

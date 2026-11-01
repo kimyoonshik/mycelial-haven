@@ -98,6 +98,8 @@ const KEY_LABELS: Record<string, string> = {
   heroTitle: "큰 제목 (줄마다)",
   heroBody: "본문",
   heroCta: "버튼 문구",
+  heroEyebrow: "히어로 작은 제목",
+  heroCta2: "버튼 문구 2 (쇼핑몰)",
   heroAlt: "사진 설명 (화면 낭독기용)",
   statement: "문장",
   pillars: "항목",

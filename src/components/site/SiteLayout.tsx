@@ -95,7 +95,7 @@ const SiteHeader = () => {
       )}
     >
       <Container className="flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="font-mc-serif text-xl tracking-tight">
+        <Link to="/" className="font-mc-serif text-2xl tracking-tight">
           Mycerra<span className="align-super text-[10px]">™</span>
         </Link>
 
@@ -160,7 +160,7 @@ const SiteFooter = () => {
     <footer className="bg-mc-ink text-mc-paper print:hidden">
       <Container className="grid gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-5">
-          <p className="font-mc-serif text-3xl font-light leading-tight">
+          <p className="font-mc-serif text-3xl leading-tight">
             {t(footerCopy.line1)}
             <br />
             <span className="text-mc-paper/50">{t(footerCopy.line2)}</span>

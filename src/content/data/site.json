@@ -588,7 +588,15 @@
             "en": "Burgundy Mycerra pure mycelium mat, dyed three times, curling to show its grain",
             "ko": "3회 염색한 버건디 Mycerra 순수 균사 매트가 말려 올라가 결이 드러난 모습"
           },
-          "image": "/media/materials/color-burgundy-05.webp"
+          "image": "/media/materials/color-burgundy-05.webp",
+          "heroEyebrow": {
+            "en": "100% pure mycelium · grown in Korea",
+            "ko": "100% 순수 균사 · 국내 배양"
+          },
+          "heroCta2": {
+            "en": "Shop the material",
+            "ko": "쇼핑몰 바로가기"
+          }
         },
         "statement": {
           "statement": {
