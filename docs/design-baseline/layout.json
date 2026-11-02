@@ -1,0 +1,1058 @@
+{
+  "desktop /": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 124",
+    "hscroll": false,
+    "order": "hero > statement > pillars > library > process > impact > shop > collections > audiences > company",
+    "sections": {
+      "hero": {
+        "heading": "Cormorant Garamond 124",
+        "grids": ""
+      },
+      "statement": {
+        "heading": "Cormorant Garamond 72",
+        "grids": ""
+      },
+      "pillars": {
+        "heading": "Cormorant Garamond 30",
+        "grids": "3"
+      },
+      "library": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "3+3+3+3"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "3"
+      },
+      "impact": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "3+2"
+      },
+      "shop": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "4"
+      },
+      "collections": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "4"
+      },
+      "audiences": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2"
+      },
+      "company": {
+        "heading": "Cormorant Garamond 56",
+        "grids": "2 , 2+2"
+      }
+    }
+  },
+  "desktop /mycerra": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 112",
+    "hscroll": false,
+    "order": "intro > feature > grid > finishing",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 112",
+        "grids": ""
+      },
+      "feature": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "1+1"
+      },
+      "grid": {
+        "heading": null,
+        "grids": "4+4+4"
+      },
+      "finishing": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2 , 2 , 2 , 2 , 2"
+      }
+    }
+  },
+  "desktop /technology": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 112",
+    "hscroll": false,
+    "order": "intro > structure > process > performance > test-reports > platform",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 112",
+        "grids": ""
+      },
+      "structure": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2 , 2 , 2"
+      },
+      "performance": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2+2"
+      },
+      "test-reports": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "platform": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "3"
+      }
+    }
+  },
+  "desktop /impact": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 112",
+    "hscroll": false,
+    "order": "intro > claims > traceability > principles > docs",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 112",
+        "grids": ""
+      },
+      "claims": {
+        "heading": null,
+        "grids": "1+1+1 , 1+1+1 , 1+2 , 1+1+1 , 1+2"
+      },
+      "traceability": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2"
+      },
+      "principles": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "3"
+      },
+      "docs": {
+        "heading": null,
+        "grids": ""
+      }
+    }
+  },
+  "desktop /work-with-us": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 101",
+    "hscroll": false,
+    "order": "intro > steps > supply > inquiry",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 101",
+        "grids": ""
+      },
+      "steps": {
+        "heading": "Cormorant Garamond 24",
+        "grids": "4"
+      },
+      "supply": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2"
+      },
+      "inquiry": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2 , 3+2 , 2+2"
+      }
+    }
+  },
+  "desktop /shop": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 101",
+    "hscroll": false,
+    "order": "intro > pricing > catalog",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 101",
+        "grids": ""
+      },
+      "pricing": {
+        "heading": "Cormorant Garamond 24",
+        "grids": ""
+      },
+      "catalog": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "5 , 2 , 5+5+5+5+1 , 5+5+4 , 5+5+5+5+1"
+      }
+    }
+  },
+  "desktop /ko": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 124",
+    "hscroll": false,
+    "order": "hero > statement > pillars > library > process > impact > shop > collections > audiences > company",
+    "sections": {
+      "hero": {
+        "heading": "Cormorant Garamond 124",
+        "grids": ""
+      },
+      "statement": {
+        "heading": "Cormorant Garamond 72",
+        "grids": ""
+      },
+      "pillars": {
+        "heading": "Cormorant Garamond 30",
+        "grids": "3"
+      },
+      "library": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "3+3+3+3"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "3"
+      },
+      "impact": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "3+2"
+      },
+      "shop": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "4"
+      },
+      "collections": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "4"
+      },
+      "audiences": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2"
+      },
+      "company": {
+        "heading": "Cormorant Garamond 56",
+        "grids": "2 , 2+2"
+      }
+    }
+  },
+  "desktop /ko/mycerra": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 112",
+    "hscroll": false,
+    "order": "intro > feature > grid > finishing",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 112",
+        "grids": ""
+      },
+      "feature": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "1+1"
+      },
+      "grid": {
+        "heading": null,
+        "grids": "4+4+4"
+      },
+      "finishing": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2 , 2 , 2 , 2 , 2"
+      }
+    }
+  },
+  "desktop /ko/technology": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 112",
+    "hscroll": false,
+    "order": "intro > structure > process > performance > test-reports > platform",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 112",
+        "grids": ""
+      },
+      "structure": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2 , 2 , 2"
+      },
+      "performance": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2+2"
+      },
+      "test-reports": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "platform": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "3"
+      }
+    }
+  },
+  "desktop /ko/impact": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 112",
+    "hscroll": false,
+    "order": "intro > claims > traceability > principles > docs",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 112",
+        "grids": ""
+      },
+      "claims": {
+        "heading": null,
+        "grids": "1+1+1 , 1+2 , 1+2 , 1+2 , 1+2"
+      },
+      "traceability": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2"
+      },
+      "principles": {
+        "heading": "Cormorant Garamond 72",
+        "grids": "3"
+      },
+      "docs": {
+        "heading": null,
+        "grids": ""
+      }
+    }
+  },
+  "desktop /ko/work-with-us": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 101",
+    "hscroll": false,
+    "order": "intro > steps > supply > inquiry",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 101",
+        "grids": ""
+      },
+      "steps": {
+        "heading": "Cormorant Garamond 24",
+        "grids": "4"
+      },
+      "supply": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2"
+      },
+      "inquiry": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "2 , 3+2 , 2+2"
+      }
+    }
+  },
+  "desktop /ko/shop": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 101",
+    "hscroll": false,
+    "order": "intro > pricing > catalog",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 101",
+        "grids": ""
+      },
+      "pricing": {
+        "heading": "Cormorant Garamond 24",
+        "grids": ""
+      },
+      "catalog": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "5 , 2 , 5+5+5+5+1 , 5+5+4 , 5+5+5+5+1"
+      }
+    }
+  },
+  "zoomed /": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 53",
+    "hscroll": false,
+    "order": "hero > statement > pillars > library > process > impact > shop > collections > audiences > company",
+    "sections": {
+      "hero": {
+        "heading": "Cormorant Garamond 53",
+        "grids": ""
+      },
+      "statement": {
+        "heading": "Cormorant Garamond 35",
+        "grids": ""
+      },
+      "pillars": {
+        "heading": "Cormorant Garamond 20",
+        "grids": "3"
+      },
+      "library": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "3+3+3+3"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      },
+      "impact": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "3+2"
+      },
+      "shop": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "4"
+      },
+      "collections": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "2+2"
+      },
+      "audiences": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "company": {
+        "heading": "Cormorant Garamond 32",
+        "grids": "1+1 , 2+2"
+      }
+    }
+  },
+  "zoomed /mycerra": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > feature > grid > finishing",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "feature": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "1+1"
+      },
+      "grid": {
+        "heading": null,
+        "grids": "2+2+2+2+2+2"
+      },
+      "finishing": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1 , 1+1 , 1+1 , 1+1"
+      }
+    }
+  },
+  "zoomed /technology": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > structure > process > performance > test-reports > platform",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "structure": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1 , 1+1"
+      },
+      "performance": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1"
+      },
+      "test-reports": {
+        "heading": "Cormorant Garamond 36",
+        "grids": ""
+      },
+      "platform": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      }
+    }
+  },
+  "zoomed /impact": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > claims > traceability > principles > docs",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "claims": {
+        "heading": null,
+        "grids": "1+1+1 , 1+1+1 , 1+1+1 , 1+1+1 , 1+1+1"
+      },
+      "traceability": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "principles": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      },
+      "docs": {
+        "heading": null,
+        "grids": ""
+      }
+    }
+  },
+  "zoomed /work-with-us": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 44",
+    "hscroll": false,
+    "order": "intro > steps > supply > inquiry",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 44",
+        "grids": ""
+      },
+      "steps": {
+        "heading": "Cormorant Garamond 24",
+        "grids": "1+1+1+1"
+      },
+      "supply": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "inquiry": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1+1+1+1 , 1+1+1+1"
+      }
+    }
+  },
+  "zoomed /shop": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 44",
+    "hscroll": false,
+    "order": "intro > pricing > catalog",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 44",
+        "grids": ""
+      },
+      "pricing": {
+        "heading": "Cormorant Garamond 24",
+        "grids": ""
+      },
+      "catalog": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "5 , 2 , 2+2+2+2+2+2+2+2+2+2+1 , 2+2+2+2+2+2+2 , 2+2+2+2+2+2+2+2+2+2+1"
+      }
+    }
+  },
+  "zoomed /ko": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 53",
+    "hscroll": false,
+    "order": "hero > statement > pillars > library > process > impact > shop > collections > audiences > company",
+    "sections": {
+      "hero": {
+        "heading": "Cormorant Garamond 53",
+        "grids": ""
+      },
+      "statement": {
+        "heading": "Cormorant Garamond 35",
+        "grids": ""
+      },
+      "pillars": {
+        "heading": "Cormorant Garamond 20",
+        "grids": "3"
+      },
+      "library": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "3+3+3+3"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      },
+      "impact": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "3+2"
+      },
+      "shop": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "4"
+      },
+      "collections": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "2+2"
+      },
+      "audiences": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "company": {
+        "heading": "Cormorant Garamond 32",
+        "grids": "1+1 , 2+2"
+      }
+    }
+  },
+  "zoomed /ko/mycerra": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > feature > grid > finishing",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "feature": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "1+1"
+      },
+      "grid": {
+        "heading": null,
+        "grids": "2+2+2+2+2+2"
+      },
+      "finishing": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1 , 1+1 , 1+1 , 1+1"
+      }
+    }
+  },
+  "zoomed /ko/technology": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > structure > process > performance > test-reports > platform",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "structure": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1 , 1+1"
+      },
+      "performance": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1"
+      },
+      "test-reports": {
+        "heading": "Cormorant Garamond 36",
+        "grids": ""
+      },
+      "platform": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      }
+    }
+  },
+  "zoomed /ko/impact": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > claims > traceability > principles > docs",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "claims": {
+        "heading": null,
+        "grids": "1+1+1 , 1+1+1 , 1+1+1 , 1+1+1 , 1+1+1"
+      },
+      "traceability": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "principles": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      },
+      "docs": {
+        "heading": null,
+        "grids": ""
+      }
+    }
+  },
+  "zoomed /ko/work-with-us": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 44",
+    "hscroll": false,
+    "order": "intro > steps > supply > inquiry",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 44",
+        "grids": ""
+      },
+      "steps": {
+        "heading": "Cormorant Garamond 24",
+        "grids": "1+1+1+1"
+      },
+      "supply": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "inquiry": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1+1+1+1 , 1+1+1+1"
+      }
+    }
+  },
+  "zoomed /ko/shop": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 44",
+    "hscroll": false,
+    "order": "intro > pricing > catalog",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 44",
+        "grids": ""
+      },
+      "pricing": {
+        "heading": "Cormorant Garamond 24",
+        "grids": ""
+      },
+      "catalog": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "5 , 2 , 2+2+2+2+2+2+2+2+2+2+1 , 2+2+2+2+2+2+2 , 2+2+2+2+2+2+2+2+2+2+1"
+      }
+    }
+  },
+  "phone /": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 50",
+    "hscroll": false,
+    "order": "hero > statement > pillars > library > process > impact > shop > collections > audiences > company",
+    "sections": {
+      "hero": {
+        "heading": "Cormorant Garamond 50",
+        "grids": ""
+      },
+      "statement": {
+        "heading": "Cormorant Garamond 35",
+        "grids": ""
+      },
+      "pillars": {
+        "heading": "Cormorant Garamond 24",
+        "grids": "1+1+1"
+      },
+      "library": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "12"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      },
+      "impact": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1+1"
+      },
+      "shop": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1"
+      },
+      "collections": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1"
+      },
+      "audiences": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "company": {
+        "heading": "Cormorant Garamond 32",
+        "grids": "1+1 , 1+1+1+1"
+      }
+    }
+  },
+  "phone /mycerra": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > feature > grid > finishing",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "feature": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "1+1"
+      },
+      "grid": {
+        "heading": null,
+        "grids": "2+2+2+2+2+2"
+      },
+      "finishing": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1 , 1+1 , 1+1 , 1+1"
+      }
+    }
+  },
+  "phone /technology": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > structure > process > performance > test-reports > platform",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "structure": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1 , 1+1"
+      },
+      "performance": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1"
+      },
+      "test-reports": {
+        "heading": "Cormorant Garamond 36",
+        "grids": ""
+      },
+      "platform": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      }
+    }
+  },
+  "phone /impact": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > claims > traceability > principles > docs",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "claims": {
+        "heading": null,
+        "grids": "1+1+1 , 1+1+1 , 1+1+1 , 1+1+1 , 1+1+1"
+      },
+      "traceability": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "principles": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      },
+      "docs": {
+        "heading": null,
+        "grids": ""
+      }
+    }
+  },
+  "phone /work-with-us": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 44",
+    "hscroll": false,
+    "order": "intro > steps > supply > inquiry",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 44",
+        "grids": ""
+      },
+      "steps": {
+        "heading": "Cormorant Garamond 24",
+        "grids": "1+1+1+1"
+      },
+      "supply": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "inquiry": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1+1+1+1 , 1+1+1+1"
+      }
+    }
+  },
+  "phone /shop": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 44",
+    "hscroll": false,
+    "order": "intro > pricing > catalog",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 44",
+        "grids": ""
+      },
+      "pricing": {
+        "heading": "Cormorant Garamond 24",
+        "grids": ""
+      },
+      "catalog": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "5 , 2 , 2+2+2+2+2+2+2+2+2+2+1 , 2+2+2+2+2+2+2 , 2+2+2+2+2+2+2+2+2+2+1"
+      }
+    }
+  },
+  "phone /ko": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 50",
+    "hscroll": false,
+    "order": "hero > statement > pillars > library > process > impact > shop > collections > audiences > company",
+    "sections": {
+      "hero": {
+        "heading": "Cormorant Garamond 50",
+        "grids": ""
+      },
+      "statement": {
+        "heading": "Cormorant Garamond 35",
+        "grids": ""
+      },
+      "pillars": {
+        "heading": "Cormorant Garamond 24",
+        "grids": "1+1+1"
+      },
+      "library": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "12"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      },
+      "impact": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1+1"
+      },
+      "shop": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1"
+      },
+      "collections": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1"
+      },
+      "audiences": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "company": {
+        "heading": "Cormorant Garamond 32",
+        "grids": "1+1 , 1+1+1+1"
+      }
+    }
+  },
+  "phone /ko/mycerra": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > feature > grid > finishing",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "feature": {
+        "heading": "Cormorant Garamond 48",
+        "grids": "1+1"
+      },
+      "grid": {
+        "heading": null,
+        "grids": "2+2+2+2+2+2"
+      },
+      "finishing": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1 , 1+1 , 1+1 , 1+1"
+      }
+    }
+  },
+  "phone /ko/technology": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > structure > process > performance > test-reports > platform",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "structure": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "process": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1 , 1+1"
+      },
+      "performance": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1+1"
+      },
+      "test-reports": {
+        "heading": "Cormorant Garamond 36",
+        "grids": ""
+      },
+      "platform": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      }
+    }
+  },
+  "phone /ko/impact": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 48",
+    "hscroll": false,
+    "order": "intro > claims > traceability > principles > docs",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 48",
+        "grids": ""
+      },
+      "claims": {
+        "heading": null,
+        "grids": "1+1+1 , 1+1+1 , 1+1+1 , 1+1+1 , 1+1+1"
+      },
+      "traceability": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "principles": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1+1"
+      },
+      "docs": {
+        "heading": null,
+        "grids": ""
+      }
+    }
+  },
+  "phone /ko/work-with-us": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 44",
+    "hscroll": false,
+    "order": "intro > steps > supply > inquiry",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 44",
+        "grids": ""
+      },
+      "steps": {
+        "heading": "Cormorant Garamond 24",
+        "grids": "1+1+1+1"
+      },
+      "supply": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1"
+      },
+      "inquiry": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "1+1 , 1+1+1+1+1 , 1+1+1+1"
+      }
+    }
+  },
+  "phone /ko/shop": {
+    "body": "Inter",
+    "h1": "Cormorant Garamond 44",
+    "hscroll": false,
+    "order": "intro > pricing > catalog",
+    "sections": {
+      "intro": {
+        "heading": "Cormorant Garamond 44",
+        "grids": ""
+      },
+      "pricing": {
+        "heading": "Cormorant Garamond 24",
+        "grids": ""
+      },
+      "catalog": {
+        "heading": "Cormorant Garamond 36",
+        "grids": "5 , 2 , 2+2+2+2+2+2+2+2+2+2+1 , 2+2+2+2+2+2+2 , 2+2+2+2+2+2+2+2+2+2+1"
+      }
+    }
+  }
+}

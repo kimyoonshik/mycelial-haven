@@ -19,7 +19,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "site": "npm run build && node scripts/lan-info.cjs 8080 && vite preview --host 0.0.0.0 --port 8080 --strictPort --open /",
-    "clone": "node tools/site-cloner/clone.mjs"
+    "clone": "node tools/site-cloner/clone.mjs",
+    "check:layout": "node scripts/check-layout.cjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
