@@ -157,20 +157,24 @@ const Home = () => {
             <Eyebrow className="text-mc-paper/50">{c.impactEyebrow}</Eyebrow>
             <Display className="mt-4 max-w-3xl text-[clamp(2.25rem,5vw,4.5rem)]">{c.impactTitle}</Display>
           </Reveal>
-          <div
-            className={cn(
-              "mt-16 grid gap-px overflow-hidden bg-mc-paper/10 sm:grid-cols-2",
-              claims.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4",
-            )}
-          >
+          {/* 6칸 격자: 5개면 윗줄 3개 + 아랫줄 2개, 4개면 2개씩, 그 밖은 3개씩 */}
+          <div className="mt-16 grid gap-px overflow-hidden bg-mc-paper/10 min-[480px]:grid-cols-6">
             {claims.map((cl, i) => (
               <Reveal
                 key={i}
                 delay={i * 100}
-                // 홀수 개일 때 첫 항목을 넓혀 빈칸이 생기지 않게
-                className={cn("bg-mc-ink p-8", claims.length % 2 === 1 && i === 0 && "sm:col-span-2 lg:col-span-1")}
+                className={cn(
+                  "bg-mc-ink p-8 min-[480px]:p-5 lg:p-8",
+                  claims.length === 5
+                    ? i < 3
+                      ? "min-[480px]:col-span-2"
+                      : "min-[480px]:col-span-3"
+                    : claims.length === 4
+                      ? "min-[480px]:col-span-3"
+                      : "min-[480px]:col-span-2",
+                )}
               >
-                <p className="font-mc-serif text-6xl font-light">{cl.value}</p>
+                <p className="font-mc-serif text-6xl font-light min-[480px]:text-5xl lg:text-6xl">{cl.value}</p>
                 <p className="mt-2 text-sm uppercase tracking-[0.18em] text-mc-paper/70">{t(cl.label)}</p>
                 <p className="mt-4 text-sm leading-relaxed text-mc-paper/60">{t(cl.detail)}</p>
                 {cl.proof.status === "published" && (
@@ -289,14 +293,13 @@ const Home = () => {
           </Reveal>
           <Reveal className="md:col-span-6 md:col-start-7" delay={150}>
             <Eyebrow>{c.newsEyebrow}</Eyebrow>
-            <ul className="mt-6 divide-y divide-mc-line border-y border-mc-line">
+            {/* 한 줄에 2개씩 */}
+            <ul className="mt-6 grid border-t border-mc-line min-[480px]:grid-cols-2 min-[480px]:gap-x-6">
               {news.map((n) => (
-                <li key={n.id} className="grid grid-cols-[96px_1fr] gap-4 py-5">
-                  <span className="pt-1 text-[11px] uppercase tracking-[0.16em] text-mc-mute">{t(n.tag)}</span>
-                  <span>
-                    <span className="block font-mc-serif text-xl">{t(n.title)}</span>
-                    <span className="text-sm text-mc-mute">{t(n.meta)}</span>
-                  </span>
+                <li key={n.id} className="border-b border-mc-line py-5">
+                  <span className="block text-[11px] uppercase tracking-[0.16em] text-mc-mute">{t(n.tag)}</span>
+                  <span className="mt-2 block font-mc-serif text-xl leading-snug">{t(n.title)}</span>
+                  <span className="mt-1 block text-sm text-mc-mute">{t(n.meta)}</span>
                 </li>
               ))}
             </ul>
