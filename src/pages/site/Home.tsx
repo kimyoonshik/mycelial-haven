@@ -91,12 +91,13 @@ const Home = () => {
             </Reveal>
           </div>
         </Container>
-        <div className="mt-14 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-4 md:scroll-px-10 md:px-10 [scrollbar-width:thin]">
+        {/* 한 줄에 3개씩 정렬 (휴대폰은 옆으로 넘겨 보기) */}
+        <div className="mx-auto mt-14 flex max-w-[1400px] snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-4 [scrollbar-width:thin] min-[480px]:grid min-[480px]:grid-cols-3 min-[480px]:gap-x-5 min-[480px]:gap-y-10 min-[480px]:overflow-visible min-[480px]:pb-0 md:px-10">
           {expressions.map((e) => (
             <Link
               key={e.code}
               to={`/mycerra?code=${e.code}`}
-              className="group relative w-[68vw] shrink-0 snap-start sm:w-[44vw] md:w-[26vw] lg:w-[20vw]"
+              className="group relative w-[68vw] shrink-0 snap-start min-[480px]:w-auto"
             >
               <div className="aspect-[4/5] overflow-hidden bg-mc-line">
                 <img
@@ -106,7 +107,7 @@ const Home = () => {
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
-              <div className="mt-3 flex items-baseline justify-between">
+              <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-2">
                 <p className="font-mc-serif text-lg">{e.name}</p>
                 <p className="text-[11px] tracking-[0.16em] text-mc-mute">{e.code}</p>
               </div>
