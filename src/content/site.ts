@@ -57,5 +57,16 @@ export const useSectionsCopy = <P extends PageId>(page: P): { [K in keyof PageCo
 };
 
 /** 표시할 섹션 ID 목록 (운영 도구에서 정한 순서, 숨긴 섹션 제외) */
+// 첫 화면 섹션(홈 hero · 다른 페이지 intro)은 순서와 관계없이 항상 맨 위 — 숨기기만 가능
+export const OPENER_SECTIONS = ["hero", "intro"];
+
+/** 첫 화면 섹션을 맨 앞으로 옮긴 순서 */
+export const pinOpener = <T extends { id: string }>(order: T[]): T[] => {
+  const i = order.findIndex((s) => OPENER_SECTIONS.includes(s.id));
+  return i > 0 ? [order[i], ...order.slice(0, i), ...order.slice(i + 1)] : order;
+};
+
 export const pageSections = (page: PageId): string[] =>
-  siteData.pages[page].order.filter((s) => s.visible).map((s) => s.id);
+  pinOpener(siteData.pages[page].order)
+    .filter((s) => s.visible)
+    .map((s) => s.id);

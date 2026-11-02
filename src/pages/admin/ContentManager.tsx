@@ -2,6 +2,7 @@
 // 데이터: src/content/data/*.json · 이미지·성적서: public/media/ (cms/plugin.ts 의 /__cms API 사용)
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { pinOpener } from "@/content/site";
 import { api, ApiError, Btn, Field, inputCls, LInput, MediaPicker, Num, TOKEN } from "./cms-ui";
 import { PagesTab, type SiteData } from "./PagesTab";
 import { ArrowDown, ArrowUp, Copy, ExternalLink, Plus, RefreshCw, Save, Trash2 } from "lucide-react";
@@ -689,6 +690,8 @@ const ContentManager = () => {
 
   const load = useCallback(async () => {
     const c = (await api<ContentSet>("/content")) as unknown as Content;
+    // 첫 화면 섹션이 맨 위가 아니게 저장돼 있으면 바로잡는다 (다음 저장 때 파일에도 반영)
+    for (const pg of Object.values(c.site.pages)) pg.order = pinOpener(pg.order);
     setSaved(c);
     setDraft(structuredClone(c));
   }, []);

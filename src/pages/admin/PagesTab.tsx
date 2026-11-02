@@ -2,6 +2,7 @@
 // 데이터: src/content/data/site.json (구성 규칙은 src/content/schema.ts 의 SITE_SECTIONS)
 
 import { useEffect, useRef, useState } from "react";
+import { OPENER_SECTIONS } from "@/content/site";
 import { ArrowDown, ArrowUp, Eye, EyeOff, Monitor, Plus, RefreshCw, Smartphone, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Btn, Field, inputCls, LInput, MediaPicker, Num } from "./cms-ui";
@@ -474,7 +475,7 @@ export const PagesTab = ({ data, setData, tick }: { data: SiteData; setData: (d:
           </ul>
         ) : (
           <>
-            <p className="text-[11px] text-mc-mute">위에서 아래 = 화면 순서. 눈 아이콘으로 숨기기·보이기.</p>
+            <p className="text-[11px] text-mc-mute">위에서 아래 = 화면 순서. 눈 아이콘으로 숨기기·보이기. 첫 화면 섹션은 항상 맨 위에 고정됩니다.</p>
             <ul className="divide-y divide-mc-line border border-mc-line bg-white" data-testid="section-list">
               {pg!.order.map((s, i) => (
                 <li key={s.id} className={cn("flex items-center gap-1 px-2 py-1.5", section === s.id && "bg-mc-cream")} data-row={s.id}>
@@ -488,7 +489,7 @@ export const PagesTab = ({ data, setData, tick }: { data: SiteData; setData: (d:
                   <button
                     type="button"
                     aria-label={`${s.id} 위로`}
-                    disabled={i === 0}
+                    disabled={i === 0 || OPENER_SECTIONS.includes(s.id) || (i === 1 && OPENER_SECTIONS.includes(pg!.order[0].id))}
                     onClick={() => move(i, -1)}
                     className="p-1 disabled:opacity-30"
                   >
@@ -497,7 +498,7 @@ export const PagesTab = ({ data, setData, tick }: { data: SiteData; setData: (d:
                   <button
                     type="button"
                     aria-label={`${s.id} 아래로`}
-                    disabled={i === pg!.order.length - 1}
+                    disabled={i === pg!.order.length - 1 || OPENER_SECTIONS.includes(s.id)}
                     onClick={() => move(i, 1)}
                     className="p-1 disabled:opacity-30"
                   >
