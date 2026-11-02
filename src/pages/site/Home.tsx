@@ -58,12 +58,12 @@ const Home = () => {
     // What / Why / How
     pillars: (
       <section className="border-t border-mc-line">
-        <Container className="grid gap-12 py-20 md:grid-cols-3 md:gap-10">
+        <Container className="grid gap-12 py-20 min-[480px]:grid-cols-3 min-[480px]:gap-5 md:gap-10">
           {c.pillars.map((col, i) => (
             <Reveal key={i} delay={i * 120}>
               <Eyebrow>{col.k}</Eyebrow>
-              <h3 className="mt-5 font-mc-serif text-3xl leading-tight">{col.t}</h3>
-              <p className="mt-4 text-[15px] leading-relaxed text-mc-mute">{col.b}</p>
+              <h3 className="mt-5 font-mc-serif text-2xl leading-tight min-[480px]:text-xl sm:text-2xl md:text-3xl">{col.t}</h3>
+              <p className="mt-4 text-[15px] leading-relaxed text-mc-mute min-[480px]:text-[13px] sm:text-[15px]">{col.b}</p>
               <TextLink to={col.to} className="mt-6">
                 {col.cta}
               </TextLink>
@@ -203,13 +203,16 @@ const Home = () => {
               <p className="max-w-sm text-[15px] leading-relaxed text-mc-mute">{c.shopBody}</p>
             </Reveal>
           </div>
-          <div className="mt-14 grid gap-px bg-mc-line sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-px bg-mc-line min-[480px]:grid-cols-4">
             {categories.map((cat, i) => (
               <Reveal key={cat.id} delay={i * 100} className="bg-mc-paper">
-                <Link to={`/shop?cat=${cat.id}`} className="group block h-full p-8 transition-colors hover:bg-mc-cream">
+                <Link
+                  to={`/shop?cat=${cat.id}`}
+                  className="group block h-full p-8 transition-colors hover:bg-mc-cream min-[480px]:p-3 sm:p-5 lg:p-8"
+                >
                   <p className="text-xs tracking-[0.2em] text-mc-mute">0{i + 1}</p>
-                  <h3 className="mt-3 font-mc-serif text-2xl">{t(cat.title)}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-mc-mute">{t(cat.summary)}</p>
+                  <h3 className="mt-3 font-mc-serif text-2xl leading-tight min-[480px]:text-lg sm:text-xl lg:text-2xl">{t(cat.title)}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-mc-mute min-[480px]:text-xs sm:text-[13px] lg:text-sm">{t(cat.summary)}</p>
                 </Link>
               </Reveal>
             ))}
@@ -234,7 +237,7 @@ const Home = () => {
               <p className="max-w-sm text-[15px] leading-relaxed text-mc-mute">{c.collectionsBody}</p>
             </Reveal>
           </div>
-          <div className="mt-14 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-x-6 gap-y-12 min-[480px]:grid-cols-2 min-[480px]:gap-x-4 sm:gap-x-6 lg:grid-cols-4">
             {collections.map((col, i) => (
               <Reveal key={i} delay={i * 100}>
                 <div className="aspect-square overflow-hidden bg-mc-cream">
