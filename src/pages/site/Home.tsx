@@ -22,7 +22,7 @@ const Home = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/10 to-black/55" />
         <Container className="relative flex h-full flex-col justify-end pb-14 md:pb-20">
           <Eyebrow className="mb-5 text-white/70">{c.heroEyebrow}</Eyebrow>
-          <Display as="h1" className="max-w-4xl text-[clamp(3rem,8vw,7.5rem)]">
+          <Display as="h1" className="max-w-5xl text-[clamp(3.1rem,8.6vw,8.25rem)]">
             {c.heroTitle.map((line, i) => (
               <span key={i} className="block">
                 {line}
@@ -49,7 +49,7 @@ const Home = () => {
       <section className="py-28 md:py-44">
         <Container>
           <Reveal>
-            <Display className="mx-auto max-w-5xl text-center text-[clamp(2rem,4.4vw,4rem)]">{c.statement}</Display>
+            <Display className="mx-auto max-w-6xl text-center text-[clamp(2.2rem,5vw,4.75rem)]">{c.statement}</Display>
           </Reveal>
         </Container>
       </section>

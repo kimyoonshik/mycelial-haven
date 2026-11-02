@@ -43,7 +43,7 @@ export const Display = ({
       className={cn(
         "font-mc-serif font-normal tracking-[-0.01em]",
         className,
-        lang === "ko" ? "leading-[1.25]" : "leading-[1.05]",
+        lang === "ko" ? "leading-[1.25]" : "leading-[1.02]",
       )}
     >
       {children}

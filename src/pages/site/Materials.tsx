@@ -48,7 +48,7 @@ const Feature = ({ e }: { e: Expression }) => {
           <p className={cn("text-xs tracking-[0.2em]", dark ? "text-mc-paper/60" : "text-mc-mute")}>
             {e.code} · {t(familyLabel[e.family])}
           </p>
-          <Display className="mt-3 text-5xl md:text-6xl">{e.name}</Display>
+          <Display className="mt-3 text-5xl md:text-7xl">{e.name}</Display>
           <p className={cn("mt-5 text-[15px] leading-relaxed", dark ? "text-mc-paper/80" : "text-mc-mute")}>
             {t(e.description)}
           </p>
@@ -93,7 +93,7 @@ const Materials = () => {
       <section className="pb-16 pt-36 md:pt-44">
         <Container>
           <Eyebrow>{c.eyebrow}</Eyebrow>
-          <Display as="h1" className="mt-5 max-w-5xl text-[clamp(2.75rem,7vw,6.5rem)]">
+          <Display as="h1" className="mt-5 max-w-5xl text-[clamp(3rem,7.8vw,7.25rem)]">
             {c.title}
           </Display>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-mc-mute">{c.intro}</p>
