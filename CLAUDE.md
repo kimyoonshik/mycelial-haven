@@ -10,7 +10,7 @@ The owner is addressed as **마이세라님** (CTO, SAVE EARTH Inc.). Reply in K
   `npm run build && npm run check:layout` — it must report "기준선과 동일 ✓".
 - If it reports a difference: revert unintended changes. Only for an approved change run
   `npm run check:layout -- --update` and add a row to `docs/design-baseline/README.md` §5.
-- Restore point: git tag `design-baseline-2026-11-02`. Details: `docs/design-baseline/README.md`.
+- Restore point: commit `19157ff` on `feature/rea-site-cloner`. Details: `docs/design-baseline/README.md`.
 
 ## Never
 

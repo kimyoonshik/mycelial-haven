@@ -1,7 +1,7 @@
 # 화면 구성 기준선 (승인 상태 고정)
 
 > 확정: 2026-11-02 · 마이세라님 승인 ("전체 화면 구성이 좋아졌다, 변경되지 않도록 주의")
-> 되돌림 지점: Git 태그 **`design-baseline-2026-11-02`**
+> 되돌림 지점: 커밋 **`19157ff`** (`feature/rea-site-cloner` 브랜치, 전체 번호 `19157ff90ddaf00fe81ee4749dab052609d8ad57`)
 > 자동 검사: `npm run build && npm run check:layout` (기준 데이터 `layout.json`)
 
 ---
