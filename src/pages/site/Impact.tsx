@@ -26,7 +26,7 @@ const Impact = () => {
       <section className="pb-20 pt-36 md:pt-44">
         <Container>
           <Eyebrow>{c.eyebrow}</Eyebrow>
-          <Display as="h1" className="mt-5 max-w-5xl text-[clamp(3rem,7.8vw,7.25rem)]">
+          <Display as="h1" className="mt-5 max-w-5xl text-[clamp(2.75rem,7vw,6.5rem)]">
             {c.title}
           </Display>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-mc-mute">{c.intro}</p>

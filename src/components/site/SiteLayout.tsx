@@ -114,7 +114,7 @@ const SiteHeader = () => {
       )}
     >
       <Container className="flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="font-mc-serif text-2xl tracking-tight">
+        <Link to="/" className="font-mc-serif text-xl tracking-tight">
           Mycerra<span className="align-super text-[10px]">™</span>
         </Link>
 
