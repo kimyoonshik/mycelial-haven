@@ -180,6 +180,65 @@ export function hyphaeSvg(seed = 'mycogen', W = 1600, H = 900) {
 
 export const MARK_SVG = `<svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M16 16 C 12 12, 8 11, 4 6"/><path d="M8 11 C 7 8, 8 6, 7 3"/><path d="M16 16 C 20 11, 24 10, 28 7"/><path d="M23 10 C 25 7, 25 5, 27 3"/><path d="M16 16 C 15 21, 12 24, 6 27"/><path d="M11 23 C 8 22, 5 22, 3 20"/><path d="M16 16 C 19 21, 23 23, 28 25"/></g><circle cx="16" cy="16" r="3.4" fill="currentColor"/></svg>`;
 
+// ---------- SNS / channels ----------
+// Simple monochrome marks (currentColor) used to link to the company's own channels.
+export const SOCIAL = [
+  { key: 'x', label: 'X', svg: '<path d="M4 4l7.2 9.1L4.3 20H6l6.1-5.9L17 20h3l-7.5-9.5L19.1 4h-1.7l-5.7 5.5L7 4z"/>' },
+  { key: 'facebook', label: 'Facebook', svg: '<path d="M13.6 21v-7.2h2.4l.4-2.8h-2.8V9.3c0-.8.2-1.4 1.4-1.4H16.5V5.4c-.3 0-1.1-.1-2.1-.1-2.1 0-3.6 1.3-3.6 3.7V11H8.4v2.8h2.4V21z"/>' },
+  { key: 'instagram', label: 'Instagram', svg: '<rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="17.2" cy="6.8" r="1.2"/>' },
+  { key: 'linkedin', label: 'LinkedIn', svg: '<circle cx="6.3" cy="6.4" r="1.8"/><rect x="4.8" y="9.4" width="3" height="10"/><path d="M10.4 9.4h2.9v1.4c.5-.9 1.6-1.7 3.2-1.7 2.7 0 3.5 1.7 3.5 4.3v6h-3v-5.3c0-1.3-.3-2.3-1.6-2.3-1.4 0-2 1-2 2.3v5.3h-3z"/>' },
+  { key: 'youtube', label: 'YouTube', svg: '<path fill-rule="evenodd" d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4a2.6 2.6 0 0 0-1.8 1.8A27 27 0 0 0 2 12a27 27 0 0 0 .4 4.8 2.6 2.6 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8A27 27 0 0 0 22 12a27 27 0 0 0-.4-4.8zM10 15V9l5.2 3z"/>' },
+  { key: 'naverBlog', label: { ko: '네이버 블로그', en: 'Naver Blog' }, svg: '<path fill-rule="evenodd" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm3 4.5v9h2.6v-4.8l3.4 4.8h2.6v-9H14v4.8l-3.4-4.8z"/>' },
+  { key: 'kakao', label: { ko: '카카오톡 채널', en: 'KakaoTalk Channel' }, svg: '<path d="M12 4C7 4 3 7.1 3 11c0 2.5 1.7 4.7 4.2 5.9l-.8 3.6 4-2.6c.5.1 1 .1 1.6.1 5 0 9-3.1 9-7s-4-7-9-7z"/>' },
+];
+
+export function socialUrls(site) {
+  const so = site.social || {};
+  return SOCIAL.map((x) => String(so[x.key] || '').trim()).filter((u) => /^https?:\/\//i.test(u));
+}
+
+function socialList(ctx, cls) {
+  const so = ctx.site.social || {};
+  const name = tx(ctx.site.company?.name, ctx.lang) || 'Mycogen';
+  const items = SOCIAL.map((x) => {
+    const url = String(so[x.key] || '').trim();
+    if (!/^https?:\/\//i.test(url)) return '';
+    const label = tx(x.label, ctx.lang);
+    return `<li><a href="${esc(url)}" target="_blank" rel="noopener me" aria-label="${esc(`${name} ${label}`)}" title="${esc(label)}"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">${x.svg}</svg></a></li>`;
+  }).join('');
+  return items ? `<ul class="social ${cls}">${items}</ul>` : '';
+}
+
+// Plain-text version of a page, used for llms-full.txt (AI assistants) — no markup, links reduced to their labels.
+const plain = (v, lang) => tx(v, lang).replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/\*\*/g, '').trim();
+
+export function pageText(site, page, lang) {
+  const out = [];
+  const P = (v) => plain(v, lang);
+  const line = (t) => { if (t) out.push(t); };
+  for (const s of page.sections || []) {
+    if (s.hidden) continue;
+    if (P(s.title)) out.push('', '## ' + P(s.title).replace(/\n/g, ' '));
+    line(P(s.text));
+    let items = s.items || [];
+    if (s.type === 'cards' && s.source === 'business') {
+      items = site.pages.filter((p) => p.parent === 'business' && !p.hidden).map((p) => ({ title: p.navLabel, text: p.cardText }));
+    }
+    if (s.type === 'steps') items.forEach((it, n) => line(`${it.tag || n + 1}. ${P(it.title)}${P(it.text) ? ' — ' + P(it.text) : ''}`));
+    else if (s.type === 'stats') items.forEach((it) => line(`- ${it.value}${P(it.unit) ? ' ' + P(it.unit) : ''}: ${P(it.label)}`));
+    else if (['cards', 'band'].includes(s.type)) items.forEach((it) => line(`- ${P(it.title)}${P(it.text) ? ': ' + P(it.text) : ''}`));
+    (s.bullets || []).forEach((b) => line('- ' + P(b.text)));
+    (s.rows || []).forEach((r) => { if (P(r.value)) line(`- ${P(r.label)}: ${P(r.value).replace(/\n/g, ' ')}`); });
+    line(P(s.note));
+    if (s.type === 'richText') line(P(s.body));
+    if (s.type === 'news') {
+      [...(site.news || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date)))
+        .forEach((n) => line(`- ${n.date} ${P(n.title)}${P(n.summary) ? ' — ' + P(n.summary) : ''}`));
+    }
+  }
+  return out.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
 // ---------- sections ----------
 const R = {};
 
@@ -193,6 +252,8 @@ R.hero = (s, ctx, i, next) => {
   ${s.network !== false ? '<div class="hero__net" aria-hidden="true"></div>' : ''}
   <div class="wrap hero__inner">
     ${eyebrow(s.eyebrow, ctx)}${h}${para(s.text, ctx, 'hero__text')}${buttons(s.buttons, ctx)}
+    ${ctx.page.id === 'home' && !ctx.site.social?.hideOnHero && socialList(ctx, 'social--hero')
+      ? `<div class="hero__social"><span class="hero__social-label">FOLLOW</span>${socialList(ctx, 'social--hero')}</div>` : ''}
   </div>
   ${fiberEdge(`hero-${ctx.page.id}-${i}`, { cls: `edge--hero tone-${esc(next?.tone || 'paper')}-fill` })}
 </section>`;
@@ -341,6 +402,7 @@ R.contact = (s, ctx) => {
   <div class="contact__intro">
     ${eyebrow(s.eyebrow, ctx)}${heading(s.title, ctx)}${para(s.text, ctx, 'sec__lead')}
     ${info ? `<ul class="contact__info">${info}</ul>` : ''}
+    ${socialList(ctx, 'social--dark')}
   </div>
   <form class="form" data-contact data-email="${esc(c.email || '')}" data-endpoint="${esc(c.formEndpoint || '')}" data-lang="${ctx.lang}" novalidate>
     <div class="form__row">
@@ -434,6 +496,7 @@ function header(ctx) {
     <nav class="nav" id="nav" aria-label="${ctx.lang === 'ko' ? '주 메뉴' : 'Main'}">
       <ul class="nav__list">${menu}</ul>
       <div class="lang">${otherLangs.length ? langLinks : ''}</div>
+      ${socialList(ctx, 'social--nav')}
     </nav>
   </div>
 </header>`;
@@ -466,6 +529,7 @@ function footer(ctx) {
     <div class="ftr__brand">
       <a class="logo logo--light" href="${esc(ctx.pageHref('home'))}">${logo(ctx)}</a>
       ${para(s.brand?.tagline, ctx, 'ftr__tagline')}
+      ${socialList(ctx, 'social--footer')}
     </div>
     <div class="ftr__cols">${cols}</div>
   </div>
@@ -492,15 +556,51 @@ function head(ctx, assetsVersion) {
   const vars = Object.entries(colors).filter(([, v]) => /^#[0-9a-f]{3,8}$/i.test(v || '')).map(([k, v]) => `--${k}:${v}`).join(';');
   const alternates = LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(ctx.abs(page.id, l))}">`).join('')
     + `<link rel="alternate" hreflang="x-default" href="${esc(ctx.abs(page.id, m.defaultLang || 'ko'))}">`;
+  const sameAs = socialUrls(site);
+  const orgId = base + '/#organization';
+  const orgName = tx(site.company?.name, 'en') || siteName;
+  const founded = (tx(site.company?.founded, 'en') + ' ' + tx(site.company?.founded, 'ko')).match(/\d{4}/);
+  const addr = tx(site.company?.address, lang).replace(/\n/g, ' ').trim();
+  const email = site.company?.email || '';
+  const tel = site.company?.tel || '';
   const org = {
-    '@context': 'https://schema.org', '@type': 'Organization',
-    name: tx(site.company?.name, 'en') || siteName, alternateName: tx(site.company?.name, 'ko'),
-    url: base + '/', logo: base + '/assets/logo.svg',
-    ...(site.company?.email ? { email: site.company.email } : {}),
-    ...(site.company?.tel ? { telephone: site.company.tel } : {}),
+    '@type': 'Organization', '@id': orgId, name: orgName,
+    alternateName: [tx(site.company?.name, 'ko'), tx(m.siteName, 'ko'), tx(m.siteName, 'en'), site.brand?.wordmark]
+      .filter((v, n, a) => v && v !== orgName && a.indexOf(v) === n),
+    url: base + '/', logo: { '@type': 'ImageObject', url: base + '/assets/logo.svg' },
+    description: tx(m.description, lang),
+    ...(m.ogImage ? { image: base + '/' + m.ogImage } : {}),
+    ...(founded ? { foundingDate: founded[0] } : {}),
+    ...(email ? { email } : {}),
+    ...(tel ? { telephone: tel } : {}),
+    ...(addr ? { address: { '@type': 'PostalAddress', streetAddress: addr, addressCountry: 'KR' } } : {}),
+    ...(sameAs.length ? { sameAs } : {}),
+    knowsAbout: tx(m.keywords, lang).split(',').map((k) => k.trim()).filter(Boolean),
+    ...(email || tel ? { contactPoint: { '@type': 'ContactPoint', contactType: 'customer service', ...(email ? { email } : {}), ...(tel ? { telephone: tel } : {}), availableLanguage: ['Korean', 'English'] } } : {}),
   };
-  const ld = [org];
-  if (isHome) ld.push({ '@context': 'https://schema.org', '@type': 'WebSite', name: siteName, url: base + '/', inLanguage: lang });
+  const trail = [];
+  for (let cur = page; cur; cur = cur.parent && ctx.pagesById[cur.parent]) trail.unshift(cur);
+  if (!isHome) trail.unshift(ctx.pagesById.home);
+  const graph = [org,
+    { '@type': 'WebSite', '@id': base + '/#website', url: base + '/', name: siteName, inLanguage: ['ko-KR', 'en'], publisher: { '@id': orgId } },
+    { '@type': 'WebPage', '@id': canonical + '#webpage', url: canonical, name: title, description: desc, inLanguage: lang === 'ko' ? 'ko-KR' : 'en',
+      isPartOf: { '@id': base + '/#website' }, about: { '@id': orgId },
+      ...(og ? { primaryImageOfPage: { '@type': 'ImageObject', url: base + '/' + og } } : {}),
+      ...(trail.length > 1 ? { breadcrumb: { '@id': canonical + '#breadcrumb' } } : {}) },
+  ];
+  if (trail.length > 1) {
+    graph.push({ '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: trail.filter(Boolean).map((p, n) => ({ '@type': 'ListItem', position: n + 1, name: tx(p.navLabel || p.title, lang), item: ctx.abs(p.id) })) });
+  }
+  if ((page.sections || []).some((x) => x.type === 'news' && !x.hidden)) {
+    const news = [...(site.news || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 20);
+    if (news.length) graph.push({ '@type': 'ItemList', itemListElement: news.map((n, k) => ({ '@type': 'ListItem', position: k + 1, item: {
+      '@type': 'NewsArticle', headline: tx(n.title, lang), datePublished: n.date, description: tx(n.summary, lang).slice(0, 300),
+      ...(n.image ? { image: base + '/' + n.image } : {}), publisher: { '@id': orgId }, author: { '@id': orgId },
+      mainEntityOfPage: canonical } })) });
+  }
+  const ld = { '@context': 'https://schema.org', '@graph': graph };
+  const xUrl = String(site.social?.x || '');
+  const xHandle = (xUrl.match(/(?:x|twitter)\.com\/(?:#!\/)?@?([A-Za-z0-9_]{1,15})/i) || [])[1];
   const ga = m.gaId && !ctx.preview
     ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${esc(m.gaId)}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${esc(m.gaId)}');</script>` : '';
   return `<meta charset="utf-8">
@@ -508,7 +608,7 @@ function head(ctx, assetsVersion) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 ${tx(m.keywords, lang) ? `<meta name="keywords" content="${esc(tx(m.keywords, lang))}">` : ''}
-${ctx.preview ? '<meta name="robots" content="noindex">' : '<meta name="robots" content="index,follow">'}
+${ctx.preview ? '<meta name="robots" content="noindex">' : '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">'}
 <link rel="canonical" href="${esc(canonical)}">
 ${alternates}
 <meta property="og:type" content="website">
@@ -520,6 +620,9 @@ ${alternates}
 ${og ? `<meta property="og:image" content="${esc(base + '/' + og)}"><meta name="twitter:card" content="summary_large_image">` : ''}
 ${m.naverVerification ? `<meta name="naver-site-verification" content="${esc(m.naverVerification)}">` : ''}
 ${m.googleVerification ? `<meta name="google-site-verification" content="${esc(m.googleVerification)}">` : ''}
+${m.bingVerification ? `<meta name="msvalidate.01" content="${esc(m.bingVerification)}">` : ''}
+${xHandle ? `<meta name="twitter:site" content="@${esc(xHandle)}">` : ''}
+<link rel="alternate" type="application/rss+xml" title="${esc(siteName)} ${lang === 'ko' ? '소식' : 'News'}" href="${esc(base)}/rss.xml">
 <meta name="theme-color" content="${esc(colors.ink || '#23201b')}">
 <link rel="icon" href="${ctx.root}assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>

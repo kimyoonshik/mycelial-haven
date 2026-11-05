@@ -237,6 +237,16 @@ export const SITE_FIELDS = [
     { key: 'brand.colors.ink', label: '글자색', type: 'color' },
     { key: 'brand.colors.paper', label: '바탕색', type: 'color' },
   ] },
+  { group: 'SNS·채널', fields: [
+    { key: 'social.x', label: 'X(트위터) 주소  예: https://x.com/mycogen', type: 'text' },
+    { key: 'social.facebook', label: '페이스북 주소  예: https://www.facebook.com/mycogen', type: 'text' },
+    { key: 'social.instagram', label: '인스타그램 주소  예: https://www.instagram.com/mycogen', type: 'text' },
+    { key: 'social.linkedin', label: '링크드인 주소  예: https://www.linkedin.com/company/mycogen', type: 'text' },
+    { key: 'social.youtube', label: '유튜브 주소  예: https://www.youtube.com/@mycogen', type: 'text' },
+    { key: 'social.naverBlog', label: '네이버 블로그 주소  예: https://blog.naver.com/mycogen', type: 'text' },
+    { key: 'social.kakao', label: '카카오톡 채널 주소  예: https://pf.kakao.com/_xxxxx', type: 'text' },
+    { key: 'social.hideOnHero', label: '홈 첫 화면의 SNS 아이콘 숨기기 (주소를 넣은 SNS만 표시됩니다)', type: 'toggle' },
+  ] },
   { group: '검색·공유', fields: [
     { key: 'meta.siteUrl', label: '사이트 주소', type: 'text' },
     { key: 'meta.siteName', label: '사이트 이름', type: 'i18n' },
@@ -245,6 +255,8 @@ export const SITE_FIELDS = [
     { key: 'meta.ogImage', label: '기본 공유 이미지(1200×630)', type: 'image' },
     { key: 'meta.naverVerification', label: '네이버 서치어드바이저 인증 코드', type: 'text' },
     { key: 'meta.googleVerification', label: '구글 서치콘솔 인증 코드', type: 'text' },
+    { key: 'meta.bingVerification', label: 'Bing 웹마스터 인증 코드(msvalidate.01) — ChatGPT·Copilot 검색이 Bing 색인을 씁니다', type: 'text' },
+    { key: 'meta.daumVerification', label: 'Daum 웹마스터도구 인증 문구(#DaumWebMasterTool:… 전체)', type: 'text' },
     { key: 'meta.gaId', label: 'GA4 측정 ID (G-XXXX)', type: 'text' },
   ] },
   { group: '푸터', fields: [

@@ -58,7 +58,14 @@
    - **가비아·카페24 웹호스팅**: FTP로 `dist` 안의 파일 전체(`.htaccess` 포함)를 웹 루트(`www` 또는 `public_html`)에 올립니다.
    - **Netlify / Cloudflare Pages(무료)**: ZIP을 푼 폴더를 관리 화면에 끌어다 놓습니다.
 3. 도메인 DNS에서 `www.mycogen.co.kr`을 호스팅으로 연결하고 SSL(https)을 켭니다.
-4. **네이버 서치어드바이저**·**구글 서치콘솔**에 사이트 등록 → 인증 코드를 `사이트 정보 → 검색·공유`에 넣고 저장·재배포 → `https://www.mycogen.co.kr/sitemap.xml` 제출.
+4. 검색 등록 — 각 서비스에 사이트를 등록하고 인증 코드를 `사이트 정보 → 검색·공유`에 넣은 뒤 저장·재배포합니다.
+   - **네이버 서치어드바이저**: 사이트맵 `https://www.mycogen.co.kr/sitemap.xml` + RSS `https://www.mycogen.co.kr/rss.xml` 제출
+   - **구글 서치콘솔**: 사이트맵 제출 (Gemini·AI 개요도 구글 색인을 씁니다)
+   - **Bing 웹마스터 도구**: 사이트맵 제출 (ChatGPT 검색·Copilot이 Bing 색인을 씁니다)
+   - **Daum 웹마스터도구**: 발급된 `#DaumWebMasterTool:…` 문구를 그대로 입력
+5. **SNS 연결**: `사이트 정보 → SNS·채널`에 주소를 넣으면 홈 첫 화면 오른쪽, 푸터, 모바일 메뉴, 문의 페이지에 아이콘이 생깁니다(주소를 넣은 것만 표시).
+
+사이트를 만들 때 검색·AI용 파일이 자동으로 함께 생성됩니다: `robots.txt`(구글·네이버·다음·Bing과 ChatGPT·Claude·Gemini·Perplexity 등 AI 크롤러 허용), `sitemap.xml`, `rss.xml`, `llms.txt`(AI용 회사 요약), `llms-full.txt`(AI용 전체 본문), 페이지마다 구조화 데이터(회사·웹페이지·경로·소식, SNS 연결 포함).
 
 ## 4. 게시 전 꼭 채울 항목
 

@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { renderPage, render404, pagePath, langPrefix, hyphaeSvg, MARK_SVG, tx } from './render.mjs';
+import { renderPage, render404, pagePath, langPrefix, hyphaeSvg, MARK_SVG, tx, pageText, socialUrls } from './render.mjs';
 import { LANGS } from './schema.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -128,7 +128,12 @@ export function build({ content, outDir = path.join(ROOT, 'dist'), preview = fal
     return LANGS.map((l) => `  <url>\n    <loc>${base}/${langPrefix(l, site)}${pagePath(p, byId)}</loc>\n    <lastmod>${today}</lastmod>\n${alts}\n  </url>`).join('\n');
   }).join('\n');
   write(path.join(outDir, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`);
-  write(path.join(outDir, 'robots.txt'), preview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`);
+  write(path.join(outDir, 'robots.txt'), preview ? 'User-agent: *\nDisallow: /\n' : robotsTxt(site, base));
+  if (!preview) {
+    write(path.join(outDir, 'llms.txt'), llmsTxt(site, base, byId, pages));
+    write(path.join(outDir, 'llms-full.txt'), llmsFull(site, base, byId, pages));
+    write(path.join(outDir, 'rss.xml'), rssXml(site, base, byId));
+  }
   // Apache hosting (Cafe24, Gabia, etc.): 404 page and caching
   write(path.join(outDir, '.htaccess'), [
     'ErrorDocument 404 /404.html',
@@ -149,6 +154,110 @@ export function build({ content, outDir = path.join(ROOT, 'dist'), preview = fal
   ].join('\n'));
 
   return { ok: true, pages: count, mediaCopied, ms: Date.now() - t0, warnings, outDir };
+}
+
+// ---------- search engines & AI assistants ----------
+// Search and AI crawlers that are explicitly welcome (all others are allowed by "*" too).
+const CRAWLERS = [
+  'Googlebot', 'Google-Extended', 'Bingbot', 'Yeti', 'Daumoa', 'DuckDuckBot', 'Applebot', 'Applebot-Extended',
+  'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-User', 'Claude-SearchBot', 'anthropic-ai',
+  'PerplexityBot', 'Perplexity-User', 'meta-externalagent', 'Amazonbot', 'CCBot', 'cohere-ai',
+  'DuckAssistBot', 'MistralAI-User', 'YouBot', 'Bytespider',
+];
+
+function robotsTxt(site, base) {
+  const daum = String(site.meta?.daumVerification || '').trim();
+  const daumLine = daum ? (daum.startsWith('#') ? daum : `#DaumWebMasterTool:${daum}`) : '';
+  return [
+    'User-agent: *', 'Allow: /', '',
+    '# Search engines and AI assistants are welcome to read and cite this site.',
+    ...CRAWLERS.map((c) => `User-agent: ${c}`), 'Allow: /', '',
+    `Sitemap: ${base}/sitemap.xml`,
+    daumLine, '',
+  ].join('\n');
+}
+
+const pageUrl = (base, site, byId, p, lang) => `${base}/${langPrefix(lang, site)}${pagePath(p, byId)}`;
+const one = (v) => String(v || '').replace(/\s*\n\s*/g, ' ').trim();
+
+// llms.txt — a short, factual map of the site for AI assistants (https://llmstxt.org)
+function llmsTxt(site, base, byId, pages) {
+  const c = site.company || {};
+  const nameKo = tx(c.name, 'ko'); const nameEn = tx(c.name, 'en');
+  const biz = site.pages.filter((p) => p.parent === 'business' && !p.hidden);
+  const facts = [
+    `- 회사명 / Company: ${nameKo}${nameEn ? ` (${nameEn})` : ''}`,
+    tx(c.founded, 'ko') ? `- 설립 / Founded: ${tx(c.founded, 'ko')}` : '',
+    biz.length ? `- 사업 분야 / Business: ${biz.map((p) => `${tx(p.navLabel, 'ko')} (${tx(p.navLabel, 'en')})`).join(', ')}` : '',
+    tx(c.ceo, 'ko') ? `- 대표 / CEO: ${tx(c.ceo, 'ko')}` : '',
+    one(tx(c.address, 'ko')) ? `- 주소 / Address: ${one(tx(c.address, 'ko'))}` : '',
+    c.email ? `- 이메일 / Email: ${c.email}` : '',
+    c.tel ? `- 전화 / Tel: ${c.tel}` : '',
+    `- 웹사이트 / Website: ${base}/`,
+    ...socialUrls(site).map((u) => `- SNS: ${u}`),
+  ].filter(Boolean);
+  const list = (lang) => pages.map((p) => `- [${one(tx(p.title, lang) || tx(p.navLabel, lang))}](${pageUrl(base, site, byId, p, lang)})${one(tx(p.description, lang)) ? `: ${one(tx(p.description, lang))}` : ''}`);
+  const news = [...(site.news || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 10)
+    .map((n) => `- ${n.date} ${one(tx(n.title, 'ko'))}${one(tx(n.summary, 'ko')) ? ` — ${one(tx(n.summary, 'ko'))}` : ''}`);
+  return [
+    `# ${nameKo}${nameEn ? ` (${nameEn})` : ''}`, '',
+    `> ${one(tx(site.meta?.description, 'ko'))}`, '',
+    one(tx(site.meta?.description, 'en')), '',
+    '## 회사 개요 / Company facts', ...facts, '',
+    '## 주요 페이지 (한국어)', ...list('ko'), '',
+    '## Key pages (English)', ...list('en'), '',
+    ...(news.length ? ['## 최근 소식 / Latest news', ...news, ''] : []),
+    '## 전체 본문 / Full text',
+    `- [llms-full.txt](${base}/llms-full.txt): 모든 페이지의 본문(한국어·영어) / full text of every page`,
+    '',
+  ].join('\n');
+}
+
+// llms-full.txt — every page as plain text, Korean then English
+function llmsFull(site, base, byId, pages) {
+  const parts = [`# ${tx(site.company?.name, 'ko')} (${tx(site.company?.name, 'en')}) — ${base}/`, ''];
+  for (const lang of LANGS) {
+    for (const p of pages) {
+      parts.push(`# ${one(tx(p.title, lang) || tx(p.navLabel, lang))}`, `URL: ${pageUrl(base, site, byId, p, lang)}`, '');
+      if (one(tx(p.description, lang))) parts.push(one(tx(p.description, lang)), '');
+      parts.push(pageText(site, p, lang), '', '---', '');
+    }
+  }
+  return parts.join('\n');
+}
+
+// rss.xml — news feed (submit to Naver Search Advisor → 요청 › RSS 제출)
+function rssXml(site, base, byId) {
+  const x = (v) => String(v ?? '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' }[ch]));
+  const newsPage = byId.news && !byId.news.hidden ? pageUrl(base, site, byId, byId.news, 'ko') : `${base}/`;
+  const link = (l) => {
+    if (!l) return newsPage;
+    if (l.startsWith('page:')) { const p = byId[l.slice(5).split('#')[0]]; return p ? pageUrl(base, site, byId, p, 'ko') : newsPage; }
+    if (l.startsWith('media/')) return `${base}/${l}`;
+    return /^https?:/.test(l) ? l : newsPage;
+  };
+  const items = [...(site.news || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date))).map((n, k) => {
+    const d = new Date(`${n.date}T09:00:00+09:00`);
+    return `  <item>
+    <title>${x(tx(n.title, 'ko'))}</title>
+    <link>${x(link(n.link))}</link>
+    <guid isPermaLink="false">${x(`${base}/news/${n.date}-${k}`)}</guid>
+    ${isNaN(d) ? '' : `<pubDate>${d.toUTCString()}</pubDate>`}
+    <description>${x(tx(n.summary, 'ko'))}</description>
+  </item>`;
+  }).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>${x(tx(site.meta?.siteName, 'ko') || tx(site.company?.name, 'ko'))} 소식</title>
+  <link>${x(newsPage)}</link>
+  <description>${x(tx(site.meta?.description, 'ko'))}</description>
+  <language>ko</language>
+  <atom:link href="${x(base)}/rss.xml" rel="self" type="application/rss+xml"/>
+${items}
+</channel>
+</rss>
+`;
 }
 
 // CLI

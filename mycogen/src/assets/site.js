@@ -67,6 +67,9 @@
     var tips = [], paths = [], pulses = [];
     var phase = 'grow', phaseTime = 0, pulseClock = 0, running = false, last = 0, raf = 0;
     var R = Math.random;
+    var SPEED = 3;     // growth speed (1 = original pace)
+    var HOLD = 1800;   // ms the grown network rests before fading
+    var FADE = 1800;   // ms to fade out; then it grows again, forever
 
     function size() {
       var r = holder.getBoundingClientRect();
@@ -95,17 +98,17 @@
         var y = side === 2 ? H + 8 : side === 3 ? -8 : H * (0.08 + R() * 0.86);
         var a = side === 0 ? (R() - 0.5) * 0.9 : side === 1 ? Math.PI + (R() - 0.5) * 0.9
           : side === 2 ? -Math.PI / 2 + (R() - 0.5) * 1.1 : Math.PI / 2 + (R() - 0.5) * 1.1;
-        tips.push(tip(x, y, a, 1.5 + R() * 0.6, 720 + R() * 420, 0));
+        tips.push(tip(x, y, a, 1.5 + R() * 0.6, (720 + R() * 420) / SPEED, 0));
       }
       phase = 'grow'; phaseTime = 0;
     }
 
     function stepTips(draw) {
       var maxTips = small ? 38 : 70;
-      var speed = small ? 1.05 : 1.35;
+      var speed = (small ? 1.05 : 1.35) * SPEED;
       for (var i = tips.length - 1; i >= 0; i--) {
         var t = tips[i];
-        t.a += (R() - 0.5) * 0.32 + t.curl;
+        t.a += (R() - 0.5) * 0.55 + t.curl * SPEED;
         var nx = t.x + Math.cos(t.a) * speed;
         var ny = t.y + Math.sin(t.a) * speed;
         if (draw) {
@@ -114,8 +117,8 @@
           nc.beginPath(); nc.moveTo(t.x, t.y); nc.lineTo(nx, ny); nc.stroke();
         }
         t.x = nx; t.y = ny; t.life--; t.n++;
-        if (t.n % 4 === 0) t.path.push([nx, ny]);
-        if (t.depth < 4 && tips.length < maxTips && R() < 0.011) {
+        t.path.push([nx, ny]);
+        if (t.depth < 4 && tips.length < maxTips && R() < 0.011 * SPEED) {
           var side = R() < 0.5 ? -1 : 1;
           tips.push(tip(nx, ny, t.a + side * (0.45 + R() * 0.75), Math.max(0.5, t.w * 0.7), t.life * (0.45 + R() * 0.35), t.depth + 1));
         }
@@ -125,7 +128,7 @@
 
     function drawGlow(dt) {
       gc.clearRect(0, 0, W, H);
-      var fade = phase === 'fade' ? Math.max(0, 1 - phaseTime / 3500) : 1;
+      var fade = phase === 'fade' ? Math.max(0, 1 - phaseTime / FADE) : 1;
       // growing tips
       gc.fillStyle = 'rgba(255,250,235,' + (0.85 * fade).toFixed(2) + ')';
       for (var i = 0; i < tips.length; i++) {
@@ -162,15 +165,15 @@
       if (phase === 'grow') {
         var steps = Math.max(1, Math.round(dt / 16));
         for (var s = 0; s < steps; s++) stepTips(true);
-        if (!tips.length || phaseTime > 30000) { phase = 'hold'; phaseTime = 0; tips = []; }
+        if (!tips.length || phaseTime > 12000) { phase = 'hold'; phaseTime = 0; tips = []; }
       } else if (phase === 'hold') {
-        if (phaseTime > 9000) { phase = 'fade'; phaseTime = 0; }
+        if (phaseTime > HOLD) { phase = 'fade'; phaseTime = 0; }
       } else if (phase === 'fade') {
         nc.globalCompositeOperation = 'destination-out';
-        nc.fillStyle = 'rgba(0,0,0,' + Math.min(0.2, dt / 900).toFixed(3) + ')';
+        nc.fillStyle = 'rgba(0,0,0,' + Math.min(0.25, dt / (FADE / 4)).toFixed(3) + ')';
         nc.fillRect(0, 0, W, H);
         nc.globalCompositeOperation = 'source-over';
-        if (phaseTime > 3500) { nc.clearRect(0, 0, W, H); seed(); }
+        if (phaseTime > FADE) { nc.clearRect(0, 0, W, H); seed(); }
       }
       drawGlow(dt);
       raf = requestAnimationFrame(frame);
@@ -185,7 +188,7 @@
 
     size();
     seed();
-    for (var pre = 0; pre < 320; pre++) stepTips(true); // start with a network already spreading
+    for (var pre = 0; pre < Math.round(320 / SPEED); pre++) stepTips(true); // start with a network already spreading
 
     var visible = true;
     if ('IntersectionObserver' in window) {
@@ -199,7 +202,7 @@
         var r = holder.getBoundingClientRect();
         if (Math.abs(r.width - W) < 40 && Math.abs(r.height - H) < 80) return;
         size(); seed();
-        for (var pre2 = 0; pre2 < 200; pre2++) stepTips(true);
+        for (var pre2 = 0; pre2 < Math.round(200 / SPEED); pre2++) stepTips(true);
       }, 250);
     });
     setRunning(true);
