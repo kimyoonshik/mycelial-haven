@@ -1,0 +1,6 @@
+dist/
+.preview/
+content/.history/
+content/.trash/
+node_modules/
+*.log
