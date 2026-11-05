@@ -257,8 +257,6 @@ R.hero = (s, ctx, i, next) => {
   ${s.network !== false ? '<div class="hero__net" aria-hidden="true"></div>' : ''}
   <div class="wrap hero__inner">
     ${eyebrow(s.eyebrow, ctx)}${h}${para(s.text, ctx, 'hero__text')}${buttons(s.buttons, ctx)}
-    ${ctx.page.id === 'home' && !ctx.site.social?.hideOnHero && socialList(ctx, 'social--hero')
-      ? `<div class="hero__social"><span class="hero__social-label">FOLLOW</span>${socialList(ctx, 'social--hero')}</div>` : ''}
   </div>
   ${fiberEdge(`hero-${ctx.page.id}-${i}`, { cls: `edge--hero tone-${esc(next?.tone || 'paper')}-fill` })}
 </section>`;
