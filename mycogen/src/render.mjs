@@ -180,6 +180,32 @@ export function hyphaeSvg(seed = 'mycogen', W = 1600, H = 900) {
 
 export const MARK_SVG = `<svg class="mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M16 16 C 12 12, 8 11, 4 6"/><path d="M8 11 C 7 8, 8 6, 7 3"/><path d="M16 16 C 20 11, 24 10, 28 7"/><path d="M23 10 C 25 7, 25 5, 27 3"/><path d="M16 16 C 15 21, 12 24, 6 27"/><path d="M11 23 C 8 22, 5 22, 3 20"/><path d="M16 16 C 19 21, 23 23, 28 25"/></g><circle cx="16" cy="16" r="3.4" fill="currentColor"/></svg>`;
 
+// ---------- card icons (24×24 line icons, stroke = currentColor) ----------
+export const ICONS = {
+  recycle: '<path d="M4.6 12a7.4 7.4 0 0 1 12.6-5.3"/><path d="M17.6 3.4v3.4h-3.4"/><path d="M19.4 12a7.4 7.4 0 0 1-12.6 5.3"/><path d="M6.4 20.6v-3.4h3.4"/><circle cx="12" cy="12" r="1.6"/>',
+  clipboard: '<rect x="5" y="4.5" width="14" height="16.5" rx="2"/><rect x="9" y="2.8" width="6" height="3.4" rx="1"/><path d="M8.5 11.2l1.6 1.6 3.2-3.2M8.5 16.5l1.6 1.6 3.2-3.2M15.2 12h0M15.2 17.3h0"/>',
+  shield: '<path d="M12 3l7 2.8v5.4c0 4.6-3 8.3-7 9.8-4-1.5-7-5.2-7-9.8V5.8z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.5"/>',
+  people: '<circle cx="9" cy="8.2" r="3"/><path d="M3.4 19.2c.6-3.1 2.8-5 5.6-5s5 1.9 5.6 5"/><circle cx="16.6" cy="9.2" r="2.4"/><path d="M15.4 14.3c2.7-.3 4.6 1.4 5.2 4.5"/>',
+  link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.2 1.2"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.2-1.2"/>',
+  leaf: '<path d="M5 19.5C5 11 10 5.5 19.5 4.5 19.5 14 14 19.5 5 19.5z"/><path d="M5 19.5c3-4.2 6.2-7.2 10.2-9.6"/>',
+  sprout: '<path d="M12 21v-9"/><path d="M12 12C12 8 9 5.8 5 5.8 5 9.8 8 12 12 12z"/><path d="M12 10c0-3.2 2.4-5.4 6.2-5.4 0 3.3-2.4 5.4-6.2 5.4z"/><path d="M8 21h8"/>',
+  mycelium: '<circle cx="12" cy="12" r="2.2"/><path d="M12 12C9.5 9.4 7 8.7 4.5 5.5M7.4 8.6c-.6-1.6-.2-3-.8-4.4M12 12c2.7-3.1 5.2-3.6 7.5-5.6M16.5 7.9c1.3-1.4 1.3-2.6 2.6-3.9M12 12c-.6 3.4-2.6 5.4-6.8 7.4M8.6 17.1c-1.9-.4-3.2-.3-4.6-1.4M12 12c1.9 3.2 4.4 4.6 7.5 5.9"/>',
+  flask: '<path d="M9 3h6M10 3v6.2L5.2 17.6A2.3 2.3 0 0 0 7.2 21h9.6a2.3 2.3 0 0 0 2-3.4L14 9.2V3"/><path d="M7.4 15h9.2"/>',
+  bulb: '<path d="M9.2 18h5.6M10.2 21h3.6"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V16h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/>',
+  award: '<circle cx="12" cy="9" r="5.5"/><path d="M8.6 13.4 7.3 21l4.7-2.4 4.7 2.4-1.3-7.6"/><path d="M10 9l1.4 1.4L14.2 7.6"/>',
+  gear: '<circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.6M12 18.6v2.6M2.8 12h2.6M18.6 12h2.6M5.5 5.5l1.9 1.9M16.6 16.6l1.9 1.9M5.5 18.5l1.9-1.9M16.6 7.4l1.9-1.9"/><circle cx="12" cy="12" r="6.6"/>',
+  truck: '<path d="M2.8 6.5h11v10h-11zM13.8 9.5h4l3.4 3.6v3.4h-7.4"/><circle cx="7" cy="17.6" r="1.9"/><circle cx="17.2" cy="17.6" r="1.9"/>',
+  chart: '<path d="M3.5 20.5h17"/><path d="M6.5 17v-5M11 17V8M15.5 17v-3.5M20 17V5.5"/><path d="M5.5 9.5 10 6l4.5 3 5-5"/>',
+  globe: '<circle cx="12" cy="12" r="8.8"/><path d="M3.2 12h17.6"/><path d="M12 3.2c2.4 2.4 3.7 5.4 3.7 8.8s-1.3 6.4-3.7 8.8c-2.4-2.4-3.7-5.4-3.7-8.8S9.6 5.6 12 3.2z"/>',
+  flame: '<path d="M12 21a6.2 6.2 0 0 0 6.2-6.2c0-4.3-3.2-6.1-4.4-10.3-2 1.9-3.2 4-3.2 6.2-1-.9-1.5-2-1.6-3C7.4 9.6 5.8 12.1 5.8 14.8A6.2 6.2 0 0 0 12 21z"/><path d="M12 21a2.6 2.6 0 0 1-2.6-2.6c0-1.6 1.4-2.5 2.6-4.2 1.2 1.7 2.6 2.6 2.6 4.2A2.6 2.6 0 0 1 12 21z"/>',
+  heart: '<path d="M12 20.2s-7.6-4.6-7.6-10.4A4.3 4.3 0 0 1 12 7.1a4.3 4.3 0 0 1 7.6 2.7c0 5.8-7.6 10.4-7.6 10.4z"/>',
+  bowl: '<path d="M3 11.5h18a9 9 0 0 1-18 0z"/><path d="M8.5 7.8c0-1.2 1.2-1.6 1.2-2.9M12.2 7.8c0-1.2 1.2-1.6 1.2-2.9"/>',
+};
+
+const iconSvg = (key) => (ICONS[key]
+  ? `<span class="card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" focusable="false">${ICONS[key]}</svg></span>`
+  : '');
+
 // ---------- SNS / channels ----------
 // Simple monochrome marks (currentColor) used to link to the company's own channels.
 export const SOCIAL = [
@@ -286,8 +312,9 @@ R.cards = (s, ctx) => {
     const text = tx(it.text, ctx.lang);
     const media = it.image ? `<div class="card__img">${img(it.image, title, ctx)}</div>` : '';
     if (style === 'text') {
-      return `<${tag} class="card card--text" ${a || ''}>
-        <span class="card__num">${String(n + 1).padStart(2, '0')}</span>${media}
+      const icon = iconSvg(it.icon);
+      return `<${tag} class="card card--text${icon ? ' has-icon' : ''}" ${a || ''}>
+        <span class="card__num">${String(n + 1).padStart(2, '0')}</span>${icon}${media}
         ${title ? `<h3 class="card__title">${esc(title)}</h3>` : ''}${text ? `<p class="card__text">${inline(text, ctx)}</p>` : ''}
         ${a ? '<span class="card__more" aria-hidden="true">→</span>' : ''}</${tag}>`;
     }

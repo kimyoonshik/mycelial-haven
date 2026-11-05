@@ -25,6 +25,16 @@ const ctaFields = [
   { key: 'style', label: '모양', type: 'select', options: [['solid', '채움'], ['outline', '외곽선'], ['light', '밝은 배경용']] },
 ];
 
+// Line icons for text cards (drawn in src/render.mjs → ICONS)
+export const ICON_OPTIONS = [
+  ['', '(없음)'],
+  ['recycle', '순환·재활용'], ['clipboard', '표준화·기록'], ['shield', '안전·보호'], ['people', '협력·사람'],
+  ['link', '연결·파트너십'], ['leaf', '친환경·지속가능'], ['sprout', '성장·배양'], ['mycelium', '균사·네트워크'],
+  ['flask', '연구·실험'], ['bulb', '혁신·아이디어'], ['award', '품질·인증'], ['gear', '공정·설비'],
+  ['truck', '공급·물류'], ['chart', '데이터·성과'], ['globe', '글로벌'], ['flame', '불연·내화'],
+  ['heart', '건강'], ['bowl', '식품'],
+];
+
 export const SECTION_TYPES = {
   hero: {
     label: '히어로(첫 화면)',
@@ -66,6 +76,7 @@ export const SECTION_TYPES = {
       { key: 'tone', label: '배경', type: 'select', options: [['paper', '밝은 종이'], ['cream', '크림'], ['white', '흰색'], ['moss', '이끼색'], ['soil', '흙색']] },
       { key: 'items', label: '카드', type: 'list', itemLabel: 'title', when: { key: 'source', not: 'business' }, fields: [
         { key: 'image', label: '사진', type: 'image' },
+        { key: 'icon', label: '아이콘 (카드 모양이 ‘글 카드’일 때 표시)', type: 'select', options: ICON_OPTIONS },
         { key: 'title', label: '제목/라벨', type: 'i18n' },
         { key: 'text', label: '설명', type: 'i18nArea', rows: 3 },
         { key: 'link', label: '연결', type: 'link' },

@@ -220,6 +220,11 @@ a.card--photo:hover .pill { background: var(--moss-deep); }
 a.card--text:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(35, 32, 27, .1); }
 .card__num { font-family: var(--display); font-weight: 600; font-size: .9rem; letter-spacing: .14em; color: var(--spore); margin-bottom: 18px; }
 .card--text .card__img { aspect-ratio: 16 / 10; margin-bottom: 20px; }
+.card--text.has-icon .card__num { position: absolute; top: 30px; right: 28px; margin: 0; }
+.card__icon { display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: 20px; border-radius: 16px; background: color-mix(in srgb, var(--spore) 16%, var(--white)); color: var(--moss); transition: background .3s, color .3s, transform .3s var(--ease); }
+.card__icon svg { width: 30px; height: 30px; }
+.card--text:hover .card__icon { background: var(--moss); color: #fbf8f2; transform: rotate(-4deg); }
+.tone-moss .card__icon, .tone-soil .card__icon { background: rgb(255 255 255 / .12); color: var(--spore); }
 .card--text .card__title { font-size: 1.22rem; margin-bottom: 10px; }
 .card--text .card__text { margin: 0; color: var(--muted); font-size: .97rem; }
 .tone-moss .card--text .card__text, .tone-soil .card--text .card__text { color: color-mix(in srgb, var(--on) 80%, transparent); }
