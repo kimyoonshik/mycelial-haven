@@ -829,6 +829,7 @@ async function boot() {
   $('#pvLang').onclick = (e) => { const v = e.target.dataset.v; if (!v) return; S.lang = v; syncSeg(); reloadPreview(true); };
   $('#pvDevice').onclick = (e) => { const v = e.target.dataset.v; if (!v) return; S.device = v; syncSeg(); layoutPreview(); };
   $('#pvFrame').addEventListener('load', () => {
+    layoutPreview();
     try { $('#pvFrame').contentWindow.scrollTo({ top: S.restoreY, behavior: 'instant' }); } catch { /* ignore */ }
   });
 
