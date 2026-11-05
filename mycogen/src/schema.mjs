@@ -245,7 +245,8 @@ export const SITE_FIELDS = [
     { key: 'social.youtube', label: '유튜브 주소  예: https://www.youtube.com/@mycogen', type: 'text' },
     { key: 'social.naverBlog', label: '네이버 블로그 주소  예: https://blog.naver.com/mycogen', type: 'text' },
     { key: 'social.kakao', label: '카카오톡 채널 주소  예: https://pf.kakao.com/_xxxxx', type: 'text' },
-    { key: 'social.hideOnHero', label: '홈 첫 화면의 SNS 아이콘 숨기기 (주소를 넣은 SNS만 표시됩니다)', type: 'toggle' },
+    { key: 'social.hideEmpty', label: '주소가 없는 SNS 아이콘 숨기기 (끄면 주소가 없어도 아이콘은 ‘준비 중’으로 표시)', type: 'toggle' },
+    { key: 'social.hideOnHero', label: '홈 첫 화면의 SNS 아이콘 숨기기', type: 'toggle' },
   ] },
   { group: '검색·공유', fields: [
     { key: 'meta.siteUrl', label: '사이트 주소', type: 'text' },

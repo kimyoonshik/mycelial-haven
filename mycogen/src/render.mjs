@@ -200,11 +200,16 @@ export function socialUrls(site) {
 function socialList(ctx, cls) {
   const so = ctx.site.social || {};
   const name = tx(ctx.site.company?.name, ctx.lang) || 'Mycogen';
+  const soon = ctx.lang === 'ko' ? '준비 중' : 'coming soon';
   const items = SOCIAL.map((x) => {
     const url = String(so[x.key] || '').trim();
-    if (!/^https?:\/\//i.test(url)) return '';
+    const ok = /^https?:\/\//i.test(url);
+    if (!ok && so.hideEmpty) return '';
     const label = tx(x.label, ctx.lang);
-    return `<li><a href="${esc(url)}" target="_blank" rel="noopener me" aria-label="${esc(`${name} ${label}`)}" title="${esc(label)}"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">${x.svg}</svg></a></li>`;
+    const icon = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">${x.svg}</svg>`;
+    // no address yet: show the icon without a link until one is entered in the editor
+    if (!ok) return `<li><span class="is-empty" role="img" aria-label="${esc(`${label} (${soon})`)}" title="${esc(`${label} · ${soon}`)}">${icon}</span></li>`;
+    return `<li><a href="${esc(url)}" target="_blank" rel="noopener me" aria-label="${esc(`${name} ${label}`)}" title="${esc(label)}">${icon}</a></li>`;
   }).join('');
   return items ? `<ul class="social ${cls}">${items}</ul>` : '';
 }
