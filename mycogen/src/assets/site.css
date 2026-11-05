@@ -163,6 +163,12 @@ body:not(.has-hero) main { padding-top: var(--hdr); }
 }
 .hero--center .hero__media::after { background: rgb(20 18 14 / var(--overlay)); }
 .hero__net { position: absolute; inset: -4%; z-index: -1; background: url(hyphae.svg) center / cover no-repeat; opacity: .26; mix-blend-mode: screen; animation: drift 38s ease-in-out infinite alternate; }
+/* live, growing mycelium (site.js); the static drawing above stays for reduced motion / no JS */
+.hero__net.is-live { background-image: none; opacity: .42; }
+/* keep the headline readable: hyphae fade where the text sits */
+.hero--left .hero__net.is-live { -webkit-mask-image: radial-gradient(ellipse 48% 42% at 27% 66%, rgba(0,0,0,.28) 30%, #000 85%); mask-image: radial-gradient(ellipse 48% 42% at 27% 66%, rgba(0,0,0,.28) 30%, #000 85%); }
+.hero--center .hero__net.is-live { -webkit-mask-image: radial-gradient(ellipse 46% 40% at 50% 58%, rgba(0,0,0,.28) 30%, #000 85%); mask-image: radial-gradient(ellipse 46% 40% at 50% 58%, rgba(0,0,0,.28) 30%, #000 85%); }
+.hero__net canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .hero__inner { padding-top: calc(var(--hdr) + 60px); padding-bottom: clamp(88px, 12vw, 150px); }
 .hero--center .hero__inner { text-align: center; }
 .hero--center .btns { justify-content: center; }

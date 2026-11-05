@@ -46,6 +46,165 @@
     });
   }
 
+  // Living mycelium on the hero: hyphae grow from the edges, branch, carry glowing
+  // nutrient pulses, then fade and grow again. Static drawing stays for reduced motion.
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion && window.HTMLCanvasElement) {
+    document.querySelectorAll('.hero__net').forEach(function (holder) { growMycelium(holder); });
+  }
+
+  function growMycelium(holder) {
+    var net = document.createElement('canvas');
+    var glow = document.createElement('canvas');
+    var nc = net.getContext('2d');
+    var gc = glow.getContext('2d');
+    if (!nc || !gc) return;
+    holder.appendChild(net);
+    holder.appendChild(glow);
+    holder.classList.add('is-live');
+
+    var W = 0, H = 0, small = false;
+    var tips = [], paths = [], pulses = [];
+    var phase = 'grow', phaseTime = 0, pulseClock = 0, running = false, last = 0, raf = 0;
+    var R = Math.random;
+
+    function size() {
+      var r = holder.getBoundingClientRect();
+      W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+      small = W < 760;
+      var dpr = Math.min(window.devicePixelRatio || 1, small ? 1.5 : 1.75);
+      [net, glow].forEach(function (c) {
+        c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+        c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+      });
+      nc.lineCap = 'round'; nc.lineJoin = 'round';
+    }
+
+    function tip(x, y, a, w, life, depth) {
+      var path = [[x, y]];
+      paths.push(path);
+      return { x: x, y: y, a: a, w: w, life: life, depth: depth, path: path, n: 0, curl: (R() - 0.5) * 0.02 };
+    }
+
+    function seed() {
+      tips = []; paths = []; pulses = [];
+      var count = small ? 7 : 12;
+      for (var i = 0; i < count; i++) {
+        var side = i % 4; // left, right, bottom, top
+        var x = side === 0 ? -8 : side === 1 ? W + 8 : W * (0.08 + R() * 0.84);
+        var y = side === 2 ? H + 8 : side === 3 ? -8 : H * (0.08 + R() * 0.86);
+        var a = side === 0 ? (R() - 0.5) * 0.9 : side === 1 ? Math.PI + (R() - 0.5) * 0.9
+          : side === 2 ? -Math.PI / 2 + (R() - 0.5) * 1.1 : Math.PI / 2 + (R() - 0.5) * 1.1;
+        tips.push(tip(x, y, a, 1.5 + R() * 0.6, 720 + R() * 420, 0));
+      }
+      phase = 'grow'; phaseTime = 0;
+    }
+
+    function stepTips(draw) {
+      var maxTips = small ? 38 : 70;
+      var speed = small ? 1.05 : 1.35;
+      for (var i = tips.length - 1; i >= 0; i--) {
+        var t = tips[i];
+        t.a += (R() - 0.5) * 0.32 + t.curl;
+        var nx = t.x + Math.cos(t.a) * speed;
+        var ny = t.y + Math.sin(t.a) * speed;
+        if (draw) {
+          nc.strokeStyle = 'rgba(255,255,255,' + (0.4 + t.w * 0.2).toFixed(2) + ')';
+          nc.lineWidth = t.w;
+          nc.beginPath(); nc.moveTo(t.x, t.y); nc.lineTo(nx, ny); nc.stroke();
+        }
+        t.x = nx; t.y = ny; t.life--; t.n++;
+        if (t.n % 4 === 0) t.path.push([nx, ny]);
+        if (t.depth < 4 && tips.length < maxTips && R() < 0.011) {
+          var side = R() < 0.5 ? -1 : 1;
+          tips.push(tip(nx, ny, t.a + side * (0.45 + R() * 0.75), Math.max(0.5, t.w * 0.7), t.life * (0.45 + R() * 0.35), t.depth + 1));
+        }
+        if (t.life <= 0 || nx < -60 || ny < -60 || nx > W + 60 || ny > H + 60) tips.splice(i, 1);
+      }
+    }
+
+    function drawGlow(dt) {
+      gc.clearRect(0, 0, W, H);
+      var fade = phase === 'fade' ? Math.max(0, 1 - phaseTime / 3500) : 1;
+      // growing tips
+      gc.fillStyle = 'rgba(255,250,235,' + (0.85 * fade).toFixed(2) + ')';
+      for (var i = 0; i < tips.length; i++) {
+        gc.beginPath(); gc.arc(tips[i].x, tips[i].y, 1.2 + tips[i].w * 0.5, 0, 6.283); gc.fill();
+      }
+      // nutrient pulses travelling along grown hyphae
+      pulseClock += dt;
+      var maxPulses = small ? 7 : 14;
+      if (phase !== 'fade' && pulseClock > 260 && pulses.length < maxPulses) {
+        pulseClock = 0;
+        var p = paths[Math.floor(R() * paths.length)];
+        if (p && p.length > 14) pulses.push({ path: p, i: 0, v: 0.18 + R() * 0.22, r: 1.8 + R() * 1.6 });
+      }
+      gc.shadowColor = 'rgba(255,196,96,0.9)';
+      gc.shadowBlur = 10;
+      for (var j = pulses.length - 1; j >= 0; j--) {
+        var q = pulses[j];
+        q.i += q.v * dt / 16;
+        var k = Math.floor(q.i);
+        if (k >= q.path.length - 1) { pulses.splice(j, 1); continue; }
+        var f = q.i - k, a = q.path[k], b = q.path[k + 1];
+        var life = Math.min(1, q.i / 4, (q.path.length - 1 - q.i) / 4);
+        gc.fillStyle = 'rgba(255,214,150,' + (0.95 * life * fade).toFixed(2) + ')';
+        gc.beginPath(); gc.arc(a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, q.r, 0, 6.283); gc.fill();
+      }
+      gc.shadowBlur = 0;
+    }
+
+    function frame(now) {
+      if (!running) return;
+      var dt = Math.min(48, now - (last || now));
+      last = now;
+      phaseTime += dt;
+      if (phase === 'grow') {
+        var steps = Math.max(1, Math.round(dt / 16));
+        for (var s = 0; s < steps; s++) stepTips(true);
+        if (!tips.length || phaseTime > 30000) { phase = 'hold'; phaseTime = 0; tips = []; }
+      } else if (phase === 'hold') {
+        if (phaseTime > 9000) { phase = 'fade'; phaseTime = 0; }
+      } else if (phase === 'fade') {
+        nc.globalCompositeOperation = 'destination-out';
+        nc.fillStyle = 'rgba(0,0,0,' + Math.min(0.2, dt / 900).toFixed(3) + ')';
+        nc.fillRect(0, 0, W, H);
+        nc.globalCompositeOperation = 'source-over';
+        if (phaseTime > 3500) { nc.clearRect(0, 0, W, H); seed(); }
+      }
+      drawGlow(dt);
+      raf = requestAnimationFrame(frame);
+    }
+
+    function setRunning(on) {
+      on = on && !document.hidden;
+      if (on === running) return;
+      running = on;
+      if (on) { last = 0; raf = requestAnimationFrame(frame); } else cancelAnimationFrame(raf);
+    }
+
+    size();
+    seed();
+    for (var pre = 0; pre < 320; pre++) stepTips(true); // start with a network already spreading
+
+    var visible = true;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; setRunning(visible); }).observe(holder);
+    }
+    document.addEventListener('visibilitychange', function () { setRunning(visible); });
+    var rt;
+    window.addEventListener('resize', function () {
+      clearTimeout(rt);
+      rt = setTimeout(function () {
+        var r = holder.getBoundingClientRect();
+        if (Math.abs(r.width - W) < 40 && Math.abs(r.height - H) < 80) return;
+        size(); seed();
+        for (var pre2 = 0; pre2 < 200; pre2++) stepTips(true);
+      }, 250);
+    });
+    setRunning(true);
+  }
+
   // reveal on scroll
   var targets = document.querySelectorAll('.sec__head, .grid > *, .split__body, .split__media, .step, .stat, .specs, .news__item, .band__tile, .cta, .contact > *, .prose');
   if ('IntersectionObserver' in window && !document.body.classList.contains('is-preview')) {
