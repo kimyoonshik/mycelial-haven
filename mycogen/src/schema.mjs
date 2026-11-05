@@ -90,6 +90,22 @@ export const SECTION_TYPES = {
     ],
     defaults: { reverse: false, tone: 'paper', bullets: [], buttons: [] },
   },
+  images: {
+    label: '사진·표(크게)',
+    hint: '사진이나 성적서·표 이미지를 페이지 폭에 맞춰 크게 보여 줍니다. 여러 장이면 위에서 아래로 놓이고, 누르면 원본이 새 창으로 열립니다.',
+    fields: [
+      { key: 'eyebrow', label: '작은 머리글', type: 'i18n' },
+      { key: 'title', label: '제목', type: 'i18nArea', rows: 2 },
+      { key: 'text', label: '설명', type: 'i18nArea', rows: 3 },
+      { key: 'width', label: '폭', type: 'select', options: [['wide', '넓게(전체 폭)'], ['mid', '보통']] },
+      { key: 'tone', label: '배경', type: 'select', options: [['white', '흰색'], ['paper', '밝은 종이'], ['cream', '크림']] },
+      { key: 'items', label: '이미지', type: 'list', itemLabel: 'caption', fields: [
+        { key: 'image', label: '이미지', type: 'image' },
+        { key: 'caption', label: '이미지 설명(아래에 표시, 검색·AI용)', type: 'i18n' },
+      ] },
+    ],
+    defaults: { width: 'wide', tone: 'white', items: [] },
+  },
   steps: {
     label: '공정·단계',
     hint: '번호가 붙은 순서도. 공정이나 연혁에 사용.',

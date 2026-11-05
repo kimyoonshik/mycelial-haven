@@ -232,6 +232,7 @@ export function pageText(site, page, lang) {
     if (s.type === 'steps') items.forEach((it, n) => line(`${it.tag || n + 1}. ${P(it.title)}${P(it.text) ? ' — ' + P(it.text) : ''}`));
     else if (s.type === 'stats') items.forEach((it) => line(`- ${it.value}${P(it.unit) ? ' ' + P(it.unit) : ''}: ${P(it.label)}`));
     else if (['cards', 'band'].includes(s.type)) items.forEach((it) => line(`- ${P(it.title)}${P(it.text) ? ': ' + P(it.text) : ''}`));
+    else if (s.type === 'images') items.forEach((it) => { if (P(it.caption)) line(`- [이미지] ${P(it.caption)}`); });
     (s.bullets || []).forEach((b) => line('- ' + P(b.text)));
     (s.rows || []).forEach((r) => { if (P(r.value)) line(`- ${P(r.label)}: ${P(r.value).replace(/\n/g, ' ')}`); });
     line(P(s.note));
@@ -313,6 +314,18 @@ R.split = (s, ctx) => {
   </div>
   <div class="split__media">${s.image ? `<figure class="frame">${img(s.image, tx(s.title, ctx.lang).replace(/\n/g, ' '), ctx)}</figure>` : ''}</div>
 </div>`;
+};
+
+R.images = (s, ctx) => {
+  const zoom = ctx.lang === 'ko' ? '원본 크게 보기' : 'View full size';
+  const figs = (s.items || []).filter((it) => it.image).map((it) => {
+    const cap = tx(it.caption, ctx.lang);
+    const src = ctx.media(it.image);
+    return `<figure class="fig"><a href="${esc(src)}" target="_blank" rel="noopener" title="${zoom}"><img src="${esc(src)}" alt="${esc(cap || tx(s.title, ctx.lang).replace(/\n/g, ' '))}" loading="lazy" decoding="async"></a>${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}</figure>`;
+  }).join('');
+  const head = tx(s.title, ctx.lang) || tx(s.text, ctx.lang) || tx(s.eyebrow, ctx.lang)
+    ? `<div class="sec__head">${eyebrow(s.eyebrow, ctx)}${heading(s.title, ctx)}${para(s.text, ctx, 'sec__lead')}</div>` : '';
+  return `<div class="wrap${s.width === 'mid' ? ' wrap--mid' : ''}">${head}<div class="figs">${figs}</div></div>`;
 };
 
 R.steps = (s, ctx) => {

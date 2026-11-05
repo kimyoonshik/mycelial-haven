@@ -252,6 +252,14 @@ a.card--text:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(3
 .steps--timeline .step__tag { min-width: 96px; height: 40px; font-size: .95rem; background: var(--moss); color: #fbf8f2; border: 0; }
 .steps--timeline .step__body { padding-top: 6px; }
 
+/* ---------- images (photos, test reports, tables) ---------- */
+.figs { display: grid; gap: clamp(28px, 4vw, 48px); }
+.fig { margin: 0; }
+.fig a { display: block; overflow: hidden; border-radius: 14px; border: 1px solid var(--line); background: #fff; box-shadow: 0 10px 30px rgba(35, 32, 27, .06); cursor: zoom-in; transition: box-shadow .25s, transform .25s var(--ease); }
+.fig a:hover { box-shadow: 0 16px 40px rgba(35, 32, 27, .12); transform: translateY(-2px); }
+.fig img { display: block; width: 100%; height: auto; }
+.fig figcaption { margin-top: 12px; font-size: .92rem; color: var(--muted); text-align: center; }
+
 /* ---------- stats ---------- */
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0; margin: 0; }
 .stat { padding: 18px 26px; border-left: 1px solid currentColor; border-color: color-mix(in srgb, currentColor 22%, transparent); }
