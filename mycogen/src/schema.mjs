@@ -7,6 +7,7 @@
 //   text       one-line text, single value (URLs, IDs, numbers as text)
 //   textarea   multi-line text, single value
 //   image      media path (content/media/...)
+//   video      mp4/webm media path or a YouTube address
 //   link       internal page id (page:<id>) or external URL
 //   select     one of `options`
 //   number     number
@@ -102,17 +103,18 @@ export const SECTION_TYPES = {
     defaults: { reverse: false, tone: 'paper', bullets: [], buttons: [] },
   },
   images: {
-    label: '사진·표(크게)',
-    hint: '사진이나 성적서·표 이미지를 페이지 폭에 맞춰 크게 보여 줍니다. 여러 장이면 위에서 아래로 놓이고, 누르면 원본이 새 창으로 열립니다.',
+    label: '사진·표·동영상(크게)',
+    hint: '사진, 성적서·표 이미지, 동영상(mp4 파일 또는 YouTube 주소)을 페이지 폭에 맞춰 크게 보여 줍니다. 여러 개면 위에서 아래로 놓이고, 이미지는 누르면 원본이 새 창으로 열립니다.',
     fields: [
       { key: 'eyebrow', label: '작은 머리글', type: 'i18n' },
       { key: 'title', label: '제목', type: 'i18nArea', rows: 2 },
       { key: 'text', label: '설명', type: 'i18nArea', rows: 3 },
       { key: 'width', label: '폭', type: 'select', options: [['wide', '넓게(전체 폭)'], ['mid', '보통']] },
       { key: 'tone', label: '배경', type: 'select', options: [['white', '흰색'], ['paper', '밝은 종이'], ['cream', '크림']] },
-      { key: 'items', label: '이미지', type: 'list', itemLabel: 'caption', fields: [
-        { key: 'image', label: '이미지', type: 'image' },
-        { key: 'caption', label: '이미지 설명(아래에 표시, 검색·AI용)', type: 'i18n' },
+      { key: 'items', label: '이미지·동영상', type: 'list', itemLabel: 'caption', fields: [
+        { key: 'video', label: '동영상 (mp4 파일 또는 YouTube 주소 — 비우면 이미지로 표시)', type: 'video' },
+        { key: 'image', label: '이미지 (동영상이면 재생 전 표지 사진, 선택)', type: 'image' },
+        { key: 'caption', label: '설명(아래에 표시, 검색·AI용)', type: 'i18n' },
       ] },
     ],
     defaults: { width: 'wide', tone: 'white', items: [] },

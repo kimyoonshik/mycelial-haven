@@ -29,6 +29,7 @@ const ko = (v) => tx(v, 'ko');
 const clone = (v) => JSON.parse(JSON.stringify(v));
 const fmtSize = (n) => (n > 1048576 ? (n / 1048576).toFixed(1) + 'MB' : Math.max(1, Math.round(n / 1024)) + 'KB');
 const IMG_EXT = /\.(jpe?g|png|webp|gif|svg|avif)$/i;
+const VIDEO_EXT = /\.(mp4|webm)$/i;
 
 async function api(path, opts = {}) {
   const res = await fetch(path, opts);
@@ -298,6 +299,16 @@ function fieldEl(f, obj, opts = {}) {
       wrap.append(label, h('div', { class: 'img-field' }, thumb, h('div', { class: 'img-field__side' }, pathEl, h('div', { class: 'row' }, choose, clear))));
       break;
     }
+    case 'video': {
+      const input = h('input', { class: 'in', placeholder: 'https://youtu.be/…  또는  media/uploads/동영상.mp4' });
+      input.value = val || '';
+      input.addEventListener('input', () => set(input.value.trim(), true));
+      const choose = h('button', { class: 'btn btn--sm', type: 'button', text: '파일 선택·업로드', onclick: () => pickMedia({ kind: 'video' }).then((p) => { if (p) { input.value = p; set(p); } }) });
+      const clear = h('button', { class: 'btn btn--sm', type: 'button', text: '지우기', onclick: () => { input.value = ''; set(''); } });
+      wrap.append(label, input, h('div', { class: 'row', style: { marginTop: '6px' } }, choose, clear),
+        h('div', { class: 'f__help', text: 'YouTube 영상은 주소만 붙여 넣으면 됩니다. 파일은 mp4로 올리며, 50MB 이하를 권합니다.' }));
+      break;
+    }
     case 'pageRef': {
       const el = h('select', { class: 'sel' }, h('option', { value: '', text: '(없음)' }),
         S.site.pages.filter((p) => p.id !== opts.selfId).map((p) => h('option', { value: p.id, text: `${p.parent ? '— ' : ''}${ko(p.navLabel) || p.id}` })));
@@ -399,6 +410,8 @@ async function prepareUpload(file) {
 async function uploadFiles(files) {
   const done = [];
   for (const file of files) {
+    if (/^video\//.test(file.type) && file.size > 60 * 1024 * 1024
+      && !confirm(`${file.name} 은(는) ${fmtSize(file.size)}입니다. 큰 동영상은 홈페이지에서 늦게 열립니다.\nYouTube에 올리고 주소를 넣는 방법을 권합니다. 그래도 올릴까요?`)) continue;
     try {
       toast(`올리는 중: ${file.name}`);
       const { blob, name } = await prepareUpload(file);
@@ -457,17 +470,18 @@ function openModal(build) {
   });
 }
 
-async function pickMedia({ images }) {
+async function pickMedia({ images, kind }) {
   await loadMedia();
+  const video = kind === 'video';
   return openModal((box, close) => {
     let filter = '';
-    const list = () => S.media.filter((m) => !images || IMG_EXT.test(m.path));
+    const list = () => S.media.filter((m) => (video ? VIDEO_EXT.test(m.path) : !images || IMG_EXT.test(m.path)));
     const gridHost = h('div');
     const paint = () => gridHost.replaceChildren(mediaGrid(list(), { onPick: close, filter }));
     const search = h('input', { class: 'in', placeholder: '파일 이름으로 찾기', oninput: (e) => { filter = e.target.value; paint(); } });
-    box.append(h('h2', { text: images ? '이미지 선택' : '파일 선택' }),
+    box.append(h('h2', { text: video ? '동영상 선택' : images ? '이미지 선택' : '파일 선택' }),
       h('p', { class: 'muted', text: '목록에서 고르거나 새 파일을 올리세요. 올린 파일은 content/media/uploads 에 저장됩니다.' }),
-      dropZone(async (files) => { const paths = await uploadFiles(files); if (paths.length === 1) close(paths[0]); else paint(); }, images ? 'image/*' : ''),
+      dropZone(async (files) => { const paths = await uploadFiles(files); if (paths.length === 1) close(paths[0]); else paint(); }, video ? 'video/mp4,video/webm' : images ? 'image/*' : ''),
       search, h('div', { style: { height: '12px' } }), gridHost,
       h('div', { class: 'modal__foot' }, h('button', { class: 'btn', type: 'button', text: '닫기', onclick: () => close(undefined) })));
     paint();

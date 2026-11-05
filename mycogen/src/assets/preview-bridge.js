@@ -3,6 +3,7 @@
   'use strict';
   if (window.parent === window) return;
   document.addEventListener('click', function (e) {
+    if (e.target.closest('video')) return; // video controls work in the preview
     var a = e.target.closest('a');
     var sec = e.target.closest('[data-edit]');
     if (a && !e.altKey) {

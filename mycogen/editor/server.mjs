@@ -19,7 +19,7 @@ const DIST_DIR = path.join(ROOT, 'dist');
 const HISTORY_DIR = path.join(ROOT, 'content', '.history');
 const TRASH_DIR = path.join(ROOT, 'content', '.trash');
 const KEEP_HISTORY = 80;
-const MAX_UPLOAD = 25 * 1024 * 1024;
+const MAX_UPLOAD = 200 * 1024 * 1024; // videos can be large; the editor warns above 60MB
 const UPLOAD_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg', '.avif', '.pdf', '.mp4', '.webm']);
 const VERSION = '1.0.0';
 
@@ -44,7 +44,7 @@ function readBody(req, limit = MAX_UPLOAD) {
     let size = 0;
     req.on('data', (c) => {
       size += c.length;
-      if (size > limit) { reject(Object.assign(new Error('파일이 너무 큽니다(최대 25MB).'), { status: 413 })); req.destroy(); return; }
+      if (size > limit) { reject(Object.assign(new Error(`파일이 너무 큽니다(최대 ${Math.round(limit / 1048576)}MB).`), { status: 413 })); req.destroy(); return; }
       chunks.push(c);
     });
     req.on('end', () => resolve(Buffer.concat(chunks)));

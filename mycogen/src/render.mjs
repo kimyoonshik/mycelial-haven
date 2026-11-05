@@ -258,7 +258,7 @@ export function pageText(site, page, lang) {
     if (s.type === 'steps') items.forEach((it, n) => line(`${it.tag || n + 1}. ${P(it.title)}${P(it.text) ? ' — ' + P(it.text) : ''}`));
     else if (s.type === 'stats') items.forEach((it) => line(`- ${it.value}${P(it.unit) ? ' ' + P(it.unit) : ''}: ${P(it.label)}`));
     else if (['cards', 'band'].includes(s.type)) items.forEach((it) => line(`- ${P(it.title)}${P(it.text) ? ': ' + P(it.text) : ''}`));
-    else if (s.type === 'images') items.forEach((it) => { if (P(it.caption)) line(`- [이미지] ${P(it.caption)}`); });
+    else if (s.type === 'images') items.forEach((it) => { if (P(it.caption)) line(`- [${it.video ? '동영상' : '이미지'}] ${P(it.caption)}`); });
     (s.bullets || []).forEach((b) => line('- ' + P(b.text)));
     (s.rows || []).forEach((r) => { if (P(r.value)) line(`- ${P(r.label)}: ${P(r.value).replace(/\n/g, ' ')}`); });
     line(P(s.note));
@@ -343,10 +343,32 @@ R.split = (s, ctx) => {
 </div>`;
 };
 
+// YouTube address -> video id (watch, youtu.be, shorts, embed, live)
+export function youtubeId(url) {
+  const m = String(url || '').match(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?(?:[^#]*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+function videoFigure(it, cap, ctx) {
+  const id = youtubeId(it.video);
+  const title = esc(cap || 'video');
+  let media;
+  if (id) {
+    const tall = /\/shorts\//.test(it.video);
+    media = `<div class="fig__video fig__video--yt${tall ? ' fig__video--tall' : ''}"><iframe src="https://www.youtube-nocookie.com/embed/${id}?rel=0" title="${title}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>`;
+  } else {
+    const src = ctx.media(it.video);
+    const type = /\.webm(\?|$)/i.test(it.video) ? 'video/webm' : 'video/mp4';
+    media = `<div class="fig__video fig__video--file"><video controls playsinline preload="metadata"${it.image ? ` poster="${esc(ctx.media(it.image))}"` : ''} aria-label="${title}"><source src="${esc(src)}" type="${type}"></video></div>`;
+  }
+  return `<figure class="fig fig--video">${media}${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}</figure>`;
+}
+
 R.images = (s, ctx) => {
   const zoom = ctx.lang === 'ko' ? '원본 크게 보기' : 'View full size';
-  const figs = (s.items || []).filter((it) => it.image).map((it) => {
+  const figs = (s.items || []).filter((it) => it.image || it.video).map((it) => {
     const cap = tx(it.caption, ctx.lang);
+    if (it.video) return videoFigure(it, cap, ctx);
     const src = ctx.media(it.image);
     return `<figure class="fig"><a href="${esc(src)}" target="_blank" rel="noopener" title="${zoom}"><img src="${esc(src)}" alt="${esc(cap || tx(s.title, ctx.lang).replace(/\n/g, ' '))}" loading="lazy" decoding="async"></a>${cap ? `<figcaption>${esc(cap)}</figcaption>` : ''}</figure>`;
   }).join('');
