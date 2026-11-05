@@ -1,6 +1,7 @@
 // Mycogen 홈페이지 편집기 — local editing server.
 //   node editor/server.mjs          (opens http://127.0.0.1:4777 in your browser)
 //   node editor/server.mjs --no-open
+//   node editor/server.mjs --site       (opens the finished website at /site/ instead of the editor)
 // Needs only Node.js 18+. Listens on 127.0.0.1, so it is reachable from this computer only.
 
 import http from 'node:http';
@@ -316,7 +317,8 @@ function start(port, attempts = 0) {
     console.log('  │  이 창을 닫으면 편집기가 종료됩니다.          │');
     console.log('  └──────────────────────────────────────────────┘');
     console.log('');
-    if (!process.argv.includes('--no-open')) openInOs(url);
+    // --site: open the finished website instead of the editor
+    if (!process.argv.includes('--no-open')) openInOs(process.argv.includes('--site') ? `${url}site/` : url);
   });
 }
 

@@ -4,6 +4,20 @@
   var doc = document.documentElement;
   doc.classList.add('js');
 
+  // Opened straight from a folder (double-clicking index.html): browsers do not turn
+  // "company/" into "company/index.html" there, so every menu link would open a folder.
+  if (location.protocol === 'file:') {
+    document.querySelectorAll('a[href]').forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (/^([a-z]+:|#|\/\/)/i.test(href)) return;
+      var hash = '';
+      var i = href.indexOf('#');
+      if (i >= 0) { hash = href.slice(i); href = href.slice(0, i); }
+      if (href === '' || href === '.' || href === './') href = './';
+      if (href.slice(-1) === '/') a.setAttribute('href', href + 'index.html' + hash);
+    });
+  }
+
   var hdr = document.querySelector('[data-hdr]');
   if (hdr) {
     var onScroll = function () { hdr.classList.toggle('is-scrolled', window.scrollY > 24); };

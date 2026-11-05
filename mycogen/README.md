@@ -18,13 +18,16 @@
 2. 이 `mycogen` 폴더를 PC에 내려받습니다.
    - GitHub 저장소 `kimyoonshik/mycelial-haven` → 브랜치 `claude/brave-dijkstra-6ezngf` → **Code → Download ZIP** 후 압축을 풀면 `mycogen` 폴더가 있습니다.
 
-## 2. 편집기 실행
+## 2. 실행 (편집기 / 홈페이지 보기)
 
-| Windows | Mac |
-|---|---|
-| `Mycogen-Editor-Windows.bat` 더블클릭 | `Mycogen-Editor-Mac.command` 더블클릭 (처음 한 번은 우클릭 → 열기) |
+| 하려는 일 | Windows | Mac |
+|---|---|---|
+| 내용 고치기 | `Mycogen-Editor-Windows.bat` 더블클릭 | `Mycogen-Editor-Mac.command` 더블클릭 |
+| 완성 홈페이지 둘러보기 | `Mycogen-Homepage-Windows.bat` 더블클릭 | `Mycogen-Homepage-Mac.command` 더블클릭 |
 
-검은 창이 뜨고 브라우저에 편집기(`http://127.0.0.1:4777`)가 열립니다. **검은 창을 닫으면 편집기가 꺼집니다.**
+검은 창이 뜨고 브라우저에 편집기(`http://127.0.0.1:4777`) 또는 홈페이지(`http://127.0.0.1:4777/site/`)가 열립니다. **검은 창을 닫으면 꺼집니다.** Mac은 처음 한 번만 우클릭 → 열기로 실행하세요.
+
+한 번 실행하면 만들어지는 `dist\index.html`을 더블클릭해 열어도 모든 메뉴가 그대로 동작합니다.
 
 ### 화면 구성
 
@@ -81,7 +84,8 @@
 
 ```
 mycogen/
-├─ Mycogen-Editor-Windows.bat / Mycogen-Editor-Mac.command   편집기 실행 파일
+├─ Mycogen-Editor-Windows.bat / Mycogen-Editor-Mac.command       편집기 실행 파일
+├─ Mycogen-Homepage-Windows.bat / Mycogen-Homepage-Mac.command   완성 홈페이지 보기
 ├─ content/
 │  ├─ site.json          홈페이지의 모든 글·설정 (편집기가 이 파일을 고칩니다)
 │  └─ media/             사진·파일 (uploads/ 에 새로 올린 파일)
