@@ -1,6 +1,7 @@
 // Mycogen 홈페이지 편집기 — local editing server.
 //   node editor/server.mjs          (opens http://127.0.0.1:4777 in your browser)
 //   node editor/server.mjs --no-open
+// Closes by itself ~10 s after the last editor/homepage browser tab is closed (--stay keeps it running).
 //   node editor/server.mjs --site       (opens the finished website at /site/ instead of the editor)
 // Needs only Node.js 18+. Listens on 127.0.0.1, so it is reachable from this computer only.
 
@@ -61,7 +62,7 @@ function inside(base, p) {
   return rel === '' || (!rel.startsWith('..') && !path.isAbsolute(rel));
 }
 
-function serveFile(res, base, rel) {
+function serveFile(res, base, rel, inject = '') {
   let file = path.resolve(base, '.' + path.sep + decodeURIComponent(rel));
   if (!inside(base, file)) return send(res, 403, 'forbidden', 'text/plain');
   if (fs.existsSync(file) && fs.statSync(file).isDirectory()) file = path.join(file, 'index.html');
@@ -70,8 +71,55 @@ function serveFile(res, base, rel) {
     if (fs.existsSync(nf)) return send(res, 404, fs.readFileSync(nf), MIME['.html']);
     return send(res, 404, '찾을 수 없습니다: ' + rel, 'text/plain; charset=utf-8');
   }
-  send(res, 200, fs.readFileSync(file), MIME[path.extname(file).toLowerCase()] || 'application/octet-stream');
+  const ext = path.extname(file).toLowerCase();
+  if (inject && ext === '.html') {
+    const html = fs.readFileSync(file, 'utf8');
+    return send(res, 200, html.includes('</body>') ? html.replace('</body>', `${inject}</body>`) : html + inject, MIME['.html']);
+  }
+  send(res, 200, fs.readFileSync(file), MIME[ext] || 'application/octet-stream');
 }
+
+// ---------- close by itself when the browser windows are closed ----------
+// Editor and homepage tabs report "alive" every 15 s and say "bye" when they close.
+// When no tab is left (after a short grace period for page reloads), the server exits
+// and the black launcher window closes with it.
+const ALIVE_SNIPPET = '<script src="/__alive.js"></script>';
+const ALIVE_JS = `(function(){var id=Math.random().toString(36).slice(2)+Date.now().toString(36);
+function ping(){try{fetch('/api/alive?id='+id,{method:'POST',keepalive:true}).catch(function(){});}catch(e){}}
+ping();setInterval(ping,15000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)ping();});
+addEventListener('pageshow',function(e){if(e.persisted)ping();});
+addEventListener('pagehide',function(){try{navigator.sendBeacon('/api/bye?id='+id);}catch(e){}});})();`;
+const clients = new Map(); // tab id -> last seen
+let everSeen = false;
+let closing = null;
+const STALE_MS = 3.5 * 60 * 1000; // background tabs may ping only once a minute
+const GRACE_MS = 8000;            // a reloading page registers again well within this
+
+function alive(id) {
+  if (!id) return;
+  clients.set(id, Date.now());
+  everSeen = true;
+  if (closing) { clearTimeout(closing); closing = null; }
+}
+function bye(id) {
+  clients.delete(id);
+  maybeClose();
+}
+function maybeClose() {
+  if (!everSeen || clients.size || closing || process.argv.includes('--stay')) return;
+  closing = setTimeout(() => {
+    closing = null;
+    if (clients.size) return;
+    console.log('\n 브라우저 창이 모두 닫혀 편집기를 종료합니다.');
+    setTimeout(() => process.exit(0), 200);
+  }, GRACE_MS);
+}
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, t] of clients) if (now - t > STALE_MS) clients.delete(id);
+  maybeClose();
+}, 15000).unref();
 
 function stamp(d = new Date()) {
   const p = (n) => String(n).padStart(2, '0');
@@ -180,12 +228,15 @@ async function handle(req, res) {
     if (origin && !/^http:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/.test(origin)) return send(res, 403, { error: '허용되지 않은 요청입니다.' });
   }
 
-  if (p === '/' || p === '/index.html') return serveFile(res, UI_DIR, 'index.html');
+  if (p === '/' || p === '/index.html') return serveFile(res, UI_DIR, 'index.html', ALIVE_SNIPPET);
+  if (p === '/__alive.js') return send(res, 200, ALIVE_JS, MIME['.js']);
+  if (p === '/api/alive' && m === 'POST') { alive(url.searchParams.get('id')); res.writeHead(204); return res.end(); }
+  if (p === '/api/bye' && m === 'POST') { bye(url.searchParams.get('id')); res.writeHead(204); return res.end(); }
   if (p.startsWith('/ui/')) return serveFile(res, UI_DIR, p.slice(4));
   if (p.startsWith('/src/') && p.endsWith('.mjs')) return serveFile(res, SRC_DIR, p.slice(5));
   if (p.startsWith('/preview/')) return serveFile(res, PREVIEW_DIR, p.slice(9) || 'index.html');
   if (p === '/preview') { res.writeHead(302, { Location: '/preview/' }); return res.end(); }
-  if (p.startsWith('/site/')) return serveFile(res, DIST_DIR, p.slice(6) || 'index.html');
+  if (p.startsWith('/site/')) return serveFile(res, DIST_DIR, p.slice(6) || 'index.html', ALIVE_SNIPPET);
   if (p === '/site') { res.writeHead(302, { Location: '/site/' }); return res.end(); }
   if (p.startsWith('/media/') && m === 'GET') return serveFile(res, MEDIA_DIR, p.slice(7));
 
