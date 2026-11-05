@@ -1287,6 +1287,39 @@
           "buttons": []
         },
         {
+          "type": "split",
+          "tone": "white",
+          "reverse": true,
+          "image": "media/photos/mycelium-leather-croc-patina.webp",
+          "eyebrow": {
+            "ko": "FINISHED MATERIAL",
+            "en": "FINISHED MATERIAL"
+          },
+          "title": {
+            "ko": "균사매트로 가공한\n균사원단",
+            "en": "Mycelium textile\nfinished from a mat"
+          },
+          "text": {
+            "ko": "균사매트에 엠보싱과 염색 같은 후가공을 더하면 가죽과 같은 질감의 균사원단이 됩니다. 마이코젠은 그 출발점인 생지 균사매트를 배양해 후가공 파트너에게 공급합니다.",
+            "en": "Add finishing such as embossing and dyeing to a mycelium mat and it becomes a leather-like mycelium textile. Mycogen grows the greige mat that this starts from and supplies it to finishing partners."
+          },
+          "bullets": [
+            {
+              "text": {
+                "ko": "악어 엠보싱 적용",
+                "en": "Crocodile embossing"
+              }
+            },
+            {
+              "text": {
+                "ko": "파티나 염색 적용",
+                "en": "Patina dyeing"
+              }
+            }
+          ],
+          "buttons": []
+        },
+        {
           "type": "cards",
           "source": "items",
           "style": "text",
