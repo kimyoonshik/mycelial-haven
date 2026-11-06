@@ -104,6 +104,7 @@ mycogen/
 ├─ scripts/check.mjs     완성 사이트 링크 검사
 ├─ docs/                 레퍼런스 분석 문서
 ├─ HOSTING.md            호스팅 담당자 안내
+├─ brand/                로고 CI 파일 (SVG·PDF·PNG, CI 가이드 PDF)
 └─ dist/                 완성 사이트 (자동 생성, 업로드 대상 · GitHub에도 포함)
 ```
 

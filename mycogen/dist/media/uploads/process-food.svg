@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 327" role="img" aria-label="균주 분주부터 대체육·에그파우더 조성까지 균사 발효 식품 공정도">
+  <style>
+    .l{fill:none;stroke:#8a7a6b;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+    .f{fill:#efe8e0}
+    .d{fill:none;stroke:#b9ada1;stroke-width:2;stroke-dasharray:4 7}
+    .t{font:600 15px 'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;fill:#7c6d5f}
+    .b{fill:#fff;stroke:#8a7a6b;stroke-width:1.4}
+  </style>
+  <path class="d" d="M215 170 H300"/><path class="d" d="M470 170 H560"/><path class="d" d="M800 170 H880"/><path class="d" d="M1080 170 H1150"/>
+
+  <!-- 1. petri dish with mycelium -->
+  <g transform="translate(30 60)">
+    <ellipse class="l f" cx="100" cy="120" rx="95" ry="40"/>
+    <path class="l" d="M5 120 V138 C5 160 195 160 195 138 V120"/>
+    <path class="l" d="M60 118 C80 100 120 100 140 118 M100 105 V92 M80 110 L66 96 M120 110 L134 96"/>
+    <rect class="b" x="40" y="10" width="124" height="26" rx="3"/><text class="t" x="48" y="28">상황 · 영지 균주</text>
+  </g>
+
+  <!-- 2. flask -->
+  <g transform="translate(305 40)">
+    <path class="l f" d="M58 30 V100 L10 230 C5 245 15 255 30 255 H130 C145 255 155 245 150 230 L102 100 V30 Z"/>
+    <path class="l" d="M50 30 H110 M30 200 C60 190 100 210 130 198"/>
+    <circle class="l" cx="70" cy="225" r="6"/><circle class="l" cx="100" cy="215" r="4"/>
+    <rect class="b" x="88" y="0" width="116" height="26" rx="3"/><text class="t" x="96" y="18">액체 종균 PDB</text>
+  </g>
+
+  <!-- 3. jars of beans -->
+  <g transform="translate(565 40)">
+    <g id="jar"><path class="l f" d="M10 40 H70 V60 C78 66 80 72 80 80 V200 C80 210 72 216 62 216 H18 C8 216 0 210 0 200 V80 C0 72 2 66 10 60 Z"/>
+      <circle class="l" cx="22" cy="180" r="7"/><circle class="l" cx="42" cy="188" r="7"/><circle class="l" cx="60" cy="178" r="7"/><circle class="l" cx="30" cy="160" r="7"/><circle class="l" cx="52" cy="158" r="7"/>
+      <path class="l" d="M6 140 C20 130 60 130 74 140"/></g>
+    <use href="#jar" x="80"/><use href="#jar" x="160"/>
+    <rect class="b" x="40" y="250" width="160" height="26" rx="3"/><text class="t" x="48" y="268">콩 접종 · 20℃ 배양</text>
+  </g>
+
+  <!-- 4. grinder -->
+  <g transform="translate(885 40)">
+    <path class="l f" d="M40 40 H160 L150 150 H50 Z"/>
+    <path class="l f" d="M30 150 H170 V240 C170 250 160 256 150 256 H50 C40 256 30 250 30 240 Z"/>
+    <circle class="l" cx="70" cy="200" r="8"/><circle class="l" cx="100" cy="200" r="8"/><circle class="l" cx="130" cy="200" r="8"/>
+    <path class="l" d="M70 90 l10 -8 M100 110 l10 -6 M120 80 l8 -8"/>
+    <rect class="b" x="50" y="5" width="100" height="26" rx="3"/><text class="t" x="58" y="23">분쇄 · 조성</text>
+  </g>
+
+  <!-- 5. patty + powder -->
+  <g transform="translate(1150 30)">
+    <path class="l f" d="M20 90 C20 50 170 50 170 90 Z"/>
+    <path class="l f" d="M15 100 H175 V112 C175 120 15 120 15 112 Z"/>
+    <path class="l" d="M15 128 C40 140 150 140 175 128"/>
+    <path class="l f" d="M20 140 H170 C170 160 20 160 20 140 Z"/>
+    <path class="l f" d="M40 245 C52 210 80 200 95 200 C115 200 140 210 152 245 Z"/>
+    <path class="l" d="M30 245 H162"/>
+    <rect class="b" x="18" y="262" width="156" height="26" rx="3"/><text class="t" x="26" y="280">대체육 · 에그파우더</text>
+  </g>
+</svg>

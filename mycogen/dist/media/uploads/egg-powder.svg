@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 640" role="img" aria-label="균사 발효 에그파우더 일러스트">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#fbf5e6"/>
+      <stop offset="0.6" stop-color="#efe1bf"/>
+      <stop offset="1" stop-color="#d9c08b"/>
+    </radialGradient>
+    <linearGradient id="powder" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbe7a6"/>
+      <stop offset="0.55" stop-color="#f2cf6f"/>
+      <stop offset="1" stop-color="#d9ad48"/>
+    </linearGradient>
+    <linearGradient id="bowl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8b7b6c"/>
+      <stop offset="1" stop-color="#5e5145"/>
+    </linearGradient>
+    <linearGradient id="bean" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3dca4"/>
+      <stop offset="1" stop-color="#cfa65a"/>
+    </linearGradient>
+    <linearGradient id="milk" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fffdf6"/>
+      <stop offset="1" stop-color="#efe8d6"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+  <rect width="600" height="640" fill="url(#bg)"/>
+  <!-- mycelium threads -->
+  <g fill="none" stroke="#ffffff" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round">
+    <path d="M40 120 C120 90 160 160 230 120 S330 60 380 110"/>
+    <path d="M90 60 C140 120 120 170 190 200"/>
+    <path d="M600 210 C520 190 500 140 430 150 S350 200 300 170"/>
+    <path d="M520 40 C500 90 540 130 500 170"/>
+    <path d="M10 300 C70 280 90 330 150 320"/>
+  </g>
+  <!-- egg silhouette, dashed -->
+  <ellipse cx="300" cy="250" rx="132" ry="170" fill="#ffffff" fill-opacity="0.35" stroke="#ffffff" stroke-width="4" stroke-dasharray="10 12"/>
+  <!-- glass of goat whey -->
+  <g transform="translate(430 300)">
+    <path d="M0 0 L70 0 L62 150 Q35 160 8 150 Z" fill="url(#milk)" stroke="#bfae8e" stroke-width="3"/>
+    <path d="M4 30 L66 30" stroke="#d8ccb2" stroke-width="3"/>
+  </g>
+  <!-- bowl shadow -->
+  <ellipse cx="290" cy="560" rx="200" ry="26" fill="#6b5a40" opacity="0.35" filter="url(#soft)"/>
+  <!-- powder mound -->
+  <path d="M110 430 C150 330 230 300 290 300 C360 300 430 340 470 430 Z" fill="url(#powder)"/>
+  <g fill="#fff6d2" opacity="0.8">
+    <circle cx="250" cy="350" r="4"/><circle cx="300" cy="330" r="3"/><circle cx="340" cy="360" r="4"/>
+    <circle cx="210" cy="390" r="3"/><circle cx="380" cy="395" r="3"/><circle cx="290" cy="380" r="2.5"/>
+  </g>
+  <!-- bowl -->
+  <path d="M92 430 L488 430 C480 520 400 560 290 560 C180 560 100 520 92 430 Z" fill="url(#bowl)"/>
+  <ellipse cx="290" cy="430" rx="198" ry="22" fill="#9a8a79"/>
+  <ellipse cx="290" cy="428" rx="186" ry="15" fill="#efcf74"/>
+  <!-- soybeans -->
+  <g>
+    <ellipse cx="80" cy="560" rx="22" ry="17" fill="url(#bean)"/>
+    <ellipse cx="118" cy="590" rx="20" ry="16" fill="url(#bean)" transform="rotate(-20 118 590)"/>
+    <ellipse cx="500" cy="585" rx="22" ry="17" fill="url(#bean)" transform="rotate(15 500 585)"/>
+    <ellipse cx="540" cy="550" rx="19" ry="15" fill="url(#bean)"/>
+    <ellipse cx="460" cy="610" rx="18" ry="14" fill="url(#bean)"/>
+    <g fill="#ffffff" opacity="0.85">
+      <ellipse cx="74" cy="553" rx="7" ry="4"/><ellipse cx="112" cy="584" rx="6" ry="3.5"/>
+      <ellipse cx="494" cy="578" rx="7" ry="4"/><ellipse cx="535" cy="544" rx="6" ry="3.5"/>
+    </g>
+  </g>
+</svg>
