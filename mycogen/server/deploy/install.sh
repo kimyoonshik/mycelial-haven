@@ -27,9 +27,19 @@ pg_admin() { (cd / && runuser -u postgres -- "$@"); }
 HAS_SYSTEMD=0; [ -d /run/systemd/system ] && HAS_SYSTEMD=1
 
 say "1/8 기본 프로그램 (git, nginx, PostgreSQL)"
+# 이 서버가 이미 쓰는 포트와 겹치는지 먼저 봅니다(이 설치로 띄운 것은 제외).
+for port in 8080 4780 4781; do
+  who=$(ss -Hltnp "sport = :$port" 2>/dev/null | grep -o 'users:(("[^"]*' | head -1 | cut -d'"' -f2 || true)
+  if [ -n "$who" ] && [ "$who" != nginx ] && [ "$who" != node ]; then
+    warn "포트 $port 를 이미 '$who' 가 쓰고 있습니다. nginx-mycogen.conf·server.env 의 포트를 바꾼 뒤 다시 실행하세요."; exit 1
+  fi
+done
+nginx_was_installed=0; dpkg -s nginx >/dev/null 2>&1 && nginx_was_installed=1
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -q
 apt-get install -y -q git nginx postgresql ca-certificates curl gnupg openssl
+# 이 설치로 nginx 를 새로 깔았다면 쓰지 않는 기본 사이트(80번 포트)를 끕니다. 원래 쓰던 nginx 는 건드리지 않습니다.
+if [ "$nginx_was_installed" = 0 ]; then rm -f /etc/nginx/sites-enabled/default; fi
 
 say "2/8 Node.js (20 이상 필요, 없으면 22 LTS 설치)"
 node_major=0
