@@ -1,0 +1,25 @@
+# /etc/systemd/system/mycogen.service  (install.sh 가 설치)
+# 문의 접수(4780)·관리 페이지(4781) 서버. 켤 때 DB 글을 합쳐 /srv/mycogen/www 에 사이트를 다시 만듭니다.
+[Unit]
+Description=Mycogen website server (inquiries, news/blog admin)
+After=network-online.target postgresql.service
+Wants=network-online.target postgresql.service
+
+[Service]
+User=mycogen
+Group=mycogen
+WorkingDirectory=/srv/mycogen/app/mycogen
+EnvironmentFile=/etc/mycogen/server.env
+ExecStart=/usr/bin/node server/server.mjs
+Restart=on-failure
+RestartSec=5
+
+# 서버가 쓸 수 있는 곳은 사이트 출력 폴더와 업로드 폴더뿐
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/srv/mycogen/www /srv/mycogen/data
+
+[Install]
+WantedBy=multi-user.target

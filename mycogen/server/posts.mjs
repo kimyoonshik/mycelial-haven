@@ -1,32 +1,25 @@
-// 소식·블로그 글: 서버 DB에 저장하고, 사이트를 빌드할 때 content/site.json 에 합칩니다.
-// site.json 파일 자체는 고치지 않습니다(대표님 편집본이 원본). 블로그 메뉴 추가도 빌드할 때만 적용합니다.
+// 소식·블로그 글: 관리 페이지에서 쓴 글은 PostgreSQL에 저장하고, 사이트를 빌드할 때 content/site.json 에 합칩니다.
+// site.json 파일 자체는 고치지 않습니다(대표님 PC 편집기 편집본이 원본).
+//   - 소식: 편집기에서 쓴 소식(site.json) + 관리 페이지에서 쓴 소식(DB)을 날짜순으로 함께 보여 줍니다.
+//   - 블로그: 관리 페이지에서만 씁니다. 블로그 메뉴와 페이지는 서버에서 빌드할 때만 생깁니다.
 import fs from 'node:fs';
 import path from 'node:path';
 import { build, loadContent, ROOT } from '../src/build.mjs';
+import { q } from './db.mjs';
 
 export const KINDS = { news: '소식', blog: '블로그' };
-export const UPLOADS = path.join(ROOT, 'server/data/uploads');
+export const UPLOADS = path.resolve(process.env.UPLOAD_DIR || path.join(ROOT, 'server/data/uploads'));
 
-export function initPosts(db) {
-  db.exec(`CREATE TABLE IF NOT EXISTS posts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    kind TEXT NOT NULL CHECK (kind IN ('news', 'blog')),
-    date TEXT NOT NULL, category TEXT, title TEXT NOT NULL, summary TEXT, body TEXT, image TEXT,
-    published INTEGER NOT NULL DEFAULT 1,
-    created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now'))
-  )`);
-  db.exec('CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT)');
-  // 처음 한 번: site.json 에 있던 기존 소식을 DB로 옮김
-  if (!db.prepare("SELECT 1 FROM settings WHERE key = 'imported_news'").get()) {
-    const ins = db.prepare('INSERT INTO posts (kind, date, category, title, summary, body) VALUES (?,?,?,?,?,?)');
-    for (const n of loadContent().news || []) {
-      if (!n.hidden) ins.run('news', n.date, n.category?.ko || '', n.title?.ko || '', n.summary?.ko || '', n.summary?.ko || '');
-    }
-    db.prepare("INSERT INTO settings VALUES ('imported_news', datetime('now'))").run();
-  }
+// 빌드·화면에 쓰는 형태로 읽기: 날짜는 'YYYY-MM-DD', 수정일은 한국 시간 기준 날짜
+export const POST_COLUMNS = `id, kind, to_char(date, 'YYYY-MM-DD') AS date, category, title, summary, body, image, published,
+  to_char(updated_at AT TIME ZONE 'Asia/Seoul', 'YYYY-MM-DD') AS updated`;
+
+const ko = (v) => ({ ko: v || '', en: '' }); // 한국어만 입력, 영어 페이지는 한국어로 표시. 영문 글이 필요해지면 en 칸 추가
+
+/** 편집기(site.json)에 있는 소식: 관리 페이지에서 '편집기에서 작성'으로 보여 주는 용도 */
+export function editorNews(site = loadContent()) {
+  return (site.news || []).filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date)));
 }
-
-const ko = (v) => ({ ko: v || '', en: '' }); // shortcut: 한국어만 입력, 영어 페이지는 한국어로 표시. 영문 글이 필요해지면 en 칸 추가
 
 // site.json + DB 글 → 빌드용 사이트 객체 (메모리에서만)
 export function siteWithPosts(site, posts) {
@@ -48,22 +41,25 @@ export function siteWithPosts(site, posts) {
     const at = nav.findIndex((n) => n.page === 'news');
     nav.splice(at >= 0 ? at + 1 : nav.length, 0, { page: 'blog', children: false, button: false });
   }
-  if (process.env.TURNSTILE_SITE_KEY) s.company = { ...s.company, turnstileSiteKey: process.env.TURNSTILE_SITE_KEY };
-  s.news = []; s.blog = [];
+  // 문의 양식: 편집기에서 다른 전송 주소를 넣지 않았다면 이 서버(/api/contact)로 받습니다.
+  s.company = { ...s.company, formEndpoint: s.company?.formEndpoint || '/api/contact' };
+  if (process.env.TURNSTILE_SITE_KEY) s.company.turnstileSiteKey = process.env.TURNSTILE_SITE_KEY;
+  s.news = [...(s.news || [])]; // 편집기 소식은 그대로 두고 DB 소식을 더함
+  s.blog = [];
   for (const p of posts.filter((x) => x.published)) {
     const id = `${p.kind === 'news' ? 'notice' : 'blog'}-${p.id}`;
-    const item = { date: p.date, category: ko(p.category), title: ko(p.title), summary: ko(p.summary), image: p.image || '', link: `page:${id}` };
-    s[p.kind].push(item);
+    s[p.kind].push({ date: p.date, category: ko(p.category), title: ko(p.title), summary: ko(p.summary), image: p.image || '', link: `page:${id}` });
     pages.push({ id, slug: String(p.id), parent: p.kind, navLabel: ko(p.title), title: ko(`${p.title} | ${KINDS[p.kind]}`),
       description: ko(p.summary), ogImage: p.image || undefined,
-      sections: [{ type: 'post', source: p.kind, tone: 'paper', date: p.date, updated: p.updated_at?.slice(0, 10), category: ko(p.category),
+      sections: [{ type: 'post', source: p.kind, tone: 'paper', date: p.date, updated: p.updated, category: ko(p.category),
         title: ko(p.title), summary: ko(p.summary), body: ko(p.body), image: p.image || '' }] });
   }
   return s;
 }
 
-export function publish(db, outDir) {
-  const posts = db.prepare('SELECT * FROM posts ORDER BY date DESC, id DESC').all();
+/** DB 글을 합쳐 outDir 에 사이트 전체를 다시 만듭니다. */
+export async function publish(outDir) {
+  const posts = await q(`SELECT ${POST_COLUMNS} FROM posts ORDER BY date DESC, id DESC`);
   const res = build({ content: siteWithPosts(loadContent(), posts), outDir });
   if (res.ok && fs.existsSync(UPLOADS)) fs.cpSync(UPLOADS, path.join(res.outDir, 'media/posts'), { recursive: true });
   return res;

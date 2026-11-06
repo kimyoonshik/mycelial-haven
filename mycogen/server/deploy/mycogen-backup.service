@@ -1,0 +1,11 @@
+# /etc/systemd/system/mycogen-backup.service  (install.sh 가 설치, mycogen-backup.timer 가 매일 새벽 3시 실행)
+[Unit]
+Description=Mycogen: back up the database and uploaded images
+After=postgresql.service
+
+[Service]
+Type=oneshot
+User=mycogen
+Group=mycogen
+EnvironmentFile=/etc/mycogen/server.env
+ExecStart=/srv/mycogen/app/mycogen/server/deploy/backup.sh
