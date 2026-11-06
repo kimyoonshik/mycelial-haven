@@ -254,9 +254,10 @@
       var email = form.getAttribute('data-email');
       if (endpoint) {
         say(ko ? '보내는 중…' : 'Sending…');
+        var again = function () { if (window.turnstile && form.querySelector('.cf-turnstile')) window.turnstile.reset(form.querySelector('.cf-turnstile')); };
         fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(data) })
-          .then(function (r) { if (!r.ok) throw new Error(r.status); form.reset(); say(ko ? '문의가 접수되었습니다. 빠르게 회신드리겠습니다.' : 'Thank you. We will get back to you shortly.', 'ok'); })
-          .catch(function () { say(ko ? '전송에 실패했습니다. ' + (email ? email + ' 로 메일을 보내 주세요.' : '') : 'Sending failed. ' + (email ? 'Please email ' + email + '.' : ''), 'error'); });
+          .then(function (r) { again(); if (!r.ok) throw new Error(r.status); form.reset(); say(ko ? '문의가 접수되었습니다. 빠르게 회신드리겠습니다.' : 'Thank you. We will get back to you shortly.', 'ok'); })
+          .catch(function () { again(); say(ko ? '전송에 실패했습니다. ' + (email ? email + ' 로 메일을 보내 주세요.' : '') : 'Sending failed. ' + (email ? 'Please email ' + email + '.' : ''), 'error'); });
         return;
       }
       if (!email) { say(ko ? '문의 수신 이메일이 설정되지 않았습니다.' : 'No inquiry address is configured.', 'error'); return; }

@@ -5,3 +5,5 @@ node_modules/
 *.log
 # The finished site is committed so hosting can use it as-is (the repo root ignores dist).
 !dist/
+server/data/
+server/server.env
