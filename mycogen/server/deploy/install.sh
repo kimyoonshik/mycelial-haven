@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 # 마이코젠 홈페이지 서버 설치 — 사내 Ubuntu 서버(22.04 / 24.04, 192.168.0.38)
 #
+#   curl -fsSLO https://raw.githubusercontent.com/kimyoonshik/mycelial-haven/main/mycogen/server/deploy/install.sh
 #   sudo bash install.sh
 #
 # 여러 번 실행해도 됩니다(이미 된 단계는 건너뜀).
-# 처음 실행하면 GitHub 배포 키를 등록하라는 안내와 함께 멈춥니다. 등록한 뒤 같은 명령을 다시 실행하세요.
 # 하는 일: 프로그램 설치(git·nginx·PostgreSQL·Node.js 22) → 서버 계정·폴더 → 저장소 받기 → DB 만들기
 #          → 설정 파일(/etc/mycogen/server.env) → nginx(127.0.0.1:8080) → 자동 실행·자동 업데이트·매일 백업 등록
 # 인터넷 쪽 연결(Cloudflare Tunnel)은 HOSTING.md 의 순서대로 따로 합니다.
+# 저장소를 비공개로 바꾼 경우: sudo REPO_URL=git@github.com:kimyoonshik/mycelial-haven.git bash install.sh
+#   (서버용 배포 키를 만들어 GitHub 에 등록하라는 안내가 나옵니다)
 set -euo pipefail
 
-REPO_URL=${REPO_URL:-git@github.com:kimyoonshik/mycelial-haven.git}
+REPO_URL=${REPO_URL:-https://github.com/kimyoonshik/mycelial-haven.git}
 BRANCH=${BRANCH:-main}
 BASE=/srv/mycogen
 APP=$BASE/app
@@ -42,8 +44,10 @@ apt-get install -y -q git nginx postgresql ca-certificates curl gnupg openssl
 if [ "$nginx_was_installed" = 0 ]; then rm -f /etc/nginx/sites-enabled/default; fi
 
 say "2/8 Node.js (20 이상 필요, 없으면 22 LTS 설치)"
-node_major=0
-command -v node >/dev/null && node_major=$(node -p 'process.versions.node.split(".")[0]')
+node_major=0; node_path=$(command -v node || true)
+[ -n "$node_path" ] && node_major=$(node -p 'process.versions.node.split(".")[0]')
+# 개인 폴더(nvm 등)에 깔린 node 는 서버 계정이 쓸 수 없으므로 시스템용으로 따로 설치
+case "$node_path" in /home/*|/root/*) node_major=0 ;; esac
 if [ "$node_major" -lt 20 ]; then
   curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
   apt-get install -y -q nodejs
@@ -75,6 +79,10 @@ $(cat "$BASE/.ssh/id_ed25519.pub")
 EOF
       exit 2
     fi
+  elif ! as_app git ls-remote --quiet "$REPO_URL" HEAD >/dev/null 2>&1; then
+    warn "저장소를 받을 수 없습니다($REPO_URL). 인터넷 연결을 확인하고, 저장소가 비공개라면 이렇게 실행하세요:"
+    echo "  sudo REPO_URL=git@github.com:kimyoonshik/mycelial-haven.git bash $0"
+    exit 2
   fi
   # mycogen 폴더만 받습니다(저장소의 다른 프로젝트는 받지 않음).
   as_app git clone --quiet --filter=blob:none --sparse --branch "$BRANCH" "$REPO_URL" "$APP"
@@ -121,6 +129,8 @@ if [ "$HAS_SYSTEMD" = 1 ]; then
   for u in mycogen.service mycogen-update.service mycogen-update.timer mycogen-backup.service mycogen-backup.timer; do
     install -m 644 "$APP/mycogen/server/deploy/$u" "/etc/systemd/system/$u"
   done
+  # node 가 /usr/bin 이 아닌 곳에 있으면 그 위치로 맞춤
+  sed -i "s|^ExecStart=/usr/bin/node |ExecStart=$(command -v node) |" /etc/systemd/system/mycogen.service
   systemctl daemon-reload
   systemctl enable --now postgresql nginx >/dev/null
   systemctl reload nginx

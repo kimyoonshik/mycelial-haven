@@ -52,14 +52,13 @@
 
 ## 3. 홈페이지에 올리기(게시)
 
-편집기 왼쪽 **게시·배포** 화면에 같은 안내가 있습니다. 호스팅 담당자용 상세 안내는 **`HOSTING.md`**에 있습니다.
+운영 홈페이지는 **사내 서버(192.168.0.38)**에서 돌아가고, Cloudflare Tunnel로 `www.mycogen.co.kr`에 연결됩니다. 설치와 운영은 **`HOSTING.md`**에 있습니다.
 
-1. 저장 → `배포용 ZIP 내려받기` (또는 `dist` 폴더 그대로 사용)
-2. 호스팅에 업로드
-   - **가비아·카페24 웹호스팅**: FTP로 `dist` 안의 파일 전체(`.htaccess` 포함)를 웹 루트(`www` 또는 `public_html`)에 올립니다.
-   - **Netlify / Cloudflare Pages(무료)**: ZIP을 푼 폴더를 관리 화면에 끌어다 놓습니다.
-3. 도메인 DNS에서 `www.mycogen.co.kr`을 호스팅으로 연결하고 SSL(https)을 켭니다.
-4. 검색 등록 — 각 서비스에 사이트를 등록하고 인증 코드를 `사이트 정보 → 검색·공유`에 넣은 뒤 저장·재배포합니다.
+1. 편집기에서 고치고 **저장**합니다. PC의 `mycogen` 폴더가 Google Drive에 동기화됩니다.
+2. 파트너(Claude)에게 **"GitHub 동기화해줘"**라고 요청합니다. Drive의 최신 편집본을 GitHub `main`에 올립니다.
+3. 사내 서버가 **5분 안에 자동으로** 받아 홈페이지를 새로 만듭니다.
+   - 소식(관리 페이지)과 블로그는 `https://info.mycogen.co.kr`에서 쓰며, 저장하는 즉시 반영됩니다.
+4. 검색 등록 — 각 서비스에 사이트를 등록하고 인증 코드를 `사이트 정보 → 검색·공유`에 넣은 뒤 저장하고 GitHub 동기화를 요청합니다.
    - **네이버 서치어드바이저**: 사이트맵 `https://www.mycogen.co.kr/sitemap.xml` + RSS `https://www.mycogen.co.kr/rss.xml` 제출
    - **구글 서치콘솔**: 사이트맵 제출 (Gemini·AI 개요도 구글 색인을 씁니다)
    - **Bing 웹마스터 도구**: 사이트맵 제출 (ChatGPT 검색·Copilot이 Bing 색인을 씁니다)
@@ -103,9 +102,10 @@ mycogen/
 ├─ editor/               편집 프로그램 (server.mjs + ui/)
 ├─ scripts/check.mjs     완성 사이트 링크 검사
 ├─ docs/                 레퍼런스 분석 문서
-├─ HOSTING.md            호스팅 담당자 안내
+├─ server/               사내 서버용: 문의 접수·관리 페이지·블로그 (PostgreSQL), deploy/ 설치·자동 실행 파일
+├─ HOSTING.md            사내 서버 + Cloudflare 설치·운영 안내
 ├─ brand/                로고 CI 파일 (SVG·PDF·PNG, CI 가이드 PDF)
-└─ dist/                 완성 사이트 (자동 생성, 업로드 대상 · GitHub에도 포함)
+└─ dist/                 정적 사본 (자동 생성. 운영 서버는 쓰지 않고 /srv/mycogen/www 에 직접 만듦)
 ```
 
 ## 6. 개발자용
@@ -114,7 +114,11 @@ mycogen/
 npm run build     # content/site.json → dist/
 npm run check     # 빌드 후 내부 링크·이미지 전수 검사
 npm run editor    # 편집기 (http://127.0.0.1:4777)
+npm run server    # 사내 서버용 (DATABASE_URL 등 server/server.env.example 참고, npm ci 필요)
+TEST_DATABASE_URL=postgres://postgres:비밀번호@127.0.0.1/postgres npm run test:server   # 서버 시험 (시험용 DB를 만들고 지움)
 ```
+
+- 홈페이지 생성기와 편집기는 외부 패키지가 없습니다. 서버(`server/`)만 `pg`, `@anthropic-ai/sdk`를 씁니다.
 
 - 섹션 종류와 입력 칸은 `src/schema.mjs` 한 곳에 정의되어 있고, 편집기 양식과 사이트 렌더러가 같은 정의를 씁니다. 새 섹션은 `SECTION_TYPES`에 항목을 추가하고 `src/render.mjs`의 `R.<type>` 함수를 만들면 됩니다.
 - 편집기 서버는 `127.0.0.1`에서만 접속을 받으며, 외부 도메인에서 온 요청과 폴더 밖 경로 접근을 차단합니다.
