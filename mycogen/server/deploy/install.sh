@@ -148,6 +148,8 @@ if [ -n "$NEW_ADMIN_PASS" ]; then
     비밀번호: $NEW_ADMIN_PASS
     바꾸려면: sudo nano $ENV_FILE  (ADMIN_PASSWORD) → sudo systemctl restart mycogen
 EOF
+else
+  echo "  관리 페이지 비밀번호 확인: sudo grep ^ADMIN_PASSWORD $ENV_FILE"
 fi
 cat <<EOF
 
