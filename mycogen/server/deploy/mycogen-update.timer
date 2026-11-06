@@ -1,0 +1,11 @@
+# /etc/systemd/system/mycogen-update.timer  (install.sh 가 설치)
+# 끄려면: sudo systemctl disable --now mycogen-update.timer
+[Unit]
+Description=Check GitHub for Mycogen updates every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=timers.target

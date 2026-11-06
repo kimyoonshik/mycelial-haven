@@ -2,12 +2,20 @@
   "name": "mycogen-site",
   "version": "1.0.0",
   "private": true,
-  "description": "(주)마이코젠 공식 홈페이지 — 정적 사이트 생성기와 로컬 편집기 (외부 패키지 없음)",
+  "description": "(주)마이코젠 공식 홈페이지 — 정적 사이트 생성기·로컬 편집기(외부 패키지 없음)와 사내 서버용 문의·소식·블로그 관리 서버(PostgreSQL)",
   "type": "module",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "node src/build.mjs",
     "editor": "node editor/server.mjs",
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs",
+    "server": "node server/server.mjs",
+    "test:server": "node --test server/server.test.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "pg": "^8.23.1"
   }
 }

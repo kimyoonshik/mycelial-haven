@@ -1,0 +1,10 @@
+# /etc/systemd/system/mycogen-backup.timer  (install.sh 가 설치)
+[Unit]
+Description=Daily Mycogen backup
+
+[Timer]
+OnCalendar=*-*-* 03:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
