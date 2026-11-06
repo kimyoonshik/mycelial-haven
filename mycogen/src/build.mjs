@@ -48,22 +48,34 @@ export function validate(site) {
   return { errors, warnings };
 }
 
-function copyDir(src, dst) {
+// Mirrors src into dst: copies new or changed files and removes files that were deleted from src,
+// so a photo deleted in the editor is no longer published. Top-level names in `keep` are left alone
+// (media/posts holds the server's blog images, which are not in content/media).
+function copyDir(src, dst, keep = new Set()) {
   if (!fs.existsSync(src)) return 0;
   let n = 0;
   fs.mkdirSync(dst, { recursive: true });
+  const wanted = new Set();
   for (const ent of fs.readdirSync(src, { withFileTypes: true })) {
     if (ent.name.startsWith('.')) continue;
+    wanted.add(ent.name);
     const s = path.join(src, ent.name);
     const d = path.join(dst, ent.name);
-    if (ent.isDirectory()) { n += copyDir(s, d); continue; }
-    const st = fs.statSync(s);
+    if (ent.isDirectory()) {
+      if (fs.existsSync(d) && !fs.statSync(d).isDirectory()) rmrf(d);
+      n += copyDir(s, d);
+      continue;
+    }
     if (fs.existsSync(d)) {
       const dt = fs.statSync(d);
-      if (dt.size === st.size && dt.mtimeMs >= st.mtimeMs) continue;
+      if (dt.isDirectory()) rmrf(d);
+      else if (dt.size === fs.statSync(s).size && dt.mtimeMs >= fs.statSync(s).mtimeMs) continue;
     }
     fs.copyFileSync(s, d);
     n++;
+  }
+  for (const name of fs.readdirSync(dst)) {
+    if (!wanted.has(name) && !keep.has(name)) rmrf(path.join(dst, name));
   }
   return n;
 }
@@ -105,7 +117,7 @@ export function build({ content, outDir = path.join(ROOT, 'dist'), preview = fal
   write(path.join(outDir, 'assets', 'favicon.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="${moss}"/>${MARK_SVG.replace(/<svg[^>]*>/, '<g color="#fbf8f2">').replace('</svg>', '</g>')}</svg>`);
   if (preview) write(path.join(outDir, 'assets', 'preview-bridge.js'), fs.readFileSync(path.join(ASSETS_DIR, 'preview-bridge.js'), 'utf8'));
 
-  const mediaCopied = copyDir(MEDIA_DIR, path.join(outDir, 'media'));
+  const mediaCopied = copyDir(MEDIA_DIR, path.join(outDir, 'media'), new Set(['posts']));
 
   // pages
   const byId = Object.fromEntries(site.pages.map((p) => [p.id, p]));
