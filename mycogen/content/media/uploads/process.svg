@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1360 327" role="img" aria-label="균주 선발에서 산업 적용까지 마이코젠 균사 배양 공정도">
+  <style>
+    .l{fill:none;stroke:#8a7a6b;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+    .f{fill:#efe8e0}
+    .d{fill:none;stroke:#b9ada1;stroke-width:2;stroke-dasharray:4 7}
+    .t{font:600 15px 'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;fill:#7c6d5f}
+    .b{fill:#fff;stroke:#8a7a6b;stroke-width:1.4}
+  </style>
+  <!-- connectors -->
+  <path class="d" d="M205 170 H300"/><path class="d" d="M470 170 H560"/><path class="d" d="M790 170 H880"/><path class="d" d="M1080 170 H1150"/>
+
+  <!-- 1. mushroom + mycelium -->
+  <g transform="translate(40 18)">
+    <path class="l f" d="M20 95 C20 40 70 15 105 15 C140 15 190 40 190 95 C150 105 60 105 20 95 Z"/>
+    <path class="l" d="M60 70 q8 -10 16 0 M120 50 q8 -10 16 0 M95 80 q6 -8 12 0"/>
+    <path class="l" d="M82 100 C80 140 78 170 72 195 L138 195 C132 170 130 140 128 100"/>
+    <path class="l" d="M105 195 C100 230 80 240 50 262 M105 195 C110 235 130 250 165 270 M90 205 C70 215 40 210 20 228 M120 205 C150 212 175 205 195 222 M105 195 V285 M70 240 C60 260 55 280 58 300 M140 245 C150 265 160 280 158 300"/>
+    <rect class="b" x="-30" y="150" width="88" height="26" rx="3"/><text class="t" x="-22" y="168">균주 선발</text>
+    <rect class="b" x="135" y="232" width="74" height="26" rx="3"/><text class="t" x="143" y="250">균사체</text>
+  </g>
+
+  <!-- 2. flask -->
+  <g transform="translate(305 40)">
+    <path class="l f" d="M58 30 V100 L10 230 C5 245 15 255 30 255 H130 C145 255 155 245 150 230 L102 100 V30 Z"/>
+    <path class="l" d="M50 30 H110 M30 200 C60 190 100 210 130 198"/>
+    <circle class="l" cx="70" cy="225" r="6"/><circle class="l" cx="100" cy="215" r="4"/><circle class="l" cx="88" cy="238" r="3"/>
+    <rect class="b" x="88" y="0" width="92" height="26" rx="3"/><text class="t" x="96" y="18">액체 종균</text>
+  </g>
+
+  <!-- 3. culture chamber -->
+  <g transform="translate(565 10)">
+    <rect class="l f" x="10" y="20" width="210" height="250" rx="8"/>
+    <path class="l" d="M10 95 H220 M10 175 H220"/>
+    <path class="l" d="M30 85 C50 60 80 70 100 60 C130 50 160 72 200 60 V85 Z"/>
+    <path class="l" d="M30 165 C55 140 90 150 120 140 C150 132 175 150 200 142 V165 Z"/>
+    <path class="l" d="M30 255 C60 232 90 238 120 230 C150 222 175 238 200 232 V255 Z"/>
+    <path class="l" d="M232 50 v40 M232 110 v40" />
+    <circle class="l" cx="232" cy="40" r="7"/>
+    <rect class="b" x="60" y="285" width="118" height="26" rx="3"/><text class="t" x="68" y="303">배양 챔버</text>
+  </g>
+
+  <!-- 4. materials: sheet roll, board, powder -->
+  <g transform="translate(885 50)">
+    <path class="l f" d="M10 150 L120 120 L190 150 L80 182 Z"/>
+    <path class="l" d="M10 150 V164 L80 196 L190 164 V150 M80 182 V196"/>
+    <ellipse class="l f" cx="60" cy="80" rx="22" ry="34"/>
+    <path class="l f" d="M60 46 H170 C182 46 182 114 170 114 H60"/>
+    <path class="l" d="M60 70 q10 10 0 20"/>
+    <path class="l f" d="M30 255 C45 215 80 205 100 205 C125 205 155 215 170 255 Z"/>
+    <path class="l" d="M22 255 H178"/>
+    <rect class="b" x="40" y="0" width="118" height="26" rx="3"/><text class="t" x="48" y="18">소재 · 원료화</text>
+  </g>
+
+  <!-- 5. applications -->
+  <g transform="translate(1150 20)">
+    <path class="l f" d="M30 70 H150 L165 140 H15 Z"/>
+    <path class="l" d="M60 70 C60 40 120 40 120 70"/>
+    <path class="l f" d="M20 175 H170 V255 H20 Z"/>
+    <path class="l" d="M20 175 L95 140 L170 175 M60 255 V210 H95 V255 M120 200 H150 V225 H120 Z"/>
+    <rect class="b" x="30" y="275" width="118" height="26" rx="3"/><text class="t" x="38" y="293">산업 적용</text>
+  </g>
+</svg>
