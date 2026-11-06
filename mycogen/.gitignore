@@ -1,0 +1,7 @@
+.preview/
+content/.history/
+content/.trash/
+node_modules/
+*.log
+# The finished site is committed so hosting can use it as-is (the repo root ignores dist).
+!dist/

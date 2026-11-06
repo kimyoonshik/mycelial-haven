@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>마이코젠 홈페이지 편집기</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%235f6b3a'/%3E%3Ccircle cx='16' cy='16' r='4' fill='%23fbf8f2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="/ui/app.css">
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <div class="top__brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#5f6b3a"/><g fill="none" stroke="#fbf8f2" stroke-width="1.8" stroke-linecap="round"><path d="M16 16 C 12 12, 8 11, 5 7"/><path d="M16 16 C 20 11, 24 10, 27 8"/><path d="M16 16 C 15 21, 12 24, 7 26"/><path d="M16 16 C 19 21, 23 23, 27 25"/></g><circle cx="16" cy="16" r="3.4" fill="#e2a93b"/></svg>
+      <div><strong>MYCOGEN</strong><span>홈페이지 편집기</span></div>
+    </div>
+    <div class="top__status" id="status" aria-live="polite"></div>
+    <div class="top__actions">
+      <button class="ibtn" id="undo" title="되돌리기 (Ctrl+Z)" disabled>↶</button>
+      <button class="ibtn" id="redo" title="다시 실행 (Ctrl+Y)" disabled>↷</button>
+      <button class="btn btn--ghost" id="discard" disabled>변경 취소</button>
+      <button class="btn btn--primary" id="save" disabled>저장 <kbd>Ctrl+S</kbd></button>
+    </div>
+  </header>
+
+  <nav class="side" id="side" aria-label="편집 메뉴"></nav>
+
+  <main class="panel" id="panel" tabindex="-1"></main>
+
+  <section class="pv" id="pv" aria-label="미리보기">
+    <div class="pv__bar">
+      <div class="seg" id="pvLang"><button data-v="ko" class="on">KO</button><button data-v="en">EN</button></div>
+      <div class="seg" id="pvDevice"><button data-v="desktop" class="on" title="데스크톱">PC</button><button data-v="tablet" title="태블릿">태블릿</button><button data-v="mobile" title="모바일">모바일</button></div>
+      <span class="pv__path" id="pvPath"></span>
+      <button class="ibtn" id="pvReload" title="새로고침">⟳</button>
+      <button class="ibtn" id="pvOpen" title="새 창에서 보기">↗</button>
+    </div>
+    <div class="pv__stage" id="pvStage"><div class="pv__frame" id="pvFrameWrap"><iframe id="pvFrame" title="사이트 미리보기"></iframe></div></div>
+    <p class="pv__hint">미리보기에서 영역을 클릭하면 해당 섹션 편집으로 이동합니다. 링크 이동은 Alt+클릭.</p>
+  </section>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<dialog class="modal" id="modal"><div class="modal__box" id="modalBox"></div></dialog>
+
+<script type="module" src="/ui/app.js"></script>
+</body>
+</html>

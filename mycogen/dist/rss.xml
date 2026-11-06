@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>마이코젠 소식</title>
+  <link>https://www.mycogen.co.kr/news/</link>
+  <description>(주)마이코젠은 버섯 균사체 배양 기술로 균사매트, 불연 바이오 건축자재, 균사발효 대체육, 균사발효 계란파우더를 개발·공급합니다.</description>
+  <language>ko</language>
+  <atom:link href="https://www.mycogen.co.kr/rss.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>(주)마이코젠 공식 홈페이지를 열었습니다</title>
+    <link>https://www.mycogen.co.kr/news/</link>
+    <guid isPermaLink="false">https://www.mycogen.co.kr/news/2026-11-05-0</guid>
+    <pubDate>Thu, 05 Nov 2026 00:00:00 GMT</pubDate>
+    <description>균사매트 배양, 불연 바이오 건축자재, 균사발효 대체육·계란파우더 네 개 사업을 소개하는 공식 홈페이지를 열었습니다.</description>
+  </item>
+  <item>
+    <title>콩 기질 균사체 고체배양 표준작업지침(v4) 수립</title>
+    <link>https://www.mycogen.co.kr/business/mycelium-meat/</link>
+    <guid isPermaLink="false">https://www.mycogen.co.kr/news/2026-10-02-1</guid>
+    <pubDate>Fri, 02 Oct 2026 00:00:00 GMT</pubDate>
+    <description>서리태·메주콩 기질에 영지·상황 균주를 배양하는 식품용 고체배양 표준작업지침을 수립했습니다. 대체육과 계란파우더 시제품 개발에 적용합니다.</description>
+  </item>
+  <item>
+    <title>폐배지·경석 혼합 배양물 4차 조성 시험</title>
+    <link>https://www.mycogen.co.kr/business/fire-safe-material/</link>
+    <guid isPermaLink="false">https://www.mycogen.co.kr/news/2026-04-29-2</guid>
+    <pubDate>Wed, 29 Apr 2026 00:00:00 GMT</pubDate>
+    <description>버섯 폐배지와 경석 파우더를 섞은 기질에서 균사 배양 가능성과 불연 효과를 확인하는 4차 조성 시험을 진행했습니다.</description>
+  </item>
+</channel>
+</rss>
