@@ -236,7 +236,7 @@ function rssXml(site, base, byId) {
     if (l.startsWith('media/')) return `${base}/${l}`;
     return /^https?:/.test(l) ? l : newsPage;
   };
-  const items = [...(site.news || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date))).map((n, k) => {
+  const items = [...(site.news || []), ...(site.blog || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date))).map((n, k) => {
     const d = new Date(`${n.date}T09:00:00+09:00`);
     return `  <item>
     <title>${x(tx(n.title, 'ko'))}</title>

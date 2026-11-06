@@ -4,10 +4,15 @@
   "private": true,
   "description": "(주)마이코젠 공식 홈페이지 — 정적 사이트 생성기와 로컬 편집기 (외부 패키지 없음)",
   "type": "module",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "node src/build.mjs",
     "editor": "node editor/server.mjs",
     "check": "node scripts/check.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0"
   }
 }

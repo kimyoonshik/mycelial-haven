@@ -262,9 +262,9 @@ export function pageText(site, page, lang) {
     (s.bullets || []).forEach((b) => line('- ' + P(b.text)));
     (s.rows || []).forEach((r) => { if (P(r.value)) line(`- ${P(r.label)}: ${P(r.value).replace(/\n/g, ' ')}`); });
     line(P(s.note));
-    if (s.type === 'richText') line(P(s.body));
+    if (s.type === 'richText' || s.type === 'post') line(P(s.body));
     if (s.type === 'news') {
-      [...(site.news || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date)))
+      sortedNews(site, s.source)
         .forEach((n) => line(`- ${n.date} ${P(n.title)}${P(n.summary) ? ' — ' + P(n.summary) : ''}`));
     }
   }
@@ -418,16 +418,18 @@ R.band = (s, ctx, i) => {
 ${fiberEdge(`band-bot-${ctx.page.id}-${i}`, { flip: true, cls: 'edge--bottom' })}`;
 };
 
-function sortedNews(site) {
-  return [...(site.news || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date)));
+// source: 'news'(소식) 또는 'blog'. 목록 페이지의 id도 source와 같습니다.
+function sortedNews(site, source = 'news') {
+  return [...(site[source || 'news'] || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date)));
 }
 
 R.news = (s, ctx) => {
   const limit = Number(s.limit ?? 3);
-  const all = sortedNews(ctx.site);
+  const source = s.source || 'news';
+  const all = sortedNews(ctx.site, source);
   const items = limit > 0 ? all.slice(0, limit) : all;
-  const newsPage = ctx.site.pages.find((p) => p.id === 'news');
-  const moreHref = s.more && newsPage && ctx.page.id !== 'news' ? ctx.pageHref('news') : null;
+  const listPage = ctx.pagesById[source];
+  const moreHref = s.more && listPage && ctx.page.id !== source ? ctx.pageHref(source) : null;
   const list = items.map((n) => {
     const a = linkAttrs(n.link, ctx);
     const title = esc(tx(n.title, ctx.lang));
@@ -439,11 +441,11 @@ R.news = (s, ctx) => {
         ${para(n.summary, ctx, 'news__summary')}
       </div>
     </article>`;
-  }).join('') || `<p class="muted center">${ctx.lang === 'ko' ? '등록된 소식이 없습니다.' : 'No news yet.'}</p>`;
+  }).join('') || `<p class="muted center">${ctx.lang === 'ko' ? '등록된 글이 없습니다.' : 'No posts yet.'}</p>`;
   return `<div class="wrap wrap--mid">
   <div class="sec__head center">${eyebrow(s.eyebrow, ctx)}${heading(s.title, ctx)}${para(s.text, ctx, 'sec__lead')}</div>
   <div class="news">${list}</div>
-  ${moreHref ? `<div class="btns btns--center"><a class="btn btn--outline" href="${esc(moreHref)}">${ctx.lang === 'ko' ? '소식 전체 보기' : 'All news'}<span class="btn__arrow" aria-hidden="true">→</span></a></div>` : ''}
+  ${moreHref ? `<div class="btns btns--center"><a class="btn btn--outline" href="${esc(moreHref)}">${ctx.lang === 'ko' ? `${esc(tx(listPage.navLabel, 'ko') || '소식')} 전체 보기` : 'View all'}<span class="btn__arrow" aria-hidden="true">→</span></a></div>` : ''}
 </div>`;
 };
 
@@ -482,21 +484,34 @@ R.contact = (s, ctx) => {
     <label class="field"><span>${L.msg} <em>${L.req}</em></span><textarea name="message" rows="6" required></textarea></label>
     ${tx(s.consent, ctx.lang) ? `<div class="consent"><p>${inline(tx(s.consent, ctx.lang), ctx)}</p></div>` : ''}
     <label class="check"><input type="checkbox" name="agree" required><span>${L.agree}</span></label>
+    ${c.turnstileSiteKey ? `<div class="cf-turnstile" data-sitekey="${esc(c.turnstileSiteKey)}" data-language="${ctx.lang}"></div><script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>` : ''}
     <button class="btn btn--solid" type="submit">${L.send}<span class="btn__arrow" aria-hidden="true">→</span></button>
     <p class="form__status" role="status" aria-live="polite"></p>
   </form>
 </div>`;
 };
 
-R.richText = (s, ctx) => {
-  const body = tx(s.body, ctx.lang);
-  const blocks = body.split(/\n{2,}/).map((b) => b.trim()).filter(Boolean).map((b) => {
+function richBlocks(body, ctx) {
+  return body.split(/\n{2,}/).map((b) => b.trim()).filter(Boolean).map((b) => {
     if (b.startsWith('## ')) return `<h3>${inline(b.slice(3), ctx)}</h3>`;
     const lines = b.split('\n');
     if (lines.every((l) => l.startsWith('- '))) return `<ul>${lines.map((l) => `<li>${inline(l.slice(2), ctx)}</li>`).join('')}</ul>`;
     return `<p>${inline(b, ctx)}</p>`;
   }).join('');
-  return `<div class="wrap wrap--narrow prose">${heading(s.title, ctx)}${blocks}</div>`;
+}
+
+R.richText = (s, ctx) => `<div class="wrap wrap--narrow prose">${heading(s.title, ctx)}${richBlocks(tx(s.body, ctx.lang), ctx)}</div>`;
+
+// 소식·블로그 글 한 편 (info.mycogen.co.kr 관리 페이지에서 작성)
+R.post = (s, ctx) => {
+  const back = ctx.pageHref(s.source || 'news');
+  return `<article class="wrap wrap--narrow prose post">
+  <p class="news__meta"><time datetime="${esc(s.date)}">${esc(String(s.date || '').replace(/-/g, '.'))}</time>${tx(s.category, ctx.lang) ? `<span class="tag">${esc(tx(s.category, ctx.lang))}</span>` : ''}</p>
+  ${heading(s.title, ctx)}
+  ${s.image ? `<figure class="post__img">${img(s.image, tx(s.title, ctx.lang), ctx)}</figure>` : ''}
+  ${richBlocks(tx(s.body, ctx.lang) || tx(s.summary, ctx.lang), ctx)}
+  ${back ? `<p class="post__back"><a href="${esc(back)}">← ${ctx.lang === 'ko' ? '목록으로' : 'Back to list'}</a></p>` : ''}
+</article>`;
 };
 
 const hasHead = (s) => ['title', 'eyebrow', 'text'].some((k) => tx(s[k], 'ko') || tx(s[k], 'en'));
@@ -656,13 +671,18 @@ function head(ctx, assetsVersion) {
   if (trail.length > 1) {
     graph.push({ '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: trail.filter(Boolean).map((p, n) => ({ '@type': 'ListItem', position: n + 1, name: tx(p.navLabel || p.title, lang), item: ctx.abs(p.id) })) });
   }
-  if ((page.sections || []).some((x) => x.type === 'news' && !x.hidden)) {
-    const news = [...(site.news || [])].filter((n) => !n.hidden).sort((a, b) => String(b.date).localeCompare(String(a.date))).slice(0, 20);
+  const listSec = (page.sections || []).find((x) => x.type === 'news' && !x.hidden);
+  if (listSec) {
+    const news = sortedNews(site, listSec.source).slice(0, 20);
     if (news.length) graph.push({ '@type': 'ItemList', itemListElement: news.map((n, k) => ({ '@type': 'ListItem', position: k + 1, item: {
-      '@type': 'NewsArticle', headline: tx(n.title, lang), datePublished: n.date, description: tx(n.summary, lang).slice(0, 300),
+      '@type': listSec.source === 'blog' ? 'BlogPosting' : 'NewsArticle', headline: tx(n.title, lang), datePublished: n.date, description: tx(n.summary, lang).slice(0, 300),
       ...(n.image ? { image: base + '/' + n.image } : {}), publisher: { '@id': orgId }, author: { '@id': orgId },
       mainEntityOfPage: canonical } })) });
   }
+  const post = (page.sections || []).find((x) => x.type === 'post');
+  if (post) graph.push({ '@type': post.source === 'blog' ? 'BlogPosting' : 'NewsArticle', headline: tx(post.title, lang), datePublished: post.date,
+    ...(post.updated ? { dateModified: post.updated } : {}), description: tx(post.summary, lang).slice(0, 300),
+    ...(post.image ? { image: base + '/' + post.image } : {}), publisher: { '@id': orgId }, author: { '@id': orgId }, mainEntityOfPage: canonical });
   const ld = { '@context': 'https://schema.org', '@graph': graph };
   const xUrl = String(site.social?.x || '');
   const xHandle = (xUrl.match(/(?:x|twitter)\.com\/(?:#!\/)?@?([A-Za-z0-9_]{1,15})/i) || [])[1];
