@@ -16,7 +16,8 @@
 
 1. https://nodejs.org/ko/download 에서 **LTS** 버전을 내려받아 설치합니다(18 이상).
 2. 이 `mycogen` 폴더를 PC에 내려받습니다.
-   - GitHub 저장소 `kimyoonshik/mycelial-haven` → 브랜치 `claude/brave-dijkstra-6ezngf` → **Code → Download ZIP** 후 압축을 풀면 `mycogen` 폴더가 있습니다.
+   - GitHub 저장소 `kimyoonshik/mycelial-haven` → 브랜치 `main` → **Code → Download ZIP** 후 압축을 풀면 `mycogen` 폴더가 있습니다.
+   - 이미 쓰고 있는 PC에서는 이렇게 받지 마세요. 그 PC의 `mycogen` 폴더가 원본이므로 덮어쓰면 안 됩니다.
 
 ## 2. 실행 (편집기 / 홈페이지 보기)
 
@@ -51,7 +52,7 @@
 
 ## 3. 홈페이지에 올리기(게시)
 
-편집기 왼쪽 **게시·배포** 화면에 같은 안내가 있습니다.
+편집기 왼쪽 **게시·배포** 화면에 같은 안내가 있습니다. 호스팅 담당자용 상세 안내는 **`HOSTING.md`**에 있습니다.
 
 1. 저장 → `배포용 ZIP 내려받기` (또는 `dist` 폴더 그대로 사용)
 2. 호스팅에 업로드
@@ -63,7 +64,9 @@
    - **구글 서치콘솔**: 사이트맵 제출 (Gemini·AI 개요도 구글 색인을 씁니다)
    - **Bing 웹마스터 도구**: 사이트맵 제출 (ChatGPT 검색·Copilot이 Bing 색인을 씁니다)
    - **Daum 웹마스터도구**: 발급된 `#DaumWebMasterTool:…` 문구를 그대로 입력
-5. **SNS 연결**: `사이트 정보 → SNS·채널`에 주소를 넣으면 홈 첫 화면 오른쪽, 푸터, 모바일 메뉴, 문의 페이지에 아이콘이 생깁니다(주소를 넣은 것만 표시).
+5. **SNS 연결**: `사이트 정보 → SNS·채널`에 주소를 넣으면 페이지 맨 아래(푸터)의 아이콘이 해당 계정으로 연결됩니다.
+   - 주소가 없는 아이콘은 ‘준비 중’으로 표시됩니다.
+   - `주소가 없는 SNS 아이콘 숨기기`를 켜면 주소가 없는 아이콘은 보이지 않습니다.
 
 사이트를 만들 때 검색·AI용 파일이 자동으로 함께 생성됩니다: `robots.txt`(구글·네이버·다음·Bing과 ChatGPT·Claude·Gemini·Perplexity 등 AI 크롤러 허용), `sitemap.xml`, `rss.xml`, `llms.txt`(AI용 회사 요약), `llms-full.txt`(AI용 전체 본문), 페이지마다 구조화 데이터(회사·웹페이지·경로·소식, SNS 연결 포함).
 
@@ -100,7 +103,8 @@ mycogen/
 ├─ editor/               편집 프로그램 (server.mjs + ui/)
 ├─ scripts/check.mjs     완성 사이트 링크 검사
 ├─ docs/                 레퍼런스 분석 문서
-└─ dist/                 완성 사이트 (자동 생성, 업로드 대상)
+├─ HOSTING.md            호스팅 담당자 안내
+└─ dist/                 완성 사이트 (자동 생성, 업로드 대상 · GitHub에도 포함)
 ```
 
 ## 6. 개발자용

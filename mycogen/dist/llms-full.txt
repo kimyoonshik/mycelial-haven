@@ -1,0 +1,792 @@
+# (주)마이코젠 (Mycogen Inc.) — https://www.mycogen.co.kr/
+
+# 마이코젠 | 균사체로 키우는 내일의 소재와 식품
+URL: https://www.mycogen.co.kr/
+
+(주)마이코젠은 버섯 균사체 배양 기술로 균사매트, 불연 바이오 건축자재, 균사발효 대체육, 균사발효 계란파우더를 개발·공급합니다.
+
+## 균사체로 키우는 내일의 소재와 식품
+마이코젠은 버섯 균사체 배양 기술 하나로 원단 소재·건축자재·식품 네 개의 사업을 잇습니다. 키우고, 결착하고, 발효합니다.
+
+## 더 단단하게. 더 안전하게. 더 건강하게.
+버섯의 뿌리인 균사체는 유기물을 분해하며 스스로 촘촘한 그물망을 짓습니다. 마이코젠은 이 자연의 결착력과 발효력을 표준화된 배양 공정으로 옮겨, 가죽 대체 원단용 균사매트부터 불연 건축자재, 단백질 식품 원료까지 만들어 냅니다.
+- 균사매트 배양: 가죽 대체 원단의 출발점. 균일한 생지 균사매트를 키워 후가공 파트너에게 공급합니다.
+- 불연 바이오 건축자재: 버섯 폐배지와 경석을 균사체로 굳힌, 불에 강한 친환경 내장재.
+- 균사발효 대체육: 국산 콩에 상황·영지 균사를 입혀 고체발효한, 씹는 맛이 있는 단백 원료.
+- 균사발효 계란파우더: 영지 균사로 발효한 메주콩과 산양유 유청으로 달걀의 기능을 내는 분말.
+
+## 버려지는 것에서 시작해 필요한 것을 만듭니다.
+버섯을 수확하고 남은 폐배지, 우리 땅에서 자란 콩과 곡물이 균사체의 먹이가 됩니다. 원료의 순환, 공정의 안전, 먹거리의 건강을 함께 설계합니다.
+- 순환
+- 안전
+- 건강
+
+## 균사체 플랫폼은 이렇게 작동합니다
+제품은 달라도 출발점은 같습니다. 건강한 균주, 잘 설계된 기질, 철저한 무균 관리.
+1. 균주 선발 — 영지·상황 등 식·약용 버섯 균주를 용도별로 선발하고 모균–액체종균–곡물종균 3단계로 관리합니다.
+2. 기질 설계 — 폐배지·경석, 콩·곡물 등 용도에 맞는 기질과 수분 조건을 설계합니다.
+3. 멸균·접종 — 고압 멸균 후 무균 환경에서 종균을 기질 전체에 고르게 접종합니다.
+4. 배양·결착 — 온도·습도·CO₂를 제어해 균사가 기질 전체를 하나로 엮도록 키웁니다.
+5. 수확·가공 — 매트는 원단용 생지로, 건축자재는 성형·건조, 식품은 저온 건조·분쇄합니다.
+
+## 숫자로 보는 마이코젠
+- 4 개: 사업 영역
+- 2 종: 핵심 식·약용 균주 (영지·상황)
+- 3 단계: 종균 관리 체계 (모균→액체→곡물)
+- 100 %: 식품 라인 식용 원료 기질
+
+## 마이코젠 소식
+- 2026-11-05 (주)마이코젠 공식 홈페이지를 열었습니다 — 균사매트 배양, 불연 바이오 건축자재, 균사발효 대체육·계란파우더 네 개 사업을 소개하는 공식 홈페이지를 열었습니다.
+- 2026-10-02 콩 기질 균사체 고체배양 표준작업지침(v4) 수립 — 서리태·메주콩 기질에 영지·상황 균주를 배양하는 식품용 고체배양 표준작업지침을 수립했습니다. 대체육과 계란파우더 시제품 개발에 적용합니다.
+- 2026-04-29 폐배지·경석 혼합 배양물 4차 조성 시험 — 버섯 폐배지와 경석 파우더를 섞은 기질에서 균사 배양 가능성과 불연 효과를 확인하는 4차 조성 시험을 진행했습니다.
+
+## 함께 키울 파트너를 찾습니다.
+샘플 요청, 공동연구, 공급·OEM, 투자 문의를 환영합니다.
+
+---
+
+# 회사소개
+URL: https://www.mycogen.co.kr/company/
+
+(주)마이코젠은 버섯 균사체 배양에 집중하는 B2B 소재·식품 원료 기업입니다. 미션, 일하는 방식, 회사 개요와 연구 이력을 소개합니다.
+
+## 균사체 배양 전문 기업, 마이코젠
+자연이 수억 년 다듬어 온 균사체의 힘을 산업의 언어로 옮깁니다.
+
+## 키우는 기술로 산업의 재료를 바꿉니다
+(주)마이코젠은 버섯 균사체 배양에 집중하는 기업입니다. 세이브어스(주) Mycerra Lab에서 축적한 균사체 배양·발효 연구를 바탕으로, 배양 자체를 하나의 독립된 산업으로 키우기 위해 설립되었습니다.
+
+우리는 완제품을 직접 만들기보다 각 산업의 파트너가 바로 쓸 수 있는 ‘잘 키운 재료’를 공급하는 데 집중합니다.
+- 배양에 집중하는 B2B 소재·식품 원료 기업
+- 원단 매트 · 건축자재 · 대체육 · 계란파우더 4개 사업
+- 표준작업지침(SOP) 기반의 재현 가능한 공정
+
+## 우리가 일하는 방식
+- 순환: 폐배지처럼 버려지는 자원을 배양의 원료로 되돌립니다.
+- 표준화: 모든 배치를 기록하고, 같은 조건이면 같은 결과가 나오도록 공정을 표준화합니다.
+- 안전: 식품 라인은 식용·식품첨가물 등급 원료만 쓰고, 건축 라인은 공인 시험 기준을 목표로 합니다.
+- 협력: 후가공·식품·건설 분야 파트너와 함께 시장에 나갑니다.
+
+## 회사 개요
+- 회사명: (주)마이코젠
+- 설립: 2026년
+- 사업 분야: 균사매트 배양 · 불연 바이오 건축자재 · 균사발효 대체육 · 균사발효 계란파우더
+- 홈페이지: www.mycogen.co.kr
+- 문의: info@mycogen.co.kr
+
+## 연구 이력
+마이코젠의 기술은 세이브어스(주) Mycerra Lab의 연구에서 출발했습니다.
+2022. 균사발효 대체육 선행연구 착수 — 콩 단백과 버섯 균사체를 결합한 대체육 조성 연구를 시작했습니다.
+2025. 폐배지·경석 혼합 배양 연구 착수 — 버섯 폐배지와 경석을 혼합한 기질의 균사 배양 가능성 연구를 시작했습니다.
+2026.04. 폐배지·경석 혼합물 4차 조성 시험 — 불연 성능 강화를 목표로 한 4차 조성 시험을 진행했습니다.
+2026.10. 콩 기질 고체배양 표준작업지침 수립 — 식품용 콩 기질 균사체 고체배양 SOP(v4)를 수립했습니다.
+2026.11. (주)마이코젠 공식 홈페이지 오픈
+
+## 함께 키울 파트너를 찾습니다.
+샘플 요청, 공동연구, 공급·OEM, 투자 문의를 환영합니다.
+
+---
+
+# 기술
+URL: https://www.mycogen.co.kr/technology/
+
+균사체의 결착력과 발효력을 활용하는 마이코젠의 고체배양(SSF) 플랫폼, 균주 관리 체계와 품질 원칙을 소개합니다.
+
+## 균사체, 자연이 만든 결착제이자 발효기
+균사체는 실처럼 가는 세포(균사)가 그물처럼 얽힌 버섯의 영양체입니다. 기질을 분해해 먹고 자라며, 그 과정에서 재료를 하나로 묶고 영양을 바꿉니다.
+
+## 보이지 않는 곳에서 숲을 잇는 네트워크
+숲 바닥 아래에서 균사체는 낙엽과 나무를 분해해 양분을 순환시키는 ‘숲의 청소부’입니다. 균사는 기질 사이사이로 뻗어 나가며 키틴질 세포벽으로 된 단단한 3차원 그물망을 만듭니다.
+
+마이코젠은 이 성질을 두 방향으로 씁니다. 그물망이 재료를 엮는 결착, 그리고 효소가 원료의 맛과 영양을 바꾸는 발효입니다.
+- 결착 — 톱밥·폐배지·경석 입자를 하나의 매트·보드로
+- 발효 — 콩·곡물 단백을 버섯 풍미의 식품 원료로
+
+## 고체배양(SSF) 플랫폼
+마이코젠의 공정은 액체가 아닌 고체 기질 위에서 균사를 키우는 고체배양(SSF)을 기반으로 합니다. 대형 발효조 없이 트레이·병·봉투 단위로 확장할 수 있어 초기 설비 부담이 낮고, 같은 플랫폼으로 소재와 식품을 모두 만들 수 있습니다.
+
+균주·기질·환경 조건을 배치 단위로 기록하는 표준작업지침(SOP)으로 재현성을 확보합니다.
+- 트레이·병·봉투 단위의 모듈형 확장
+- 배치별 배양 기록과 오염 판별 기준
+- 식품 라인은 식용 원료만 사용하는 별도 기준
+
+## 균주에서 제품까지 다섯 단계
+1. 균주 선발 — 영지·상황 등 식·약용 버섯 균주를 용도별로 선발하고 모균–액체종균–곡물종균 3단계로 관리합니다.
+2. 기질 설계 — 폐배지·경석, 콩·곡물 등 용도에 맞는 기질과 수분 조건을 설계합니다.
+3. 멸균·접종 — 고압 멸균 후 무균 환경에서 종균을 기질 전체에 고르게 접종합니다.
+4. 배양·결착 — 온도·습도·CO₂를 제어해 균사가 기질 전체를 하나로 엮도록 키웁니다.
+5. 수확·가공 — 매트는 원단용 생지로, 건축자재는 성형·건조, 식품은 저온 건조·분쇄합니다.
+
+## 핵심 균주
+용도에 맞는 균주를 고르고, 따로 키웁니다. 서로 밀어내는 균주는 섞지 않습니다.
+- 영지 Ganoderma lucidum: 오랫동안 약용으로 쓰여 온 버섯. 균사 생장이 빠르고 결착력이 좋아 식품 고체배양과 매트 배양에 활용합니다.
+- 상황 Phellinus linteus: 국내에서 귀하게 여겨 온 약용 버섯. 고유의 황갈색 색소와 향을 지니며, 콩 기질 대체육 발효에 활용합니다.
+- 식·약용 균주 탐색: 결착력, 생장 속도, 풍미를 기준으로 새로운 식·약용 균주를 계속 평가합니다.
+
+## 품질 관리 원칙
+- 무균 관리: 고압 멸균과 무균 접종, 무접종 대조구로 멸균 상태를 검증합니다.
+- 종균 관리: 모균–액체종균–곡물종균 3단계 체계, 계대 횟수 제한.
+- 기록: 배치번호 기준으로 배합·균주·조건·판정을 기록합니다.
+- 식품 라인: 식용 원료와 식품첨가물 등급만 사용하고, 저온 건조와 질소 충전 포장으로 품질을 지킵니다.
+- 소재·건축 라인: 성능 수치는 공인 시험 결과를 확보한 뒤 공개합니다.
+세부 공정 조건은 영업비밀 및 특허 출원 대상으로 공개하지 않습니다.
+
+## 함께 키울 파트너를 찾습니다.
+샘플 요청, 공동연구, 공급·OEM, 투자 문의를 환영합니다.
+
+---
+
+# 사업분야
+URL: https://www.mycogen.co.kr/business/
+
+균사매트 배양, 불연 바이오 건축자재, 균사발효 대체육, 균사발효 계란파우더 — 마이코젠의 네 가지 사업을 소개합니다.
+
+## 하나의 균사체, 네 개의 산업
+소재에서 식품까지, 마이코젠의 배양 플랫폼이 만드는 네 가지 사업입니다.
+- 균사매트 배양: 가죽 대체 원단의 출발점. 균일한 생지 균사매트를 키워 후가공 파트너에게 공급합니다.
+- 불연 바이오 건축자재: 버섯 폐배지와 경석을 균사체로 굳힌, 불에 강한 친환경 내장재.
+- 균사발효 대체육: 국산 콩에 상황·영지 균사를 입혀 고체발효한, 씹는 맛이 있는 단백 원료.
+- 균사발효 계란파우더: 영지 균사로 발효한 메주콩과 산양유 유청으로 달걀의 기능을 내는 분말.
+
+## 사업별 개발 단계
+- 균사매트 배양: 배양 공정 운영 경험 보유 · 생지 매트 공급 사업화 준비
+- 불연 바이오 건축자재: 실험실 조성 시험 단계 · 공인 불연 시험 준비
+- 균사발효 대체육: 고체배양 SOP 수립 · 시제품 개발 단계
+- 균사발효 계란파우더: 배합 설계 · 시제품 개발 단계
+개발 단계의 제품 정보는 연구 결과에 따라 바뀔 수 있습니다.
+
+## 함께 키울 파트너를 찾습니다.
+샘플 요청, 공동연구, 공급·OEM, 투자 문의를 환영합니다.
+
+---
+
+# 균사매트 배양
+URL: https://www.mycogen.co.kr/business/mycelium-mat/
+
+가죽 대체 원단의 출발점인 균사매트를 배양해 후가공 파트너에게 생지 상태로 공급합니다.
+
+## 원단의 출발점, 균사매트를 키웁니다
+마이코젠은 배양에 집중합니다. 균일한 두께와 밀도의 생지 균사매트를 키워, 가소화·염색·코팅 등 후가공을 맡는 파트너에게 공급합니다.
+
+## 후가공 전 단계의 ‘잘 키운’ 균사매트
+균사매트는 균사가 표면에서 촘촘하게 자라 만든 부드러운 시트입니다. 최종 원단의 품질은 이 생지의 균일성에서 결정됩니다.
+
+마이코젠은 후가공 공정을 제외한 배양 단계 — 기질 준비, 접종, 매트 배양, 수확·불활성화, 건조·검수 — 를 전담합니다.
+- 후가공(가소화·염색·코팅·엠보) 제외, 배양 전담
+- 두께·밀도·규격 맞춤 생산 협의
+- 배치별 배양 기록 제공
+
+## Mycogen 균사매트로 가공한 균사원단
+균사매트에 엠보싱과 염색 같은 후가공을 더하면 가죽과 같은 질감의 균사원단이 됩니다. 마이코젠은 그 출발점인 생지 균사매트를 배양해 후가공 파트너에게 공급합니다.
+- 악어 엠보싱 적용
+- 파티나 염색 적용
+
+## 균사매트가 쓰이는 곳
+- 가죽 대체 원단: 가방·지갑·신발 등 패션 잡화용 원단의 기초 소재.
+- 인테리어·가구: 벽면 마감재, 가구 커버 등 내장 소재.
+- 자동차 내장: 친환경 내장재를 찾는 모빌리티 분야.
+- 연구·시제품: 대학·연구소·브랜드의 소재 연구용 샘플.
+
+## 매트 배양 공정
+1. 기질 준비 — 목질 기질을 배합하고 수분을 맞춥니다.
+2. 멸균·접종 — 멸균한 기질에 종균을 고르게 접종합니다.
+3. 매트 배양 — 환경을 제어해 표면 균사층을 키웁니다.
+4. 수확·불활성화 — 매트를 걷어내고 생장을 멈춥니다.
+5. 건조·검수 — 두께·결점을 검수해 출하합니다.
+
+## 공급 개요
+- 공급 형태: 생지 균사매트 (후가공 전 상태)
+- 규격: 용도별 협의
+- 품질 자료: 배치별 배양 기록
+- 후가공: 파트너사 수행 (가소화·염색·코팅 등)
+
+## 함께 키울 파트너를 찾습니다.
+샘플 요청, 공동연구, 공급·OEM, 투자 문의를 환영합니다.
+
+---
+
+# 불연 바이오 건축자재
+URL: https://www.mycogen.co.kr/business/fire-safe-material/
+
+버섯 폐배지와 경석을 섞은 기질을 균사체로 결착해 불에 강한 친환경 건축 내장재를 개발합니다.
+
+## 폐배지와 경석, 균사체로 굳힌 불연 내장재
+버섯을 키우고 남은 폐배지에 화산석인 경석을 더하고, 균사체가 이를 하나로 엮습니다. 가볍고, 불에 강하고, 버려지던 자원에서 시작하는 내장재를 개발합니다.
+
+## 버려지는 배지, 강화되는 화재 기준
+버섯 재배가 끝나면 다량의 폐배지가 남아 처리 비용이 됩니다. 한편 건축 내장재에는 화재 안전 기준이 계속 강화되고 있습니다. 마이코젠은 이 두 문제를 하나의 소재로 풀고자 합니다 — 유기질 폐배지에 무기질 경석을 더해 불에 대한 저항을 높이고, 균사체를 천연 접착제로 씁니다.
+
+## 개발 목표
+아래 항목은 개발 목표이며, 수치는 공인 시험 이후 공개합니다.
+- 불연·난연: 무기질 경석으로 가연성 유기물 비중을 낮춥니다.
+- 경량: 다공성 경석과 균사 구조로 가벼운 패널을 지향합니다.
+- 자원 순환: 버섯 폐배지를 주원료로 업사이클링합니다.
+- 무독성 결착: 합성 접착제 대신 균사체가 입자를 결착합니다.
+
+## 제조 공정
+1. 폐배지 수거·분쇄 — 버섯 농가의 폐배지를 수거해 분쇄합니다.
+2. 경석 혼합 — 경석 파우더를 섞어 기질을 만듭니다.
+3. 멸균·접종 — 멸균 후 균사체를 접종합니다.
+4. 금형 배양 — 형틀 안에서 균사가 기질을 결착합니다.
+5. 건조·시험 — 건조로 생장을 멈추고 화염·물성 시험을 합니다.
+
+## 개발 현황
+- 원료: 버섯 폐배지(업사이클) + 경석
+- 적용 분야: 벽체·천장 내장재, 흡음 패널(평가 예정)
+- 개발 단계: 실험실 조성 시험 (2026년 4차 시험)
+- 목표 시험: 불연재료: KS F ISO 1182 · 준불연재료: KS F ISO 5660-1 · 가스 유해성: KS F 2271
+본 제품은 개발 중이며, 불연·준불연 등급은 공인 시험기관의 시험 결과에 따라 확정됩니다.
+
+## 함께 키울 파트너를 찾습니다.
+샘플 요청, 공동연구, 공급·OEM, 투자 문의를 환영합니다.
+
+---
+
+# 균사발효 대체육
+URL: https://www.mycogen.co.kr/business/mycelium-meat/
+
+서리태·메주콩 등 국산 콩에 상황·영지 균사체를 접종해 고체발효한 대체육 원료를 개발합니다.
+
+## 콩에 균사를 입히다
+서리태·메주콩 같은 국산 콩에 상황(Phellinus linteus) 또는 영지(Ganoderma lucidum) 균사체를 접종해 발효합니다. 균사가 콩알을 하나의 조직으로 엮어, 씹는 식감과 버섯의 풍미를 가진 단백 원료가 됩니다.
+
+## 발효가 만드는 조직감과 풍미
+균사체 고체발효는 인도네시아의 템페처럼 균사가 콩 사이를 채우며 덩어리를 만드는 원리입니다. 압출 성형 없이도 결이 있는 조직이 생기고, 발효 과정에서 콩 비린내가 줄고 버섯 특유의 감칠맛이 더해집니다.
+
+마이코젠은 여기에 국내에서 오래 쓰여 온 상황·영지 균주를 적용해 차별화된 발효 단백을 개발합니다.
+- 국산 콩과 통곡물 기반 기질
+- 톱밥·왕겨 등 비식용 담체 사용하지 않음
+- 식품첨가물은 식품 등급만 사용
+
+## 제품 설계 포인트
+- 원료: 서리태·메주콩 + 수수·현미 등 통곡물.
+- 균주: 상황 또는 영지. 균주별로 따로 배양합니다.
+- 형태: 블록·슬라이스 또는 건조 분말 형태의 B2B 중간소재.
+- 용도: 패티·너겟·간편식 등 가공식품 원료.
+
+## 제조 공정
+1. 선별·침지 — 콩을 고르고 깨끗하게 불립니다.
+2. 증숙 — 증기로 쪄서 균사가 먹기 좋게 만듭니다.
+3. 멸균 — 고압 멸균으로 잡균을 없앱니다.
+4. 접종·발효 — 곡물종균을 고르게 넣고 고체발효합니다.
+5. 가공 — 성형하거나 저온 건조·분쇄합니다.
+
+## 개발 현황
+- 개발 단계: 식품용 고체배양 표준작업지침(v4) 수립 · 시제품 개발
+- 알레르기 정보: 대두 함유
+- 인허가: 균사체 식품원료 적합성 검토 및 관련 인허가 진행 예정
+
+## 함께 키울 파트너를 찾습니다.
+샘플 요청, 공동연구, 공급·OEM, 투자 문의를 환영합니다.
+
+---
+
+# 균사발효 계란파우더
+URL: https://www.mycogen.co.kr/business/egg-powder/
+
+메주콩에 영지 균사체를 발효하고 산양유 유청 등을 배합해, 달걀의 유화·기포·결착 기능을 내는 베이킹·가공용 분말을 개발합니다.
+
+## 달걀의 기능을 콩과 균사로
+메주콩에 영지 균사체를 접종해 발효한 뒤, 산양유 유청 등 기능성 원료를 배합해 달걀처럼 유화·기포·결착하는 분말을 만듭니다.
+
+## 흔들리는 달걀 수급, 안정적인 대안이 필요합니다
+조류인플루엔자가 퍼질 때마다 달걀 공급과 가격이 크게 흔들립니다. 국내에서도 2017년과 2021년 달걀을 긴급 수입했고, 2025년 미국 달걀 가격은 사상 최고치를 기록했습니다. 제과·제빵·가공식품 기업에게 달걀은 빼기 어려운 원료이기에, 저장성이 좋고 공급이 안정적인 분말형 대체 원료의 수요가 커지고 있습니다.
+
+## 달걀이 하는 일을 대신합니다
+식품 속 달걀의 역할을 기능별로 나누어 원료를 설계합니다.
+- 유화: 대두 단백과 유청 단백이 기름과 물을 섞어 줍니다. 소스·드레싱.
+- 기포: 유청 단백의 거품성으로 반죽에 공기를 품게 합니다. 케이크·머랭.
+- 겔화·결착: 가열하면 굳어 재료를 묶습니다. 면·패티·베이커리.
+- 영양·풍미: 발효로 콩 비린내를 줄이고 고소한 맛을 더합니다.
+
+## 원료 설계
+주원료는 메주콩(대두)입니다. 영지 균사체로 고체발효해 저온 건조·분쇄한 뒤, 녹두 등 곡류와 산양유 유청을 용도에 맞춰 배합합니다. 녹두 단백은 해외 식물성 대체 계란에 널리 쓰이는 원료이고, 유청 단백은 뛰어난 기포·겔화 특성을 가집니다.
+
+용도에 따라 유청을 넣은 기능 강화형과 식물성 원료만 쓴 배합을 함께 설계합니다.
+- 메주콩 + 영지 균사체 고체발효
+- 녹두 등 곡류, 산양유 유청 배합
+- 60℃ 이하 저온 건조, 질소 충전 포장
+
+## 제조 공정
+1. 메주콩 증숙 — 메주콩을 불리고 쪄서 준비합니다.
+2. 영지 고체발효 — 멸균 후 영지 종균으로 발효합니다.
+3. 저온 건조·분쇄 — 기능 성분을 지키며 말리고 갈아 냅니다.
+4. 기능 원료 배합 — 녹두·유청 등을 용도별로 배합합니다.
+5. 포장 — 질소 충전으로 산화를 막아 포장합니다.
+
+## 제품 개요
+- 형태: 분말
+- 주원료: 메주콩(대두), 녹두 등 곡류, 산양유 유청
+- 균주: 영지 (Ganoderma lucidum)
+- 용도: 제과·제빵, 소스·드레싱, 면·가공식품
+- 알레르기 정보: 대두·우유(유청 포함 제품) 함유
+- 개발 단계: 배합 설계 · 시제품 개발
+유청을 포함한 제품은 비건 제품이 아닙니다.
+
+## 함께 키울 파트너를 찾습니다.
+샘플 요청, 공동연구, 공급·OEM, 투자 문의를 환영합니다.
+
+---
+
+# 소식
+URL: https://www.mycogen.co.kr/news/
+
+마이코젠의 연구 개발과 회사 소식.
+
+## 마이코젠 소식
+연구 개발 현황과 회사 소식을 전합니다.
+- 2026-11-05 (주)마이코젠 공식 홈페이지를 열었습니다 — 균사매트 배양, 불연 바이오 건축자재, 균사발효 대체육·계란파우더 네 개 사업을 소개하는 공식 홈페이지를 열었습니다.
+- 2026-10-02 콩 기질 균사체 고체배양 표준작업지침(v4) 수립 — 서리태·메주콩 기질에 영지·상황 균주를 배양하는 식품용 고체배양 표준작업지침을 수립했습니다. 대체육과 계란파우더 시제품 개발에 적용합니다.
+- 2026-04-29 폐배지·경석 혼합 배양물 4차 조성 시험 — 버섯 폐배지와 경석 파우더를 섞은 기질에서 균사 배양 가능성과 불연 효과를 확인하는 4차 조성 시험을 진행했습니다.
+
+## 함께 키울 파트너를 찾습니다.
+샘플 요청, 공동연구, 공급·OEM, 투자 문의를 환영합니다.
+
+---
+
+# 문의하기
+URL: https://www.mycogen.co.kr/contact/
+
+샘플 요청, 공동연구, 공급·OEM, 투자 문의는 마이코젠 문의 양식으로 남겨 주세요.
+
+## 마이코젠에 문의하기
+샘플 요청, 공동연구, 공급·OEM, 투자 등 무엇이든 남겨 주세요. 담당자가 확인 후 회신드립니다.
+
+---
+
+# 개인정보처리방침
+URL: https://www.mycogen.co.kr/privacy/
+
+(주)마이코젠 개인정보처리방침
+
+## 개인정보처리방침
+(주)마이코젠(이하 ‘회사’)은 「개인정보 보호법」에 따라 이용자의 개인정보를 보호하고 관련 고충을 원활하게 처리하기 위하여 다음과 같이 개인정보처리방침을 수립·공개합니다.
+
+## 1. 처리 목적
+회사는 홈페이지 문의 양식을 통해 받은 개인정보를 문의 내용 확인 및 회신 목적으로만 처리합니다.
+
+## 2. 처리 항목
+- 필수: 성함, 이메일, 문의 내용
+- 선택: 회사·기관명, 연락처, 문의 유형
+
+## 3. 보유 및 이용 기간
+문의 처리 완료 후 1년간 보관 후 파기합니다. 다만 관계 법령에 따라 보존할 필요가 있는 경우 해당 기간 동안 보관합니다.
+
+## 4. 제3자 제공
+회사는 이용자의 개인정보를 제3자에게 제공하지 않습니다. 법령에 특별한 규정이 있는 경우는 예외로 합니다.
+
+## 5. 처리 위탁
+문의 접수를 위해 이메일 서비스 또는 양식 전송 서비스를 이용할 수 있으며, 위탁 시 해당 업체와 내용을 본 방침에 공개합니다.
+
+## 6. 파기 절차 및 방법
+보유 기간이 지난 개인정보는 지체 없이 파기하며, 전자적 파일은 복구할 수 없는 방법으로 삭제합니다.
+
+## 7. 정보주체의 권리
+이용자는 언제든지 자신의 개인정보 열람·정정·삭제·처리정지를 요구할 수 있으며, 아래 연락처로 요청하시면 지체 없이 조치합니다.
+
+## 8. 안전성 확보 조치
+회사는 개인정보 접근 권한 관리, 접속 기록 보관, 암호화 등 안전성 확보에 필요한 조치를 취합니다.
+
+## 9. 개인정보 보호책임자
+- 담당: 개인정보 보호책임자
+- 이메일: info@mycogen.co.kr
+
+## 10. 시행일
+본 방침은 2026년 11월 5일부터 시행합니다.
+
+---
+
+# Mycogen | Growing tomorrow's materials and food with mycelium
+URL: https://www.mycogen.co.kr/en/
+
+Mycogen Inc. uses mushroom mycelium cultivation to develop mycelium mats, fire-safe bio building materials, and mycelium-fermented meat and egg alternatives.
+
+## Growing tomorrow's materials and food with mycelium
+Mycogen links four businesses — textile mats, building materials and two food ingredients — through one mycelium cultivation platform. We grow, bind and ferment.
+
+## Stronger. Safer. Healthier.
+Mycelium, the root network of mushrooms, digests organic matter and weaves itself into a dense web. Mycogen turns that natural binding and fermenting power into standardized cultivation — producing mats for leather-alternative textiles, fire-safe building materials and protein food ingredients.
+- Mycelium Mats: The starting point of leather alternatives: uniform greige mats for finishing partners.
+- Fire-safe Building Material: Spent mushroom substrate and pumice, bound by mycelium into a fire-resistant interior panel.
+- Mycelium Meat Alternative: Korean soybeans fermented with Phellinus or reishi mycelium into a chewy protein ingredient.
+- Mycelium Egg Powder: Reishi-fermented soybeans and goat-milk whey in a powder that works like egg.
+
+## We start with what is thrown away and make what is needed.
+Spent substrate left after mushroom harvests and locally grown beans and grains become food for mycelium. We design for circular inputs, safe processes and healthier food.
+- Circular
+- Safe
+- Healthy
+
+## How our mycelium platform works
+Different products, one starting point: healthy strains, well-designed substrates and strict aseptic control.
+1. Select the strain — We select edible and medicinal mushroom strains such as reishi and Phellinus for each use and manage them through a three-stage seed system.
+2. Design the substrate — We design the substrate and moisture for each product: spent substrate and pumice, or beans and grains.
+3. Sterilize & inoculate — After autoclave sterilization, seed culture is spread evenly through the substrate under aseptic conditions.
+4. Grow & bind — Temperature, humidity and CO₂ are controlled so the mycelium knits the whole substrate together.
+5. Harvest & finish — Mats ship as greige material, building panels are formed and dried, food is dried at low temperature and milled.
+
+## Mycogen at a glance
+- 4 개: Business lines
+- 2 strains: Core edible & medicinal strains
+- 3 stages: Seed-culture system (mother → liquid → grain)
+- 100 %: Edible-only substrates in the food line
+
+## Latest from Mycogen
+- 2026-11-05 Our official website is live — Our new website introduces four businesses: mycelium mats, fire-safe building materials, and mycelium-fermented meat and egg alternatives.
+- 2026-10-02 Soybean solid-state fermentation SOP (v4) established — A food-grade SOP for growing reishi and Phellinus on soybean substrates, now applied to meat-alternative and egg-powder prototypes.
+- 2026-04-29 Fourth trial of spent substrate–pumice composites — A fourth trial checking mycelial growth and fire performance in mixes of spent mushroom substrate and pumice powder.
+
+## Let's grow something together.
+We welcome sample requests, joint research, supply/OEM and investment inquiries.
+
+---
+
+# Company
+URL: https://www.mycogen.co.kr/en/company/
+
+Mycogen Inc. is a B2B materials and food-ingredient company focused on mushroom mycelium cultivation.
+
+## Mycogen, a mycelium cultivation company
+We translate mycelium's natural power into the language of industry.
+
+## Changing industrial materials through the craft of growing
+Mycogen Inc. is a company dedicated to mushroom mycelium cultivation. Building on mycelium cultivation and fermentation research from Save Earth Co., Ltd.’s Mycerra Lab, we were founded to grow cultivation itself into an independent industry.
+
+Rather than making finished goods, we focus on supplying well-grown materials that partners in each industry can use right away.
+- A B2B materials and food-ingredient company focused on cultivation
+- Four lines: textile mats, building materials, meat and egg alternatives
+- Reproducible processes built on standard operating procedures
+
+## How we work
+- Circularity: We return discarded resources such as spent substrate to the cultivation cycle.
+- Standardization: Every batch is recorded so the same conditions give the same result.
+- Safety: Food lines use only edible, food-grade inputs; building lines target certified test standards.
+- Partnership: We go to market together with finishing, food and construction partners.
+
+## Company overview
+- Company: Mycogen Inc.
+- Founded: 2026
+- Business: Mycelium mat cultivation · Fire-safe bio building materials · Mycelium-fermented meat alternative · Mycelium-fermented egg powder
+- Website: www.mycogen.co.kr
+- Contact: info@mycogen.co.kr
+
+## R&D milestones
+Our technology grew out of research at Save Earth’s Mycerra Lab.
+2022. Early research on mycelium-fermented meat alternatives — Began formulation research combining soy protein and mushroom mycelium.
+2025. Spent substrate + pumice composite research — Started testing whether mycelium can grow through mixes of spent mushroom substrate and pumice.
+2026.04. Fourth composition trial — Ran a fourth composition trial aimed at better fire performance.
+2026.10. Soybean SSF standard operating procedure — Established SOP v4 for food-grade solid-state fermentation on soybeans.
+2026.11. Official website launched
+
+## Let's grow something together.
+We welcome sample requests, joint research, supply/OEM and investment inquiries.
+
+---
+
+# Technology
+URL: https://www.mycogen.co.kr/en/technology/
+
+Mycogen's solid-state fermentation platform, strain management and quality principles.
+
+## Mycelium: nature's binder and fermenter
+Mycelium is the feeding body of a mushroom: thread-like cells woven into a web. As it digests and grows through a substrate, it binds materials together and transforms nutrition.
+
+## The hidden network that ties forests together
+Under the forest floor, mycelium is the clean-up crew that breaks down leaves and wood and recycles nutrients. Its hyphae grow between particles and build a tough three-dimensional web with chitin-rich cell walls.
+
+We use this in two ways: binding, where the web knits materials together, and fermentation, where enzymes change the taste and nutrition of raw ingredients.
+- Binding — turning sawdust, spent substrate and pumice into mats and boards
+- Fermentation — turning bean and grain protein into savory food ingredients
+
+## A solid-state fermentation platform
+Our processes are built on solid-state fermentation (SSF): mycelium grows on a solid substrate rather than in liquid. It scales in trays, jars and bags without large bioreactors, keeps capital needs low, and lets one platform make both materials and food.
+
+Standard operating procedures record strain, substrate and conditions batch by batch for reproducibility.
+- Modular scale-up in trays, jars and bags
+- Batch records and contamination criteria
+- A separate edible-only standard for the food line
+
+## Five steps from strain to product
+1. Select the strain — We select edible and medicinal mushroom strains such as reishi and Phellinus for each use and manage them through a three-stage seed system.
+2. Design the substrate — We design the substrate and moisture for each product: spent substrate and pumice, or beans and grains.
+3. Sterilize & inoculate — After autoclave sterilization, seed culture is spread evenly through the substrate under aseptic conditions.
+4. Grow & bind — Temperature, humidity and CO₂ are controlled so the mycelium knits the whole substrate together.
+5. Harvest & finish — Mats ship as greige material, building panels are formed and dried, food is dried at low temperature and milled.
+
+## Core strains
+We match the strain to the product and grow each one separately.
+- Reishi · Ganoderma lucidum: A mushroom long used in traditional medicine. Fast, dense mycelial growth makes it suitable for food fermentation and mats.
+- Phellinus linteus: A prized medicinal mushroom in Korea with a characteristic yellow-brown pigment and aroma, used for soybean-based meat alternatives.
+- Strain discovery: We keep screening edible and medicinal strains for binding strength, growth speed and flavor.
+
+## Quality principles
+- Aseptic control: Autoclave sterilization, aseptic inoculation and uninoculated controls to verify sterility.
+- Seed cultures: Three-stage system (mother → liquid → grain) with limited sub-culturing.
+- Records: Formula, strain, conditions and results recorded per batch number.
+- Food line: Only edible and food-grade inputs; low-temperature drying and nitrogen-flushed packaging.
+- Materials line: Performance figures are published only after certified testing.
+Detailed process parameters are proprietary and not disclosed.
+
+## Let's grow something together.
+We welcome sample requests, joint research, supply/OEM and investment inquiries.
+
+---
+
+# Business
+URL: https://www.mycogen.co.kr/en/business/
+
+Mycogen's four businesses: mycelium mats, fire-safe bio building materials, and mycelium-fermented meat and egg alternatives.
+
+## One mycelium, four industries
+From materials to food: four businesses grown on one cultivation platform.
+- Mycelium Mats: The starting point of leather alternatives: uniform greige mats for finishing partners.
+- Fire-safe Building Material: Spent mushroom substrate and pumice, bound by mycelium into a fire-resistant interior panel.
+- Mycelium Meat Alternative: Korean soybeans fermented with Phellinus or reishi mycelium into a chewy protein ingredient.
+- Mycelium Egg Powder: Reishi-fermented soybeans and goat-milk whey in a powder that works like egg.
+
+## Development status
+- Mycelium mats: Cultivation process in operation · preparing greige-mat supply
+- Fire-safe building material: Lab composition trials · preparing certified fire tests
+- Meat alternative: SSF SOP established · prototype development
+- Egg powder: Formulation design · prototype development
+Information on products in development may change as research progresses.
+
+## Let's grow something together.
+We welcome sample requests, joint research, supply/OEM and investment inquiries.
+
+---
+
+# Mycelium Mat Cultivation
+URL: https://www.mycogen.co.kr/en/business/mycelium-mat/
+
+We cultivate mycelium mats — the starting point of leather-alternative textiles — and supply them as greige material to finishing partners.
+
+## We grow the mat where textiles begin
+We focus on cultivation: uniform greige mycelium mats, supplied to partners who handle plasticizing, dyeing and coating.
+
+## Well-grown mats, ready for finishing
+A mycelium mat is a soft sheet formed as hyphae grow densely at the surface. The quality of the final textile depends on how uniform this greige mat is.
+
+Mycogen handles everything up to finishing: substrate prep, inoculation, mat growth, harvest and inactivation, drying and inspection.
+- Cultivation only — finishing is done by partners
+- Thickness, density and size agreed per order
+- Batch cultivation records provided
+
+## Processed with MycoGen mycelium mat Mycelium fabric
+Add finishing such as embossing and dyeing to a mycelium mat and it becomes a leather-like mycelium textile. Mycogen grows the greige mat that this starts from and supplies it to finishing partners.
+- Crocodile embossing
+- Patina dyeing
+
+## Where mats are used
+- Leather alternatives: Base material for bags, wallets, shoes and accessories.
+- Interiors & furniture: Wall finishes, upholstery and interior surfaces.
+- Automotive interiors: Mobility makers looking for bio-based interiors.
+- R&D & prototypes: Samples for universities, labs and brand material teams.
+
+## Mat cultivation process
+1. Substrate prep — Lignocellulosic substrate is mixed and moisture-adjusted.
+2. Sterilize & inoculate — Seed culture is spread through sterilized substrate.
+3. Mat growth — Controlled conditions grow the surface mycelium layer.
+4. Harvest & inactivate — Mats are lifted and growth is stopped.
+5. Dry & inspect — Thickness and defects are checked before shipping.
+
+## Supply overview
+- Form: Greige mycelium mat (before finishing)
+- Size: Agreed per application
+- Quality data: Batch cultivation records
+- Finishing: By partners (plasticizing, dyeing, coating, etc.)
+
+## Let's grow something together.
+We welcome sample requests, joint research, supply/OEM and investment inquiries.
+
+---
+
+# Fire-safe Bio Building Material
+URL: https://www.mycogen.co.kr/en/business/fire-safe-material/
+
+Mycelium-bound panels of spent mushroom substrate and pumice, developed as fire-resistant interior building materials.
+
+## Spent substrate and pumice, bound into a fire-safe panel
+We add pumice, a volcanic stone, to spent mushroom substrate and let mycelium bind it into one piece — a light, fire-resistant interior material made from what used to be waste.
+
+## Wasted substrate, tougher fire rules
+Mushroom farms leave behind large volumes of spent substrate that cost money to dispose of, while fire-safety rules for interior materials keep getting stricter. We aim to solve both with one material: inorganic pumice raises fire resistance, and mycelium works as a natural binder.
+
+## What we are designing for
+These are design targets; figures will be published after certified testing.
+- Fire resistance: Inorganic pumice lowers the share of combustible organic matter.
+- Lightweight: Porous pumice and mycelium aim at a light panel.
+- Circular input: Spent mushroom substrate is upcycled as the main input.
+- Non-toxic binding: Mycelium, not synthetic glue, binds the particles.
+
+## How it is made
+1. Collect & grind — Spent substrate from mushroom farms is collected and ground.
+2. Mix pumice — Pumice powder is blended into the substrate.
+3. Sterilize & inoculate — The mix is sterilized and inoculated.
+4. Grow in molds — Mycelium binds the mix inside molds.
+5. Dry & test — Drying stops growth; fire and physical tests follow.
+
+## Development status
+- Inputs: Spent mushroom substrate (upcycled) + pumice
+- Applications: Wall and ceiling interiors; acoustic panels (to be evaluated)
+- Stage: Lab composition trials (4th trial in 2026)
+- Target tests: Non-combustible: KS F ISO 1182 · Quasi-non-combustible: KS F ISO 5660-1 · Gas toxicity: KS F 2271
+This product is under development; fire classification will be confirmed by an accredited testing body.
+
+## Let's grow something together.
+We welcome sample requests, joint research, supply/OEM and investment inquiries.
+
+---
+
+# Mycelium-fermented Meat Alternative
+URL: https://www.mycogen.co.kr/en/business/mycelium-meat/
+
+Soybeans fermented with Phellinus linteus or reishi mycelium, developed as a meat-alternative ingredient.
+
+## Beans, knitted together by mycelium
+We inoculate Korean soybeans with Phellinus linteus or reishi mycelium. The mycelium knits the beans into one piece — a protein ingredient with chew and savory mushroom flavor.
+
+## Texture and flavor, made by fermentation
+Solid-state fermentation works like tempeh: hyphae fill the gaps between beans and form a solid block. Texture forms without extrusion, beany notes fade, and mushroom umami appears.
+
+We apply Phellinus and reishi — strains with a long history of use in Korea — to make a distinctive fermented protein.
+- Korean soybeans and whole grains
+- No non-edible carriers such as sawdust or husks
+- Only food-grade additives
+
+## Product design
+- Ingredients: Black and yellow soybeans with whole grains such as sorghum or brown rice.
+- Strains: Phellinus or reishi, always cultured separately.
+- Formats: B2B intermediate as blocks, slices or dried powder.
+- Uses: Patties, nuggets and ready meals.
+
+## How it is made
+1. Sort & soak — Beans are sorted, split and soaked.
+2. Steam — Steaming makes them easy for mycelium to digest.
+3. Sterilize — Autoclaving removes competing microbes.
+4. Inoculate & ferment — Grain spawn is mixed in for solid-state fermentation.
+5. Process — Formed, or dried at low temperature and milled.
+
+## Development status
+- Stage: Food-grade SSF SOP (v4) established · prototype development
+- Allergens: Contains soy
+- Regulatory: Food-ingredient eligibility review and approvals planned
+
+## Let's grow something together.
+We welcome sample requests, joint research, supply/OEM and investment inquiries.
+
+---
+
+# Mycelium-fermented Egg Powder
+URL: https://www.mycogen.co.kr/en/business/egg-powder/
+
+Soybeans fermented with reishi mycelium and blended with goat-milk whey into a powder that emulsifies, foams and binds like egg.
+
+## The function of egg, from beans and mycelium
+We ferment soybeans with reishi mycelium, then blend in goat-milk whey and other functional ingredients to make a powder that emulsifies, foams and binds like egg.
+
+## Egg supply keeps shaking. Food makers need a steady alternative.
+Every avian-flu outbreak shakes egg supply and prices. Korea made emergency egg imports in 2017 and 2021, and US egg prices hit record highs in 2025. Eggs are hard to replace in bakery and processed food, so demand is growing for shelf-stable powdered alternatives with steady supply.
+
+## Doing the jobs egg does
+We design ingredients around each job egg does in food.
+- Emulsifying: Soy and whey proteins hold oil and water together — sauces and dressings.
+- Foaming: Whey protein traps air in batters — cakes and meringues.
+- Gelling & binding: Sets on heating and binds — noodles, patties, bakery.
+- Nutrition & flavor: Fermentation softens beany notes and adds a nutty taste.
+
+## Ingredient design
+The base is soybean. After reishi solid-state fermentation it is dried at low temperature and milled, then blended with grains such as mung bean and with goat-milk whey. Mung bean protein is widely used in plant-based egg alternatives; whey protein foams and gels well.
+
+We design both whey-enhanced and fully plant-based blends for different uses.
+- Soybeans fermented with reishi mycelium
+- Blended with mung bean and goat-milk whey
+- Dried below 60 °C, nitrogen-flushed packaging
+
+## How it is made
+1. Steam soybeans — Soybeans are soaked and steamed.
+2. Reishi SSF — Sterilized and fermented with reishi spawn.
+3. Dry & mill — Dried gently and milled to protect actives.
+4. Blend — Mung bean, whey and more blended per use.
+5. Pack — Nitrogen-flushed to prevent oxidation.
+
+## Product overview
+- Form: Powder
+- Main ingredients: Soybean, mung bean and other grains, goat-milk whey
+- Strain: Reishi (Ganoderma lucidum)
+- Uses: Bakery, sauces and dressings, noodles and processed food
+- Allergens: Contains soy; milk in whey-containing blends
+- Stage: Formulation design · prototype development
+Blends containing whey are not vegan.
+
+## Let's grow something together.
+We welcome sample requests, joint research, supply/OEM and investment inquiries.
+
+---
+
+# News
+URL: https://www.mycogen.co.kr/en/news/
+
+Research and company news from Mycogen.
+
+## News
+Updates on our research and company.
+- 2026-11-05 Our official website is live — Our new website introduces four businesses: mycelium mats, fire-safe building materials, and mycelium-fermented meat and egg alternatives.
+- 2026-10-02 Soybean solid-state fermentation SOP (v4) established — A food-grade SOP for growing reishi and Phellinus on soybean substrates, now applied to meat-alternative and egg-powder prototypes.
+- 2026-04-29 Fourth trial of spent substrate–pumice composites — A fourth trial checking mycelial growth and fire performance in mixes of spent mushroom substrate and pumice powder.
+
+## Let's grow something together.
+We welcome sample requests, joint research, supply/OEM and investment inquiries.
+
+---
+
+# Contact
+URL: https://www.mycogen.co.kr/en/contact/
+
+Contact Mycogen for samples, joint research, supply/OEM and investment.
+
+## Contact Mycogen
+Samples, joint research, supply/OEM, investment — tell us what you need and we will get back to you.
+
+---
+
+# Privacy Policy
+URL: https://www.mycogen.co.kr/en/privacy/
+
+Mycogen Inc. privacy policy
+
+## Privacy Policy
+Mycogen Inc. (the "Company") protects the personal information of users in accordance with Korea's Personal Information Protection Act.
+
+## 1. Purpose
+Information submitted through the website inquiry form is used only to review and answer the inquiry.
+
+## 2. Items collected
+- Required: name, email, message
+- Optional: company, phone, inquiry topic
+
+## 3. Retention
+Kept for one year after the inquiry is closed, then destroyed, unless the law requires longer retention.
+
+## 4. Third parties
+We do not provide personal information to third parties except where required by law.
+
+## 5. Outsourcing
+We may use an email or form-delivery service to receive inquiries. Any such provider will be disclosed in this policy.
+
+## 6. Destruction
+Information past its retention period is destroyed without delay; electronic files are deleted irrecoverably.
+
+## 7. Your rights
+You may request access, correction, deletion or suspension of processing at any time using the contact below.
+
+## 8. Security
+We apply access control, log retention and encryption measures.
+
+## 9. Privacy officer
+- Email: info@mycogen.co.kr
+
+## 10. Effective date
+This policy is effective from November 5, 2026.
+
+---

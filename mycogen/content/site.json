@@ -196,7 +196,7 @@
           },
           "items": [
             {
-              "image": "media/photos/cultivation-room.webp",
+              "image": "media/uploads/gemini_generated_image_iby68yiby68yiby6.webp",
               "title": {
                 "ko": "순환",
                 "en": "Circular"
@@ -204,7 +204,7 @@
               "link": "page:technology"
             },
             {
-              "image": "media/photos/pumice-stone.webp",
+              "image": "media/uploads/gemini_generated_image_ndxh9pndxh9pndxh-2.webp",
               "title": {
                 "ko": "안전",
                 "en": "Safe"
@@ -212,7 +212,7 @@
               "link": "page:fire-safe-material"
             },
             {
-              "image": "media/photos/fermented-soy-sliced.webp",
+              "image": "media/uploads/gemini_generated_image_ndxh9pndxh9pndxh.webp",
               "title": {
                 "ko": "건강",
                 "en": "Healthy"
@@ -499,7 +499,8 @@
               "text": {
                 "ko": "폐배지처럼 버려지는 자원을 배양의 원료로 되돌립니다.",
                 "en": "We return discarded resources such as spent substrate to the cultivation cycle."
-              }
+              },
+              "icon": "recycle"
             },
             {
               "title": {
@@ -509,7 +510,8 @@
               "text": {
                 "ko": "모든 배치를 기록하고, 같은 조건이면 같은 결과가 나오도록 공정을 표준화합니다.",
                 "en": "Every batch is recorded so the same conditions give the same result."
-              }
+              },
+              "icon": "clipboard"
             },
             {
               "title": {
@@ -519,7 +521,8 @@
               "text": {
                 "ko": "식품 라인은 식용·식품첨가물 등급 원료만 쓰고, 건축 라인은 공인 시험 기준을 목표로 합니다.",
                 "en": "Food lines use only edible, food-grade inputs; building lines target certified test standards."
-              }
+              },
+              "icon": "shield"
             },
             {
               "title": {
@@ -529,7 +532,8 @@
               "text": {
                 "ko": "후가공·식품·건설 분야 파트너와 함께 시장에 나갑니다.",
                 "en": "We go to market together with finishing, food and construction partners."
-              }
+              },
+              "icon": "people"
             }
           ]
         },
@@ -745,7 +749,7 @@
           "align": "left",
           "overlay": 50,
           "network": true,
-          "image": "media/photos/ganoderma-reishi.webp",
+          "image": "media/uploads/kakaotalk_20241120_172205554_19.jpg",
           "eyebrow": {
             "ko": "TECHNOLOGY",
             "en": "TECHNOLOGY"
@@ -797,7 +801,7 @@
           "type": "split",
           "tone": "cream",
           "reverse": true,
-          "image": "media/photos/fermented-soy-block.webp",
+          "image": "media/uploads/kakaotalk_20241028_184713493_01.jpg",
           "eyebrow": {
             "ko": "SOLID-STATE FERMENTATION",
             "en": "SOLID-STATE FERMENTATION"
@@ -1296,8 +1300,8 @@
             "en": "FINISHED MATERIAL"
           },
           "title": {
-            "ko": "균사매트로 가공한\n균사원단",
-            "en": "Mycelium textile\nfinished from a mat"
+            "ko": "Mycogen 균사매트로 가공한\n균사원단",
+            "en": "Processed with MycoGen mycelium mat\nMycelium fabric"
           },
           "text": {
             "ko": "균사매트에 엠보싱과 염색 같은 후가공을 더하면 가죽과 같은 질감의 균사원단이 됩니다. 마이코젠은 그 출발점인 생지 균사매트를 배양해 후가공 파트너에게 공급합니다.",
@@ -1555,7 +1559,7 @@
         "ko": "버섯 폐배지와 경석을 섞은 기질을 균사체로 결착해 불에 강한 친환경 건축 내장재를 개발합니다.",
         "en": "Mycelium-bound panels of spent mushroom substrate and pumice, developed as fire-resistant interior building materials."
       },
-      "cardImage": "media/photos/pumice-stone.webp",
+      "cardImage": "media/uploads/kyung-214-2.jpg",
       "cardText": {
         "ko": "버섯 폐배지와 경석을 균사체로 굳힌, 불에 강한 친환경 내장재.",
         "en": "Spent mushroom substrate and pumice, bound by mycelium into a fire-resistant interior panel."
@@ -1567,7 +1571,7 @@
           "align": "left",
           "overlay": 55,
           "network": true,
-          "image": "media/photos/pumice-stone.webp",
+          "image": "media/uploads/kyung-214.jpg",
           "eyebrow": {
             "ko": "BUSINESS 02 · BUILDING MATERIAL",
             "en": "BUSINESS 02 · BUILDING MATERIAL"
@@ -1805,6 +1809,16 @@
           }
         },
         {
+          "type": "images",
+          "width": "wide",
+          "tone": "white",
+          "items": [
+            {
+              "video": "https://youtu.be/wTRrpfmV6x8"
+            }
+          ]
+        },
+        {
           "type": "cta",
           "title": {
             "ko": "함께 키울 파트너를 찾습니다.",
@@ -1843,7 +1857,7 @@
         "ko": "서리태·메주콩 등 국산 콩에 상황·영지 균사체를 접종해 고체발효한 대체육 원료를 개발합니다.",
         "en": "Soybeans fermented with Phellinus linteus or reishi mycelium, developed as a meat-alternative ingredient."
       },
-      "cardImage": "media/photos/fermented-soy-block.webp",
+      "cardImage": "media/uploads/meat_00022.jpg",
       "cardText": {
         "ko": "국산 콩에 상황·영지 균사를 입혀 고체발효한, 씹는 맛이 있는 단백 원료.",
         "en": "Korean soybeans fermented with Phellinus or reishi mycelium into a chewy protein ingredient."
@@ -1855,7 +1869,7 @@
           "align": "left",
           "overlay": 50,
           "network": true,
-          "image": "media/photos/fermented-soy-sliced.webp",
+          "image": "media/uploads/meat-035.jpg",
           "eyebrow": {
             "ko": "BUSINESS 03 · MEAT ALTERNATIVE",
             "en": "BUSINESS 03 · MEAT ALTERNATIVE"
@@ -1883,7 +1897,7 @@
           "type": "split",
           "tone": "paper",
           "reverse": false,
-          "image": "media/photos/black-soybeans.webp",
+          "image": "media/uploads/meat_00022.jpg",
           "eyebrow": {
             "ko": "THE IDEA",
             "en": "THE IDEA"
@@ -2106,6 +2120,19 @@
           }
         },
         {
+          "type": "images",
+          "width": "wide",
+          "tone": "white",
+          "items": [
+            {
+              "image": "media/uploads/00_3_배양콩성분.png"
+            },
+            {
+              "image": "media/uploads/00_4_배양콩성분2.png"
+            }
+          ]
+        },
+        {
           "type": "cta",
           "title": {
             "ko": "함께 키울 파트너를 찾습니다.",
@@ -2144,7 +2171,7 @@
         "ko": "메주콩에 영지 균사체를 발효하고 산양유 유청 등을 배합해, 달걀의 유화·기포·결착 기능을 내는 베이킹·가공용 분말을 개발합니다.",
         "en": "Soybeans fermented with reishi mycelium and blended with goat-milk whey into a powder that emulsifies, foams and binds like egg."
       },
-      "cardImage": "media/art/egg-powder.webp",
+      "cardImage": "media/uploads/egg_powder-01.jpg",
       "cardText": {
         "ko": "영지 균사로 발효한 메주콩과 산양유 유청으로 달걀의 기능을 내는 분말.",
         "en": "Reishi-fermented soybeans and goat-milk whey in a powder that works like egg."
@@ -2156,7 +2183,7 @@
           "align": "left",
           "overlay": 30,
           "network": false,
-          "image": "media/art/egg-powder.webp",
+          "image": "media/uploads/egg_powder-01.jpg",
           "eyebrow": {
             "ko": "BUSINESS 04 · EGG POWDER",
             "en": "BUSINESS 04 · EGG POWDER"
@@ -2261,7 +2288,7 @@
           "type": "split",
           "tone": "paper",
           "reverse": true,
-          "image": "media/photos/fermented-soy-block.webp",
+          "image": "media/uploads/egg_powder-02.jpg",
           "eyebrow": {
             "ko": "INGREDIENTS",
             "en": "INGREDIENTS"
@@ -2674,7 +2701,7 @@
         "ko": "서리태·메주콩 기질에 영지·상황 균주를 배양하는 식품용 고체배양 표준작업지침을 수립했습니다. 대체육과 계란파우더 시제품 개발에 적용합니다.",
         "en": "A food-grade SOP for growing reishi and Phellinus on soybean substrates, now applied to meat-alternative and egg-powder prototypes."
       },
-      "image": "media/photos/fermented-soy-sliced.webp",
+      "image": "media/uploads/meat-035.jpg",
       "link": "page:mycelium-meat"
     },
     {
@@ -2691,7 +2718,7 @@
         "ko": "버섯 폐배지와 경석 파우더를 섞은 기질에서 균사 배양 가능성과 불연 효과를 확인하는 4차 조성 시험을 진행했습니다.",
         "en": "A fourth trial checking mycelial growth and fire performance in mixes of spent mushroom substrate and pumice powder."
       },
-      "image": "media/photos/pumice-stone.webp",
+      "image": "media/uploads/flame-poster.jpg",
       "link": "page:fire-safe-material"
     }
   ]

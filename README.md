@@ -1,3 +1,7 @@
+> **(주)마이코젠 공식 홈페이지는 [`mycogen/`](mycogen/) 폴더입니다.**
+> 호스팅은 [`mycogen/HOSTING.md`](mycogen/HOSTING.md), 편집 프로그램 사용법은 [`mycogen/README.md`](mycogen/README.md)를 보세요.
+> 이 아래의 Lovable 프로젝트(저장소 맨 위의 React·Vite 파일)는 이전 시안이며 게시에 쓰지 않습니다.
+
 # Welcome to your Lovable project
 
 ## Project info
