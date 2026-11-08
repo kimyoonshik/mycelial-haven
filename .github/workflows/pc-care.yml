@@ -1,0 +1,62 @@
+name: PC Care (Windows build)
+
+on:
+  push:
+    paths:
+      - "pc-care/**"
+      - ".github/workflows/pc-care.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-exe:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: pc-care
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: python -m pip install -r requirements.txt pyinstaller==6.11.1 pytest==8.3.3
+
+      - name: Tests (including the Windows registry ones)
+        run: python -m pytest -q
+
+      - name: Open every tab from source
+        run: |
+          python run.py --selftest selftest-source.txt
+          $code = $LASTEXITCODE
+          Get-Content selftest-source.txt
+          if ($code -ne 0) { exit 1 }
+
+      - name: Build PC-Care.exe
+        run: >
+          pyinstaller --noconfirm --onefile --windowed --name PC-Care
+          --hidden-import csv --hidden-import sqlite3 --hidden-import zipfile
+          --hidden-import urllib.request --hidden-import webbrowser
+          run.py
+
+      - name: Open every tab in the built exe, with the add-on template loaded
+        run: |
+          New-Item -ItemType Directory -Force dist/plugins | Out-Null
+          Copy-Item plugin_template.py dist/plugins/hello.py
+          $p = Start-Process dist/PC-Care.exe -ArgumentList "--selftest", "$PWD/selftest-exe.txt" -Wait -PassThru
+          Get-Content selftest-exe.txt
+          if ($p.ExitCode -ne 0) { exit 1 }
+          if (-not (Select-String -Path selftest-exe.txt -Pattern "^ok hello$" -Quiet)) { Write-Error "add-on was not loaded"; exit 1 }
+          Remove-Item -Recurse dist/plugins
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PC-Care-Windows
+          path: pc-care/dist/PC-Care.exe
+          if-no-files-found: error
