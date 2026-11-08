@@ -4,4 +4,4 @@ dist/
 *.spec
 selftest-*.txt
 # add-ons dropped in while running from source
-plugins/
+/plugins/
