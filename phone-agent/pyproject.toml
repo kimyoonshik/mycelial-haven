@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phone-agent"
+version = "0.1.0"
+description = "아이폰에 블루투스 핸즈프리로 붙어, 본인 번호로 AI가 대신 통화하는 휴대용 브리지"
+requires-python = ">=3.11"
+dependencies = [
+    # 대화 API가 베타라 버전을 고정합니다. 올릴 때는 voice.py 가 쓰는 Conversation·AudioInterface 를 다시 확인하세요.
+    "elevenlabs==2.78.0",
+    "jeepney>=0.9,<1",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.scripts]
+phone-agent = "phone_agent.__main__:main"
+
+[tool.setuptools]
+packages = ["phone_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

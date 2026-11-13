@@ -1,0 +1,13 @@
+[Unit]
+Description=Phone Agent web screen
+After=pipewire.service wireplumber.service
+
+[Service]
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/local/bin/phone-agent serve
+# setup 을 마치기 전에는 비밀번호가 없어 바로 끝납니다. 10초마다 다시 시도하므로 setup 뒤에 저절로 켜집니다.
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
