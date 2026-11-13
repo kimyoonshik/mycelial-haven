@@ -1,5 +1,6 @@
 java/lib/
 java/out/
+dist/
 __pycache__/
 *.hwp
 *.json

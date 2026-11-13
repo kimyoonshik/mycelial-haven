@@ -3,40 +3,43 @@
 정부·R&D 사업 문서를 한글(HWP 5.0) 파일로 만드는 도구입니다.
 문서 내용을 중간 JSON으로 만든 뒤, Java 빌더(hwplib 기반)가 HWP로 씁니다.
 
-## 준비 (세션마다 한 번)
+이 폴더는 claude.ai 스킬 `008-hwp-document`의 원본이기도 합니다. 사용법은 `SKILL.md`에 있습니다.
+
+## 준비 확인
 
 ```bash
-pip install olefile
-bash java/build.sh
+python3 make_hwp.py --check
 ```
 
-`build.sh`는 처음 실행할 때 Maven Central에서 hwplib 1.1.11과 gson 2.10.1을 받습니다.
-Java 17 이상이 필요합니다.
+처음 실행하면 `java/build.sh`가 Maven Central에서 hwplib 1.1.11과 gson 2.10.1을 받아 컴파일합니다(Java 11 이상).
+Java가 없으면 PyPI의 `jdk4py`를 설치해 씁니다.
 
 ## 만드는 방법
 
-새 문서 작성은 `hwpdsl.py`로 내용을 짭니다. `example.py`를 참고하세요.
+새 문서는 `hwpdsl.py`로 내용을 짜고 `make_hwp.build()`로 저장합니다(`example.py`, `SKILL.md` 참고).
+저장할 때 구조 검증까지 자동으로 합니다. 한글 파일명도 그대로 쓸 수 있습니다.
 
 ```bash
-python3 example.py example.json
-java -cp "java/out:java/lib/*" Json2Hwp example.json example.hwp
-python3 validate_hwp.py example.hwp
+python3 make_hwp.py 입력.json 출력.hwp    # 중간 JSON → HWP
+python3 make_hwp.py 입력.docx 출력.hwp    # Word → HWP
 ```
 
-Word 문서를 HWP로 바꿀 때는 다음과 같이 실행합니다.
+## 스킬 묶음 만들기
 
 ```bash
-python3 docx2json.py 입력.docx 중간.json
-java -cp "java/out:java/lib/*" Json2Hwp 중간.json 출력.hwp
-python3 validate_hwp.py 출력.hwp
+python3 package_skill.py
 ```
 
-Java는 한글 파일명을 읽지 못할 수 있으므로 입력·출력 경로는 영문으로 쓰고, 다 만든 뒤 이름을 바꿉니다.
+`dist/008-hwp-document.zip`이 만들어집니다. claude.ai 설정의 스킬 메뉴에 올리면 모든 대화에서 쓸 수 있습니다.
+도구를 고친 뒤에는 이 명령으로 다시 묶어 새로 올립니다.
 
 ## 파일
 
 | 파일 | 역할 |
 |---|---|
+| `SKILL.md` | 스킬 설명서 (Claude가 읽는 사용법) |
+| `make_hwp.py` | 한 번에 만들기: JSON·Word → HWP, 구조 검증, Java 확인 |
+| `package_skill.py` | 스킬 zip 묶기 |
 | `hwpdsl.py` | 공문서 양식(□ ○ - ※, 표, 제목 띠, A4, 쪽 번호)으로 중간 JSON을 만드는 작성 도구 |
 | `docx2json.py` | Word(.docx) → 중간 JSON (글자·문단 서식, 글머리, 표 병합·테두리·음영, 쪽 번호) |
 | `java/src/main/java/Json2Hwp.java` | 중간 JSON → HWP 5.0 |

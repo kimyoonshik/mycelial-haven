@@ -26,6 +26,12 @@ It pulls `main` every 5 minutes, so whatever is merged into `main` goes live.
 - Run `npm run test:server` (needs `TEST_DATABASE_URL`) after changing anything in `server/`.
 - When `src/` changes, the owner's PC also needs the changed files (rule 3 above), or the editor preview drifts from the live site.
 
+## Documents are delivered as HWP
+
+When creating a document (report, plan, overview, proposal, contract, memo, government or R&D paperwork),
+produce a Hangul `.hwp` file unless the owner asks for another format. Slides and spreadsheets keep their own formats.
+Use the `008-hwp-document` skill if it is available; otherwise use `tools/hwp/` (see `tools/hwp/SKILL.md`).
+
 # Coding behavior guidelines (andrej-karpathy-skills)
 
 Source: https://github.com/forrestchang/andrej-karpathy-skills (CLAUDE.md, fetched 2026-11-08).
